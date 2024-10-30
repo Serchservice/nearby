@@ -1,0 +1,134 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:drive/library.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+class HomeController extends GetxController {
+  HomeController();
+  static HomeController get data => Get.find<HomeController>();
+  final state = HomeState();
+
+  final AppService appService = AppImplementation();
+  final AccessService accessService = AccessImplementation();
+  BannerAd? bannerAd;
+
+  @override
+  void onInit() {
+    _launchDevice();
+    _createBannerAd();
+
+    super.onInit();
+  }
+
+  List<ButtonView> categories = [
+    ButtonView(
+      header: "Mechanic",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/mechanic.png",
+      path: "MECHANIC",
+    ),
+    ButtonView(
+      header: "Plumber",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/plumber.png",
+      path: "PLUMBER",
+    ),
+    ButtonView(
+      header: "Electrician",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/electrician.png",
+      path: "ELECTRICIAN",
+    ),
+    ButtonView(
+      header: "House Keeper",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/housekeeper.png",
+      path: "HOUSE_KEEPING",
+    ),
+    ButtonView(
+      header: "Carpenter",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/carpenter.png",
+      path: "CARPENTER",
+    ),
+    ButtonView(
+      header: "Generator repairer",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/generator.png",
+      path: "GENERATOR_REPAIR",
+    ),
+    ButtonView(
+      header: "Home Installer",
+      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/home.png",
+      path: "HOME_INSTALLER",
+    ),
+  ];
+
+  Future<void> _launchDevice() async {
+    appService.buildDeviceInformation(onSuccess: (device) {
+      Database.saveDevice(device);
+      _requestAccess(device.sdk);
+
+      AnalyticsEngine.logEvent("DEVICE_INFORMATION", parameters: device.toJson());
+    });
+  }
+
+  Future<void> _requestAccess(int sdk, {Function()? onSuccess}) async {
+    bool hasAccess = await accessService.requestPermissions();
+    if(hasAccess) {
+      if(Platform.isAndroid || Platform.isIOS) {
+        onSuccess?.call();
+        return;
+      } else {
+        throw SerchException("Unsupported platform", isPlatformNotSupported: true);
+      }
+    } else {
+      _requestAccess(sdk, onSuccess: onSuccess);
+    }
+  }
+  
+  void _createBannerAd() {
+    bannerAd = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: Keys.admobBannerId,
+      listener: _adListener,
+      request: const AdRequest()
+    )..load();
+  }
+
+  final BannerAdListener _adListener = BannerAdListener(
+    onAdFailedToLoad: (ad, error) {
+      ad.dispose();
+    },
+    onAdLoaded: (ad) {
+      Logger.log(ad);
+    }
+  );
+
+  Widget banner() {
+    _createBannerAd();
+
+    if(bannerAd != null) {
+      return Container(
+        height: 50,
+        margin: EdgeInsets.only(bottom: Sizing.space(10)),
+        child: AdWidget(ad: bannerAd!)
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
+  bool get canShowButton => state.selectedCategory.value.isNotEmpty
+      && state.selectedAddress.value.longitude != 0.0
+      && state.selectedAddress.value.latitude != 0.0;
+
+  void selectCategory(String category) {
+    state.selectedCategory.value = category;
+  }
+
+  void updateAddress(Address address) {
+    state.selectedAddress.value = address;
+  }
+
+  void search() {
+    RequestSearch search = RequestSearch(category: state.selectedCategory.value, pickup: state.selectedAddress.value);
+    Navigate.to(ResultLayout.route, parameters: search.toParams(), arguments: search.toJson());
+  }
+}

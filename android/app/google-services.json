@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "977124095958",
+    "project_id": "serch-drive",
+    "storage_bucket": "serch-drive.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977124095958:android:58342d5f49ef1b605a9677",
+        "android_client_info": {
+          "package_name": "com.serch.drive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpixbFdRc_Z3XR3wwbWMlAy_TbaWYXCBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

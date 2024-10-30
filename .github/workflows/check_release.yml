@@ -1,0 +1,54 @@
+name: Check Release
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up .netrc
+        run: |
+          echo "machine github.com" >> ~/.netrc
+          echo "login ${{ secrets.PKG_AUTH_USERNAME }}" >> ~/.netrc
+          echo "password ${{ secrets.PKG_AUTH_PASSWORD }}" >> ~/.netrc
+          chmod 600 ~/.netrc
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PKG_AUTH_PASSWORD }}  # Removed the repository field
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Get version from pubspec.yaml
+        id: get_version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Check for existing tag
+        id: check_tag
+        run: |
+          if git fetch --tags && git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Tag v${{ env.VERSION }} already exists. Failing the check."
+            exit 1
+          fi
+
+      - name: Check for existing release
+        id: check_release
+        run: |
+          if gh release view "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Release v${{ env.VERSION }} already exists. Failing the check."
+            exit 1
+          fi
