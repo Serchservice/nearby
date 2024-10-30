@@ -20,11 +20,18 @@ class UpdateLayout extends GetResponsiveView<UpdateController> {
           color: Theme.of(context).primaryColor
         ),
       ),
-      child: ListView.builder(
-        itemCount: controller.updates.length,
-        itemBuilder: (context, index) {
-          return UpdateBox(update: controller.updates[index]);
-        }
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: controller.updates.length,
+              itemBuilder: (context, index) {
+                return UpdateBox(update: controller.updates[index]);
+              }
+            ),
+          ),
+          HomeController.data.banner()
+        ],
       )
     );
   }
