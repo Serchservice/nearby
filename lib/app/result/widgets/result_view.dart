@@ -11,15 +11,20 @@ class ResultView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ButtonView> options = [
       ButtonView(header: "View shop details", index: 0, icon: Icons.details_rounded),
-      ButtonView(header: "View directions on map", index: 1, icon: Icons.arrow_forward_sharp),
-      ButtonView(header: "Drive with uber", index: 2, icon: Icons.arrow_forward_sharp),
-      ButtonView(header: "Call ${shop.shop.name}", index: 3, icon: Icons.call),
+      ButtonView(header: "Directions", index: 1, icon: Icons.directions),
+      ButtonView(header: "Ride with uber", index: 2, icon: Icons.arrow_forward_sharp),
+      if(shop.shop.phone.isNotEmpty) ... [
+        ButtonView(header: "Call ${shop.shop.name}", index: 3, icon: Icons.call),
+      ],
+      if(shop.isGoogle) ...[
+        ButtonView(header: "More about this business", index: 4, icon: Icons.view_compact),
+      ]
     ];
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: CommonColors.shimmer)
+        border: Border.all(color: Theme.of(context).appBarTheme.backgroundColor ?? CommonColors.shimmer)
       ),
       width: MediaQuery.sizeOf(context).width,
       child: ClipRRect(
@@ -31,7 +36,7 @@ class ResultView extends StatelessWidget {
               options: options,
               onTap: (view) {
                 if(view.index == 0) {
-                  ShopDetails.open(shop);
+                  ShopDetails.open(shop, controller);
                 } else if(view.index == 1) {
                   NavigationSheet.open(shop);
                 } else if(view.index == 2) {
@@ -45,31 +50,32 @@ class ResultView extends StatelessWidget {
                       "&dropoff[nickname]=${shop.shop.address}"
                       "&dropoff[formatted_address]=${shop.shop.address}"
                   );
-                } else {
+                } else if(view.index == 3) {
                   RouteNavigator.callNumber(shop.shop.phone);
+                } else if(view.index == 4) {
+                  RouteNavigator.openLink(url: shop.shop.category);
                 }
               }
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 6.0),
-                  child: _buildContent(
-                    context: context,
-                    image: shop.shop.logo,
-                    name: shop.shop.name,
-                    distance: shop.distanceInKm,
-                    rating: shop.shop.rating,
-                    category: shop.shop.category
-                  ),
+                  child: _buildContent(context),
                 ),
-                MapView(
-                  origin: controller.state.search.value.pickup,
-                  destination: Address(latitude: shop.shop.latitude, longitude: shop.shop.longitude, place: shop.shop.address),
-                  distance: shop.distanceInKm,
-                  isTop: false,
-                  height: 200,
-                )
+                if(!shop.isGoogle) ...[
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    margin: EdgeInsets.only(left: 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: CommonColors.success,)
+                    ),
+                    child: SText(text: "RECOMMENDED", size: Sizing.font(12), color: CommonColors.success,),
+                  ),
+                  const SizedBox(height: 10)
+                ]
               ],
             ),
           ),
@@ -78,49 +84,38 @@ class ResultView extends StatelessWidget {
     );
   }
 
-  Widget _buildContent({
-    required BuildContext context,
-    required String image,
-    required String name,
-    required String distance,
-    required double rating,
-    required String category
-  }) {
+  Widget _buildContent(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Avatar.small(avatar: image),
+        Stack(
+          children: [
+            Avatar.medium(avatar: shop.shop.logo),
+            Positioned(right: 0, top: 10, child: buildNotifier())
+          ],
+        ),
         const SizedBox(width: 6),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: SText(
-                      text: name,
-                      size: Sizing.font(14),
-                      color: Theme.of(context).primaryColor,
-                      flow: TextOverflow.ellipsis
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  SText(text: distance, size: Sizing.font(12), color: Theme.of(context).primaryColor),
-                ],
+              SText(
+                text: shop.shop.name,
+                size: Sizing.font(16),
+                weight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: SText(
-                      text: category,
-                      size: Sizing.font(11),
-                      color: Theme.of(context).primaryColorLight,
-                      flow: TextOverflow.ellipsis
+                      text: "${shop.distanceInKm} away",
+                      size: Sizing.font(14),
+                      color: Theme.of(context).primaryColor
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  RatingIcon(rating: rating, iconSize: 14, textSize: 10),
+                  RatingIcon(rating: shop.shop.rating, iconSize: 22, textSize: 14),
                 ],
               ),
             ],
@@ -128,5 +123,27 @@ class ResultView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget buildNotifier() {
+    if(shop.shop.open) {
+      return HeartBeating(
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: CommonColors.success,
+            borderRadius: BorderRadius.circular(50)
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: CommonColors.yellow,
+          borderRadius: BorderRadius.circular(50)
+        ),
+      );
+    }
   }
 }

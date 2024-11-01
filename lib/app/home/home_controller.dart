@@ -12,53 +12,35 @@ class HomeController extends GetxController {
 
   final AppService appService = AppImplementation();
   final AccessService accessService = AccessImplementation();
+  final ConnectService _connect = Connect(useToken: false);
+
   BannerAd? bannerAd;
 
   @override
   void onInit() {
     _launchDevice();
-    _createBannerAd();
 
     super.onInit();
   }
 
-  List<ButtonView> categories = [
-    ButtonView(
-      header: "Mechanic",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/mechanic.png",
-      path: "MECHANIC",
-    ),
-    ButtonView(
-      header: "Plumber",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/plumber.png",
-      path: "PLUMBER",
-    ),
-    ButtonView(
-      header: "Electrician",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/electrician.png",
-      path: "ELECTRICIAN",
-    ),
-    ButtonView(
-      header: "House Keeper",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/housekeeper.png",
-      path: "HOUSE_KEEPING",
-    ),
-    ButtonView(
-      header: "Carpenter",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/carpenter.png",
-      path: "CARPENTER",
-    ),
-    ButtonView(
-      header: "Generator repairer",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/generator.png",
-      path: "GENERATOR_REPAIR",
-    ),
-    ButtonView(
-      header: "Home Installer",
-      asset: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/categories/home.png",
-      path: "HOME_INSTALLER",
-    ),
-  ];
+  @override
+  void onReady() {
+    _loadCategories();
+    _createBannerAd();
+
+    super.onReady();
+  }
+
+  void _loadCategories() async {
+    state.isFetchingCategories.value = true;
+    var response = await _connect.get(endpoint: "/shop/drive/categories");
+    state.isFetchingCategories.value = false;
+
+    if(response.isSuccessful) {
+      List<dynamic> result = response.data;
+      state.categories.value = result.map((d) => DriveCategoryResponse.fromJson(d)).toList();
+    }
+  }
 
   Future<void> _launchDevice() async {
     appService.buildDeviceInformation(onSuccess: (device) {

@@ -20,4 +20,5 @@ export 'shop/shop_weekday.dart';
 
 /// SEARCH
 export 'search/request_search.dart';
+export 'search/drive_category_response.dart';
 export 'search/search_shop_response.dart';

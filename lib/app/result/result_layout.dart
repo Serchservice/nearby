@@ -49,16 +49,19 @@ class ResultLayout extends GetResponsiveView<ResultController> {
                     )
                   );
                 } else {
-                  return ListView.builder(
+                  return ListView.separated(
                     itemCount: controller.state.sortedShops.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.all(6),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: 16);
+                    },
                     itemBuilder: (context, index) {
                       return ResultView(
                         shop: controller.state.sortedShops[index],
                         controller: controller,
                       );
-                    }
+                    },
                   );
                 }
               })

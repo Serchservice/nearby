@@ -1,6 +1,7 @@
 library;
 
 export 'animations/expandable.dart';
+export 'animations/heartbeat.dart';
 
 export 'buttons/loading_button.dart';
 export 'buttons/navigator_button.dart';

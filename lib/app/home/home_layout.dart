@@ -12,10 +12,14 @@ class HomeLayout extends GetResponsiveView<HomeController> {
     return Obx(() {
       return MainLayout(
         endDrawer: AppDrawer(),
-        floatingButton: controller.canShowButton ? FloatingActionButton.small(
+        floatingButton: controller.canShowButton ? FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColorLight,
           onPressed: () => controller.search(),
-          child: Icon(
+          label: SText(
+            text: "Search",
+            color: Theme.of(context).scaffoldBackgroundColor
+          ),
+          icon: Icon(
             Icons.manage_search_rounded,
             color: Theme.of(context).scaffoldBackgroundColor
           ),
@@ -90,51 +94,7 @@ class HomeLayout extends GetResponsiveView<HomeController> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 8,
-                          mainAxisExtent: 150,
-                          mainAxisSpacing: 8
-                        ),
-                        shrinkWrap: true,
-                        itemCount: controller.categories.length,
-                        itemBuilder: (context, index) {
-                          ButtonView category = controller.categories[index];
-
-                          return Obx(() {
-                            bool selected = controller.state.selectedCategory.value == category.path;
-
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Material(
-                                color: selected ? Theme.of(context).primaryColor : Theme.of(context).appBarTheme.backgroundColor,
-                                child: InkWell(
-                                  onTap: () => controller.selectCategory(category.path),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Column(
-                                      children: [
-                                        Expanded(child: CategoryImage(image: category.asset, height: 50, width: 80)),
-                                        const SizedBox(height: 4),
-                                        SText.center(
-                                          text: category.header,
-                                          size: 9,
-                                          color: selected ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).primaryColor
-                                        )
-                                      ],
-                                    )
-                                  ),
-                                ),
-                              ),
-                            );
-                          });
-                        },
-                      ),
-                    )
+                    _buildCategories(context)
                   ],
                 ),
               ),
@@ -144,5 +104,76 @@ class HomeLayout extends GetResponsiveView<HomeController> {
         )
       );
     });
+  }
+
+  Widget _buildCategories(BuildContext context) {
+    SliverGridDelegateWithFixedCrossAxisCount count = SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+      crossAxisSpacing: 8,
+      mainAxisExtent: 150,
+      mainAxisSpacing: 8
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Obx(() {
+        if(controller.state.isFetchingCategories.value) {
+          return LoadingShimmer(
+            content: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: count,
+              shrinkWrap: true,
+              itemCount: 8,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: CommonColors.shimmerHigh
+                  ),
+                );
+              },
+            ),
+          );
+        } else {
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: count,
+            shrinkWrap: true,
+            itemCount: controller.state.categories.length,
+            itemBuilder: (context, index) {
+              DriveCategoryResponse category = controller.state.categories[index];
+
+              return Obx(() {
+                bool selected = controller.state.selectedCategory.value == category.name;
+
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Material(
+                    color: selected ? Theme.of(context).primaryColor : Theme.of(context).appBarTheme.backgroundColor,
+                    child: InkWell(
+                      onTap: () => controller.selectCategory(category.name),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          children: [
+                            Expanded(child: CategoryImage(image: category.image, height: 50, width: 80)),
+                            const SizedBox(height: 4),
+                            SText.center(
+                              text: category.type,
+                              size: 9,
+                              color: selected ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).primaryColor
+                            )
+                          ],
+                        )
+                      ),
+                    ),
+                  ),
+                );
+              });
+            },
+          );
+        }
+      }),
+    );
   }
 }

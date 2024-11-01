@@ -9,7 +9,8 @@ class CurvedBottomSheet extends StatelessWidget {
     this.padding,
     this.borderRadius,
     this.safeArea = false,
-    this.margin
+    this.margin,
+    this.height
   });
 
   final Color? backgroundColor;
@@ -18,6 +19,7 @@ class CurvedBottomSheet extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class CurvedBottomSheet extends StatelessWidget {
               topRight: Radius.circular(24),
             ),
           child: Container(
+            height: height,
             color: backgroundColor ?? Theme.of(context).bottomAppBarTheme.color,
             padding: padding ?? EdgeInsets.symmetric(vertical: Sizing.space(15), horizontal: Sizing.space(10)),
             child: child
