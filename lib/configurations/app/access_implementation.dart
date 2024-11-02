@@ -15,10 +15,7 @@ class AccessImplementation implements AccessService {
       throw SerchException("Location service is not enabled on this device", isPlatformNotSupported: true);
     }
 
-    var locationPermission = await Geolocator.requestPermission();
-    bool isLocationGranted = locationPermission == LocationPermission.always ||
-        locationPermission == LocationPermission.whileInUse;
-
-    return !isLocationGranted;
+    var permission = await Geolocator.requestPermission();
+    return permission == LocationPermission.always || permission == LocationPermission.whileInUse;
   }
 }

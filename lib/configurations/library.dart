@@ -12,7 +12,6 @@ export 'app/location_service.dart';
 export 'app/location_implementation.dart';
 
 export 'core/sizing.dart';
-export 'assets/media.dart';
 
 export 'core/connect_service.dart';
 export 'core/connect.dart';

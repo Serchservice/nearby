@@ -10,4 +10,6 @@ class LocationSearchState {
 
   /// Is Loading Search Result
   RxBool isSearching = RxBool(false);
+
+  RxBool isSearchingLocation = RxBool(false);
 }

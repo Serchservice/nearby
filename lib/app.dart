@@ -32,7 +32,7 @@ class _MainState extends State<Main> {
         theme: MainTheme.light,
         darkTheme: MainTheme.dark,
         themeMode: Database.themeMode,
-        title: "Serch",
+        title: "Serch Drive",
         color: CommonColors.darkTheme,
         debugShowCheckedModeBanner: false,
         initialRoute: HomeLayout.route,

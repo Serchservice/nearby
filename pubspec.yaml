@@ -3,7 +3,7 @@ description: "Drive to shop application for Serchservice Inc."
 
 publish_to: 'none'
 
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: ^3.5.4
@@ -44,6 +44,7 @@ dependencies:
   map_launcher: ^3.5.0
   google_maps_flutter: ^2.9.0
   google_directions_api: ^0.10.0
+  liquid_pull_to_refresh: ^3.0.1
   flutter_svg:
 
   connectify_flutter:

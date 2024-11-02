@@ -71,7 +71,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
 
   void _addOrUpdateMarker(LatLng position, bool isDestination, {String? asset}) async {
     final Uint8List markerIcon = await _getBytesFromAsset(
-      asset ?? (isDestination ? Media.destination : Media.current),
+      asset ?? (isDestination ? Assets.mapDestination : Assets.mapCurrent),
       isDestination ? 32 : 32,
       isDestination ? 32 : 32
     );

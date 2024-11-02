@@ -1,76 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
 
-class LocationView extends StatefulWidget {
+class LocationView extends StatelessWidget {
   final Address address;
   final Function(Address)? onSelect;
+  final VoidCallback? onShowOptions;
+  final VoidCallback? onSearch;
   final bool withPadding;
   final double fontSize;
+  final bool isSearching;
 
   const LocationView({
     super.key,
     required this.address,
     this.onSelect,
     this.withPadding = false,
-    this.fontSize = 12
+    this.fontSize = 12,
+    this.onShowOptions,
+    this.onSearch,
+    this.isSearching = false
   });
-
-  @override
-  State<LocationView> createState() => _LocationViewState();
-}
-
-class _LocationViewState extends State<LocationView> {
-  final LocationService _locationService = LocationImplementation();
-
-  bool isSearching = false;
-
-  void searchCurrentLocation() {
-    setState(() {
-      isSearching = true;
-    });
-
-    _locationService.getAddress(
-      onSuccess: (data, position) {
-        setState(() {
-          isSearching = false;
-        });
-        widget.onSelect?.call(data);
-      },
-      onError: (error) {
-        notify.error(message: error);
-        setState(() {
-          isSearching = false;
-        });
-      }
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: widget.address.place.isEmpty ? () => searchCurrentLocation() : () => widget.onSelect?.call(widget.address),
+        onTap: onShowOptions ?? onSearch ?? () => onSelect?.call(address),
         child: Padding(
-          padding: widget.withPadding ? const EdgeInsets.all(8.0) : EdgeInsets.zero,
+          padding: withPadding ? const EdgeInsets.all(8.0) : EdgeInsets.zero,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if(widget.address.place.isNotEmpty && !isSearching) ...[
+              if(!isSearching) ...[
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SText(
-                          text: widget.address.place,
-                          size: Sizing.font(widget.fontSize),
-                          color: Theme.of(context).primaryColor,
-                          lines: 2,
-                          flow: TextOverflow.ellipsis
+                        text: address.place.isNotEmpty
+                          ? address.place
+                          : onShowOptions != null
+                            ? "Tap to search your location"
+                            : "Tap to use current location",
+                        size: Sizing.font(fontSize),
+                        color: Theme.of(context).primaryColor,
+                        lines: 2,
+                        flow: TextOverflow.ellipsis
                       ),
-                      if(widget.address.country.isNotEmpty) ...[
+                      if(address.country.isNotEmpty) ...[
                         SText(
-                          text: widget.address.country,
+                          text: address.country,
                           size: Sizing.font(12),
                           color: Theme.of(context).primaryColorLight
                         ),
@@ -79,19 +59,32 @@ class _LocationViewState extends State<LocationView> {
                   )
                 )
               ] else ...[
-                LoadingButton(
-                  padding: EdgeInsets.symmetric(vertical: Sizing.space(12), horizontal: Sizing.space(22)),
-                  text: "Use current location",
-                  textColor: Theme.of(context).scaffoldBackgroundColor,
-                  buttonColor: Theme.of(context).primaryColor,
-                  borderRadius: 24,
-                  textSize: 12,
-                  loading: isSearching,
-                  onClick: () => searchCurrentLocation(),
+                Expanded(
+                  child: LoadingShimmer(
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 24,
+                          width: MediaQuery.sizeOf(context).width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: CommonColors.shimmerHigh
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          height: 12,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: CommonColors.shimmerHigh
+                          ),
+                        )
+                      ],
+                    )
+                  ),
                 ),
-              ],
-              if(widget.address.place.isNotEmpty && !isSearching) ...[] else ...[
-                Spacer()
               ],
               Image(
                 image: AssetUtility.image(Assets.mapLocation),

@@ -27,13 +27,11 @@ class LocationSearchLayout extends GetResponsiveView<LocationSearchController> {
                   hintText: "Enter your location",
                   controller: controller.locationController,
                 ),
-                Obx(() {
-                  if(controller.state.location.value.latitude == 0.0) {
-                    return Container();
-                  } else {
-                    return LocationView(address: controller.state.location.value);
-                  }
-                }),
+                Obx(() => LocationView(
+                  address: controller.state.location.value,
+                  isSearching: controller.state.isSearchingLocation.value,
+                  onSearch: () => controller.fetchCurrentAddress(),
+                )),
               ],
             ),
           ),

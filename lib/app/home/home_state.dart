@@ -8,5 +8,7 @@ class HomeState {
 
   RxList<DriveCategoryResponse> categories = RxList();
 
-  Rx<Address> selectedAddress = Address.empty().obs;
+  Rx<Address> selectedAddress = Database.address.obs;
+
+  RxBool isSearchingLocation = RxBool(false);
 }

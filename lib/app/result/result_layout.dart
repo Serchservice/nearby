@@ -1,5 +1,6 @@
 import 'package:drive/library.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:get/get.dart';
 
 class ResultLayout extends GetResponsiveView<ResultController> {
@@ -37,34 +38,40 @@ class ResultLayout extends GetResponsiveView<ResultController> {
       child: Column(
         children: [
           Expanded(
-            child: _buildBody(
-              context: context,
-              child: Obx(() {
-                if(controller.state.sortedShops.isEmpty) {
-                  return Center(
-                    child: SText(
-                      text: controller.noResult(),
-                      size: Sizing.font(16),
-                      color: Theme.of(context).primaryColor,
-                    )
-                  );
-                } else {
-                  return ListView.separated(
-                    itemCount: controller.state.sortedShops.length,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(6),
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(height: 16);
-                    },
-                    itemBuilder: (context, index) {
-                      return ResultView(
-                        shop: controller.state.sortedShops[index],
-                        controller: controller,
-                      );
-                    },
-                  );
-                }
-              })
+            child: LiquidPullToRefresh(
+              onRefresh: () => controller.refreshShopList(),
+              color: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              showChildOpacityTransition: false,
+              child: _buildBody(
+                context: context,
+                child: Obx(() {
+                  if(controller.state.sortedShops.isEmpty) {
+                    return Center(
+                      child: SText(
+                        text: controller.noResult(),
+                        size: Sizing.font(16),
+                        color: Theme.of(context).primaryColor,
+                      )
+                    );
+                  } else {
+                    return ListView.separated(
+                      itemCount: controller.state.sortedShops.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.all(6),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 16);
+                      },
+                      itemBuilder: (context, index) {
+                        return ResultView(
+                          shop: controller.state.sortedShops[index],
+                          controller: controller,
+                        );
+                      },
+                    );
+                  }
+                })
+              ),
             ),
           ),
           if(controller.bannerAdManager.banner() != null) ...[

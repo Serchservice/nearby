@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:drive/library.dart';
 
@@ -28,12 +30,12 @@ class ResultController extends GetxController {
   }
 
   void updateTitle() {
-    state.title.value = "Showing results for nearby ${CommonUtility.capitalizeWords(state.search.value.category)}shops";
+    state.title.value = "Nearby ${state.search.value.category.toLowerCase().replaceAll("_", " ")} locations";
 
     AnalyticsEngine.logSearchResults(state.title.value, state.search.value.toJson());
   }
 
-  String noResult() => "No ${state.search.value.category.toLowerCase()} shops found";
+  String noResult() => "No ${state.search.value.category.toLowerCase().replaceAll("_", " ")} result in your location";
 
   String shopEndpoint({double? radius}) {
     String query = state.search.value.category;
@@ -54,17 +56,36 @@ class ResultController extends GetxController {
     state.isSearching.value = false;
     if(response.isOk) {
       List<dynamic> result = response.data;
-      List<SearchShopResponse> list = result.map((item) => SearchShopResponse.fromJson(item)).toList();
-      state.shops.value = list;
-      state.sortedShops.value = list;
+      _updateShopList(result);
     } else {
       notify.error(message: response.message);
       return;
     }
   }
 
+  void _updateShopList(List<dynamic> result) {
+    List<SearchShopResponse> list = result.map((item) => SearchShopResponse.fromJson(item)).toList();
+    state.shops.value = list;
+    state.sortedShops.value = list;
+  }
+
+  Future<void> refreshShopList() async {
+    final Completer<void> completer = Completer<void>();
+
+    var response = await _connect.get(endpoint: shopEndpoint(radius: state.radius.value));
+    if(response.isSuccessful) {
+      List<dynamic> result = response.data;
+      _updateShopList(result);
+    }
+
+    completer.complete();
+    return completer.future;
+  }
+
   List<ButtonView> driveFilters = [
     ButtonView(header: "All", index: 0),
+    ButtonView(header: "Open", index: 1),
+    ButtonView(header: "Closed", index: 2),
     ButtonView(header: "Distance", index: 3),
     ButtonView(header: "Rating", index: 4)
   ];
@@ -82,13 +103,25 @@ class ResultController extends GetxController {
     state.filter.value = index;
     if(index == 0) {
       sortByAll();
-    } else if(index == 1 || index == 2) {
-      return;
+    } else if(index == 1) {
+      sortByOpen();
+    } else if(index == 2) {
+      sortByClosed();
     } else if(index == 3) {
       sortByDistance();
     } else if(index == 4) {
       sortByRating();
     }
+  }
+
+  void sortByOpen() {
+    state.sortedShops.value = state.shops;
+    state.sortedShops.where((shop) => shop.shop.open);
+  }
+
+  void sortByClosed() {
+    state.sortedShops.value = state.shops;
+    state.sortedShops.where((shop) => !shop.shop.open);
   }
 
   void sortByAll() => state.sortedShops.value = state.shops;

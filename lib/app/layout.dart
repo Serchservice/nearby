@@ -87,6 +87,10 @@ class MainLayout extends StatelessWidget {
             : Brightness.light,
       ),
       child: PopScope(
+        onPopInvokedWithResult: (value, result) {
+          Logger.log(value);
+          Navigate.back();
+        },
         child: Scaffold(
           key: layoutKey ?? mainLayoutKey,
           appBar: appbar,

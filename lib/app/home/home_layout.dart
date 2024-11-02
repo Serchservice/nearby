@@ -1,5 +1,6 @@
 import 'package:drive/library.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:get/get.dart';
 
 class HomeLayout extends GetResponsiveView<HomeController> {
@@ -9,103 +10,107 @@ class HomeLayout extends GetResponsiveView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return MainLayout(
-        endDrawer: AppDrawer(),
-        floatingButton: controller.canShowButton ? FloatingActionButton.extended(
-          backgroundColor: Theme.of(context).primaryColorLight,
-          onPressed: () => controller.search(),
-          label: SText(
-            text: "Search",
-            color: Theme.of(context).scaffoldBackgroundColor
-          ),
-          icon: Icon(
-            Icons.manage_search_rounded,
-            color: Theme.of(context).scaffoldBackgroundColor
-          ),
-        ) : null,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: Sizing.space(12)),
-              color: Theme.of(context).appBarTheme.backgroundColor,
-              width: MediaQuery.sizeOf(context).width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => RouteNavigator.openWeb(header: "Serchservice", url: Constants.baseWeb),
-                    child: Image.asset(
-                      Assets.logoSplashWhite,
-                      width: 80,
-                      color: Theme.of(context).primaryColor
+    return MainLayout(
+      endDrawer: AppDrawer(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: Sizing.space(12)),
+            color: Theme.of(context).appBarTheme.backgroundColor,
+            width: MediaQuery.sizeOf(context).width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () => RouteNavigator.openWeb(header: "Serchservice", url: Constants.baseWeb),
+                      child: Image.asset(
+                        Assets.logoSplashWhite,
+                        width: 80,
+                        color: Theme.of(context).primaryColor
+                      ),
                     ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        if(mainLayoutKey.currentState!.isEndDrawerOpen) {
+                          mainLayoutKey.currentState!.closeEndDrawer();
+                        } else {
+                          mainLayoutKey.currentState!.openEndDrawer();
+                        }
+                      },
+                      icon: Icon(Icons.menu_rounded, color: Theme.of(context).primaryColor)
+                    )
+                  ],
+                ),
+                SText(
+                  text: CommonUtility.greeting(),
+                  size: Sizing.font(20),
+                  weight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor
+                ),
+                const SizedBox(height: 10),
+                SText(
+                  text: "Your Location (Tap to update)",
+                  size: Sizing.font(12),
+                  color: Theme.of(context).primaryColorLight
+                ),
+                Obx(() => LocationView(
+                  address: controller.state.selectedAddress.value,
+                  isSearching: controller.state.isSearchingLocation.value,
+                  onSearch: () => AppInformationSheet.open(
+                    options: controller.options,
+                    onTap: (view) => controller.onLocationSearch(view)
                   ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      if(mainLayoutKey.currentState!.isEndDrawerOpen) {
-                        mainLayoutKey.currentState!.closeEndDrawer();
-                      } else {
-                        mainLayoutKey.currentState!.openEndDrawer();
-                      }
-                    },
-                    icon: Icon(Icons.menu_rounded, color: Theme.of(context).primaryColor)
-                  )
-                ],
-              ),
+                )),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Expanded(child: SizedBox(width: 20)),
+                    Obx(() => Material(
+                      color: controller.canShowButton ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface,
+                      child: InkWell(
+                        onTap: controller.canShowButton ? () => controller.search() : null,
+                        child: Padding(
+                          padding: EdgeInsets.all(Sizing.space(9)),
+                          child: Icon(
+                            Icons.arrow_forward_rounded,
+                            size: Sizing.space(24),
+                            color: Theme.of(context).scaffoldBackgroundColor
+                          )
+                        )
+                      )
+                    ))
+                  ],
+                ),
+              ],
             ),
-            Expanded(
+          ),
+          Expanded(
+            child: LiquidPullToRefresh(
+              onRefresh: () => controller.refreshCategories(),
+              color: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              showChildOpacityTransition: false,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: Sizing.space(12),
-                        right: Sizing.space(12),
-                        bottom: Sizing.space(12)
-                      ),
-                      color: Theme.of(context).appBarTheme.backgroundColor,
-                      width: MediaQuery.sizeOf(context).width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SText(
-                            text: CommonUtility.greeting(),
-                            size: Sizing.font(20),
-                            weight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor
-                          ),
-                          const SizedBox(height: 10),
-                          FakeField(
-                            buttonText: "Search",
-                            searchText: "What is your pickup address?",
-                            color: Theme.of(context).textSelectionTheme.selectionColor,
-                            needPadding: false,
-                            onTap: () => Navigate.to(LocationSearchLayout.route),
-                          ),
-                          const SizedBox(height: 10),
-                          LocationView(
-                            address: controller.state.selectedAddress.value,
-                            onSelect: (address) => controller.updateAddress(address),
-                          )
-                        ],
-                      ),
-                    ),
                     _buildCategories(context)
                   ],
                 ),
               ),
             ),
-            if(controller.bannerAdManager.banner() != null) ...[
-              controller.bannerAdManager.banner()!
-            ]
-          ],
-        )
-      );
-    });
+          ),
+          if(controller.bannerAdManager.banner() != null) ...[
+            controller.bannerAdManager.banner()!
+          ]
+        ],
+      )
+    );
   }
 
   Widget _buildCategories(BuildContext context) {

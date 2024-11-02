@@ -32,21 +32,11 @@ class MainConfiguration extends GetxController {
     _linkSubscription = await _appService.initializeDeepLink();
 
     AppLifeCycle appLifeCycle = AppLifeCycle(
-      onForeground: () async {
-        log("FOREGROUND", from: "LifeCycle - Main Configuration");
-      },
-      onPaused: () async {
-        log("PAUSED", from: "LifeCycle - Main Configuration");
-      },
-      onDetached: () async {
-        log("DETACHED", from: "LifeCycle - Main Configuration");
-      },
-      onInactive: () async {
-        log("INACTIVE", from: "LifeCycle - Main Configuration");
-      },
-      onHidden: () async {
-        log("HIDDEN", from: "LifeCycle - Main Configuration");
-      }
+      onForeground: () async { },
+      onPaused: () async { },
+      onDetached: () async { },
+      onInactive: () async { },
+      onHidden: () async { }
     );
     WidgetsBinding.instance.addObserver(appLifeCycle);
     appLifeCycle.init();

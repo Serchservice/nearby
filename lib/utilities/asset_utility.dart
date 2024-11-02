@@ -21,8 +21,8 @@ class AssetUtility {
     } else {
       return AssetImage(
         Database.preference.isDarkTheme
-          ? Media.light
-          : Media.dark
+          ? Assets.commonDriveCarBlack
+          : Assets.commonDriveCarWhite
       );
     }
   }
