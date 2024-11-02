@@ -8,6 +8,7 @@ class LocationSearchController extends GetxController {
   final state = LocationSearchState();
 
   final ConnectService _connect = Connect(useToken: false);
+  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
 
   final TextEditingController locationController = TextEditingController();
 

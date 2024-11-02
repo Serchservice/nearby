@@ -30,7 +30,9 @@ class UpdateLayout extends GetResponsiveView<UpdateController> {
               }
             ),
           ),
-          HomeController.data.banner()
+          if(controller.bannerAdManager.banner() != null) ...[
+            controller.bannerAdManager.banner()!
+          ]
         ],
       )
     );

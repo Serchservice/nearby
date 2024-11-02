@@ -6,6 +6,7 @@ class ResultController extends GetxController {
   final state = ResultState();
 
   final ConnectService _connect = Connect(useToken: false);
+  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
 
   final args = Get.arguments;
 

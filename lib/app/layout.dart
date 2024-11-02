@@ -34,7 +34,6 @@ class MainLayout extends StatelessWidget {
     this.extendBody = false,
     this.extendBehindAppbar = false,
     this.goDark = false,
-    this.shouldWillPop = false,
     this.onWillPop,
     this.theme,
     this.drawer,
@@ -57,7 +56,6 @@ class MainLayout extends StatelessWidget {
   final bool extendBehindAppbar;
   final bool goDark;
   final bool shouldOverride;
-  final bool shouldWillPop;
   final ThemeType? theme;
   final Widget? drawer;
   final Widget? endDrawer;
@@ -88,57 +86,26 @@ class MainLayout extends StatelessWidget {
             ? Brightness.dark
             : Brightness.light,
       ),
-      child: Scaffold(
-        key: layoutKey ?? mainLayoutKey,
-        appBar: appbar,
-        extendBody: extendBody,
-        drawer: drawer,
-        endDrawer: endDrawer,
-        extendBodyBehindAppBar: extendBehindAppbar,
-        backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
-        body: _buildBody(context),
-        floatingActionButton: floatingButton,
-        floatingActionButtonLocation: floatingLocation,
-        bottomNavigationBar: bottomNavbar,
-        bottomSheet: bottomSheet,
+      child: PopScope(
+        child: Scaffold(
+          key: layoutKey ?? mainLayoutKey,
+          appBar: appbar,
+          extendBody: extendBody,
+          drawer: drawer,
+          endDrawer: endDrawer,
+          extendBodyBehindAppBar: extendBehindAppbar,
+          backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+          body: _buildBody(context),
+          floatingActionButton: floatingButton,
+          floatingActionButtonLocation: floatingLocation,
+          bottomNavigationBar: bottomNavbar,
+          bottomSheet: bottomSheet,
+        ),
       )
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    if(shouldWillPop && needSafeArea && floater != null) {
-      return PopScope(
-        onPopInvokedWithResult: onWillPop,
-        child: SafeArea(
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height,
-                width: MediaQuery.sizeOf(context).width,
-                child: child
-              ),
-              Positioned(
-                bottom: floaterPosition,
-                child: SizedBox(
-                  width: Get.width,
-                  child: floater!
-                )
-              )
-            ],
-          )
-        )
-      );
-    }
-
-    if(shouldWillPop && needSafeArea) {
-      return PopScope(onPopInvokedWithResult: onWillPop, child: SafeArea(child: child));
-    }
-
-    if(shouldWillPop) {
-      return PopScope(onPopInvokedWithResult: onWillPop, child: child);
-    }
-
     if(floater != null && needSafeArea) {
       return SafeArea(
         child: Stack(

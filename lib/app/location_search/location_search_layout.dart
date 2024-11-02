@@ -76,7 +76,9 @@ class LocationSearchLayout extends GetResponsiveView<LocationSearchController> {
               return Container();
             }
           }),
-          HomeController.data.banner()
+          if(controller.bannerAdManager.banner() != null) ...[
+            controller.bannerAdManager.banner()!
+          ]
         ],
       )
     );

@@ -45,6 +45,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.DRIVE_APP_SECRET_KEY }}" >> .env
           echo "ANDROID_BANNER_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_BANNER_ADMOB_ID }}" >> .env
           echo "ANDROID_APP_OPEN_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_APP_OPEN_ADMOB_ID }}" >> .env
+          echo "SERCH_ANDROID_STORE_ID=${{ secrets.DRIVE_APP_ANDROID_STORE_ID }}" >> .env
 
       - name: Decode and save keystore
         run: |
@@ -63,7 +64,7 @@ jobs:
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: Serch
+          name: Serch Drive
           path: build/app/outputs/bundle/release/app-release.aab
 
       - name: Get version from pubspec.yaml

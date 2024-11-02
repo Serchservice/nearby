@@ -5,6 +5,8 @@ class UpdateController extends GetxController {
   UpdateController();
   final state = UpdateState();
 
+  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
+
   List<UpdateLogView> updates = [
     UpdateLogView(
       header: "0.0.1: Launching Serch Drive.",

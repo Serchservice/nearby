@@ -1,5 +1,9 @@
 library;
 
+export 'ad_manager/app_lifecycle_reactor.dart';
+export 'ad_manager/app_open_ad_manager.dart';
+export 'ad_manager/banner_ad_manager.dart';
+
 export 'app/app_service.dart';
 export 'app/app_implementation.dart';
 export 'app/access_service.dart';

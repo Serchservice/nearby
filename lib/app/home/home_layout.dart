@@ -99,7 +99,9 @@ class HomeLayout extends GetResponsiveView<HomeController> {
                 ),
               ),
             ),
-            controller.banner()
+            if(controller.bannerAdManager.banner() != null) ...[
+              controller.bannerAdManager.banner()!
+            ]
           ],
         )
       );

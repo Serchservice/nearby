@@ -7,6 +7,8 @@ class ExploreController extends GetxController {
   ExploreController();
   final state = ExploreState();
 
+  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
+
   List<ButtonView> apps = [
     ButtonView(
       header: "Serch | Provider/Associate",

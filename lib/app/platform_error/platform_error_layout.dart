@@ -95,7 +95,10 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Center(child: Image.asset(Assets.logoSmeBlack, width: 150, color: Theme.of(context).primaryColor),
               ),
-            )
+            ),
+            if(controller.bannerAdManager.banner() != null) ...[
+              controller.bannerAdManager.banner()!
+            ]
           ]
         ),
       )

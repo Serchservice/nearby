@@ -51,6 +51,12 @@ class AppDrawer extends StatelessWidget {
                                   index: 2,
                                   icon: Icons.view_compact_rounded,
                                   path: ExploreLayout.route
+                                ),
+                                ButtonView(
+                                  header: "Rate app",
+                                  index: 3,
+                                  icon: Icons.star,
+                                  path: ""
                                 )
                               ].map((view) {
                                 return ClipRRect(
@@ -65,7 +71,12 @@ class AppDrawer extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () {
                                         mainLayoutKey.currentState?.closeEndDrawer();
-                                        Navigate.to(view.path);
+
+                                        if(view.index == 3) {
+                                          controller.appStoreReview();
+                                        } else {
+                                          Navigate.to(view.path);
+                                        }
                                       },
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),

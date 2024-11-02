@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:drive/library.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeController extends GetxController {
   HomeController();
@@ -14,19 +12,22 @@ class HomeController extends GetxController {
   final AccessService accessService = AccessImplementation();
   final ConnectService _connect = Connect(useToken: false);
 
-  BannerAd? bannerAd;
+  late AppLifecycleReactor _appLifecycleReactor;
+  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
 
   @override
   void onInit() {
     _launchDevice();
 
+    AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
+    _appLifecycleReactor = AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
+    _appLifecycleReactor.listenToAppStateChanges();
     super.onInit();
   }
 
   @override
   void onReady() {
     _loadCategories();
-    _createBannerAd();
 
     super.onReady();
   }
@@ -62,38 +63,6 @@ class HomeController extends GetxController {
       }
     } else {
       _requestAccess(sdk, onSuccess: onSuccess);
-    }
-  }
-  
-  void _createBannerAd() {
-    bannerAd = BannerAd(
-      size: AdSize.fullBanner,
-      adUnitId: Keys.admobBannerId,
-      listener: _adListener,
-      request: const AdRequest()
-    )..load();
-  }
-
-  final BannerAdListener _adListener = BannerAdListener(
-    onAdFailedToLoad: (ad, error) {
-      ad.dispose();
-    },
-    onAdLoaded: (ad) {
-      Logger.log(ad);
-    }
-  );
-
-  Widget banner() {
-    _createBannerAd();
-
-    if(bannerAd != null) {
-      return Container(
-        height: 50,
-        margin: EdgeInsets.only(bottom: Sizing.space(10)),
-        child: AdWidget(ad: bannerAd!)
-      );
-    } else {
-      return SizedBox();
     }
   }
 

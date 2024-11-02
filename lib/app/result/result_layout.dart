@@ -67,7 +67,9 @@ class ResultLayout extends GetResponsiveView<ResultController> {
               })
             ),
           ),
-          HomeController.data.banner()
+          if(controller.bannerAdManager.banner() != null) ...[
+            controller.bannerAdManager.banner()!
+          ]
         ],
       )
     );

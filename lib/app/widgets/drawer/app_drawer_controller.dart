@@ -1,8 +1,11 @@
 import 'package:drive/library.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get/get.dart';
+
+final InAppReview inAppReview = InAppReview.instance;
 
 class AppDrawerController extends GetxController {
   AppDrawerController();
@@ -29,6 +32,10 @@ class AppDrawerController extends GetxController {
     Preference preference = Database.preference.copyWith(theme: theme);
     state.theme.value = theme;
     Database.savePreference(preference);
+  }
+
+  void appStoreReview() async {
+    inAppReview.openStoreListing(appStoreId: Keys.appStore);
   }
 
   void openLegal() {
