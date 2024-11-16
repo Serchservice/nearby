@@ -21,4 +21,7 @@ abstract class AppService {
 
   /// Verifies the safeness of the device
   void verifyDevice();
+
+  /// Checks for app update and updates the app version
+  void checkUpdate();
 }

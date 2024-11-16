@@ -35,7 +35,12 @@ class AppDrawerController extends GetxController {
   }
 
   void appStoreReview() async {
-    inAppReview.openStoreListing(appStoreId: Keys.appStore);
+    bool isAvailable = await inAppReview.isAvailable();
+    if(isAvailable) {
+      await inAppReview.requestReview();
+    } else {
+      notify.tip(message: "Unable to use in-app rating at the moment. Try again later");
+    }
   }
 
   void openLegal() {

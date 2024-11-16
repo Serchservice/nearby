@@ -29,7 +29,8 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
-    runChecks();
+    _appService.verifyDevice();
+    _appService.checkUpdate();
 
     _launchDevice();
     _loadCategories();

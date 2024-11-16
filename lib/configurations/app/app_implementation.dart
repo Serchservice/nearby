@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io' show Platform, NetworkInterface;
+import 'package:device_safety_info/device_safety_info.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:app_links/app_links.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-// import 'package:safe_device/safe_device.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:drive/library.dart';
 
 class AppImplementation implements AppService {
@@ -115,31 +117,54 @@ class AppImplementation implements AppService {
 
   @override
   void verifyDevice() async {
-    // bool isJailBroken = await SafeDevice.isJailBroken;
-    // bool isRealDevice = await SafeDevice.isRealDevice;
-    // bool isMockLocation = await SafeDevice.isMockLocation;
-    // bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
-    //
-    // if(isJailBroken) {
-    //   throw SerchException(
-    //     "Device not supported. Review your device settings to make sure you're not violating any real device setup.",
-    //     isPlatformNotSupported: true
-    //   );
-    // } else if(!isRealDevice) {
-    //   throw SerchException(
-    //     "The Serch platform can only run on real devices. Verify your device setup and try again.",
-    //     isPlatformNotSupported: true
-    //   );
-    // } else if(isMockLocation) {
-    //   throw SerchException(
-    //       "You are either using a mock location or location service is not enabled on this device. As such, you cannot continue.",
-    //     isPlatformNotSupported: true
-    //   );
-    // } else if(isDevelopmentModeEnable) {
-    //   throw SerchException(
-    //     "You seem to be running your device in developer mode. Switch it off to continue usage of the Serch platform.",
-    //     isPlatformNotSupported: true
-    //   );
-    // }
+    bool isJailBroken = await DeviceSafetyInfo.isRootedDevice;
+    if (isJailBroken) {
+      throw SerchException(isPlatformNotSupported: true, [
+        "Your device appears to be jail broken or rooted.",
+        "This indicates that restrictions imposed by the manufacturer or operating system have been bypassed.",
+        "Such modifications compromise the device's security, exposing it to potential malware and attacks.",
+        "For security reasons, Serch does not allow its application to run on modified devices."
+      ].join(" "));
+    }
+
+    bool isRealDevice = await DeviceSafetyInfo.isRealDevice;
+    if (!isRealDevice) {
+      throw SerchException(isPlatformNotSupported: true, [
+        "It seems like you're using an emulator or virtual device.",
+        "Serch requires a real physical device to ensure optimal performance and security.",
+        "Please switch to a compatible device to continue using the application."
+      ].join(" "));
+    }
+
+    bool isDeveloperMode = await DeviceSafetyInfo.isDeveloperMode;
+    if (isDeveloperMode) {
+      throw SerchException(isPlatformNotSupported: true, [
+        "Developer mode is currently enabled on your device.",
+        "This mode may expose your device to vulnerabilities and interfere with Serch's functionality.",
+        "Please disable developer mode to proceed."
+      ].join(" "));
+    }
+
+    bool isMockedLocation = (await Geolocator.getCurrentPosition()).isMocked;
+    if (isMockedLocation) {
+      throw SerchException(isPlatformNotSupported: true, [
+        "Your device seems to be using mock locations.",
+        "This feature can compromise the integrity of location-based services.",
+        "Serch requires accurate location data to function correctly. Please disable mock location to continue."
+      ].join(" "));
+    }
+  }
+
+  @override
+  void checkUpdate() async {
+    InAppUpdate.checkForUpdate().then((AppUpdateInfo info) {
+      if(info.updateAvailability == UpdateAvailability.updateAvailable) {
+        InAppUpdate.startFlexibleUpdate().then((AppUpdateResult result) {
+          if(result == AppUpdateResult.success) {
+            InAppUpdate.completeFlexibleUpdate();
+          }
+        });
+      }
+    });
   }
 }
