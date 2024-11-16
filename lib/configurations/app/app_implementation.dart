@@ -139,8 +139,8 @@ class AppImplementation implements AppService {
     bool isDeveloperMode = await DeviceSafetyInfo.isDeveloperMode;
     if (isDeveloperMode) {
       throw SerchException(isPlatformNotSupported: true, [
-        "Developer mode is currently enabled on your device.",
-        "This mode may expose your device to vulnerabilities and interfere with Serch's functionality.",
+        "Developer mode is currently enabled on your device which may expose your device",
+        "to vulnerabilities and interfere with Serch's functionality.",
         "Please disable developer mode to proceed."
       ].join(" "));
     }
