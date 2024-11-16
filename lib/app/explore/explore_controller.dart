@@ -33,15 +33,15 @@ class ExploreController extends GetxController {
   void open(int index) {
     if(index == 0) {
       if(Platform.isAndroid) {
-        RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serch.provider");
+        RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serchservice.provider");
       }
     } else if(index == 1) {
       if(Platform.isAndroid) {
-        RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serch.user");
+        RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serchservice.user");
       }
     } else {
       if(Platform.isAndroid) {
-        RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serch.business");
+        RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serchservice.business");
       }
     }
   }

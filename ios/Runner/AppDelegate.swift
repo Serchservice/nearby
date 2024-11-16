@@ -10,7 +10,7 @@ import GoogleMaps
   ) -> Bool {
 
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-    let mapApi = FlutterMethodChannel(name: "com.serch.drive/apiKey", binaryMessenger: controller.binaryMessenger)
+    let mapApi = FlutterMethodChannel(name: "com.serchservice.drive/apiKey", binaryMessenger: controller.binaryMessenger)
 
     mapApi.invokeMethod("getMapApiKey", arguments: nil) { (result: Any?) in
       if let apiKey = result as? String {

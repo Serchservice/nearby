@@ -48,28 +48,28 @@ class FirebaseConfiguration {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBvYgOst0EBqRskuU7hJt8Lw3OqXFwS2dI',
-    appId: '1:977124095958:web:6c3119631edf9a745a9677',
+    appId: '1:977124095958:web:996ef3bf6aaea2b15a9677',
     messagingSenderId: '977124095958',
     projectId: 'serch-drive',
     authDomain: 'serch-drive.firebaseapp.com',
-    storageBucket: 'serch-drive.appspot.com',
-    measurementId: 'G-0MY1ZWK9QQ',
+    storageBucket: 'serch-drive.firebasestorage.app',
+    measurementId: 'G-8LDPB11Y20',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBpixbFdRc_Z3XR3wwbWMlAy_TbaWYXCBg',
-    appId: '1:977124095958:android:58342d5f49ef1b605a9677',
+    appId: '1:977124095958:android:f02307e58c5886e15a9677',
     messagingSenderId: '977124095958',
     projectId: 'serch-drive',
-    storageBucket: 'serch-drive.appspot.com',
+    storageBucket: 'serch-drive.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDa6ptQwN2NE2qaObC2Z6TO1AIqA-ZYaN0',
-    appId: '1:977124095958:ios:367fcfaecbafeb3d5a9677',
+    appId: '1:977124095958:ios:85dff033559a2d415a9677',
     messagingSenderId: '977124095958',
     projectId: 'serch-drive',
-    storageBucket: 'serch-drive.appspot.com',
-    iosBundleId: 'com.serch.drive',
+    storageBucket: 'serch-drive.firebasestorage.app',
+    iosBundleId: 'com.serchservice.drive',
   );
 }

@@ -10,6 +10,7 @@ class OnboardingLayout extends GetResponsiveView<OnboardingController> {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
+      layoutKey: Key("Onboarding"),
       child: Padding(
         padding: EdgeInsets.all(Sizing.space(12)),
         child: Column(

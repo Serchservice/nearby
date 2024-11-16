@@ -20,16 +20,18 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    _launchDevice();
-
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
     _appLifecycleReactor = AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
     _appLifecycleReactor.listenToAppStateChanges();
+
     super.onInit();
   }
 
   @override
   void onReady() {
+    runChecks();
+
+    _launchDevice();
     _loadCategories();
 
     super.onReady();
