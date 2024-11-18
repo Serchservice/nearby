@@ -10,6 +10,8 @@ export 'web/web_layout.dart';
 export 'web/web_state.dart';
 
 /// HOME
+export 'home/widgets/category_section_sheet.dart';
+
 export 'home/home_layout.dart';
 export 'home/home_state.dart';
 export 'home/home_controller.dart';

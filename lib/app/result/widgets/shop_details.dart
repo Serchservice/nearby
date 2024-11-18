@@ -137,7 +137,7 @@ class ShopDetails extends StatelessWidget {
                       ButtonView(body: shop.shop.address, icon: Icons.location_on_sharp),
                       ButtonView(body: shop.shop.phone, icon: Icons.call),
                       ButtonView(body: shop.shop.status, icon: Icons.data_exploration_rounded),
-                      ButtonView(body: controller.state.search.value.category, icon: Icons.category)
+                      ButtonView(body: controller.state.search.value.category.title, icon: Icons.category)
                     ].map((view) {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

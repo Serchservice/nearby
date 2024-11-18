@@ -3,7 +3,7 @@ description: "Drive to shop application for Serchservice Inc."
 
 publish_to: 'none'
 
-version: 1.0.0+7
+version: 1.0.1
 
 environment:
   sdk: ^3.5.4

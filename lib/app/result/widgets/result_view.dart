@@ -17,7 +17,11 @@ class ResultView extends StatelessWidget {
         ButtonView(header: "Call ${shop.shop.name}", index: 3, icon: Icons.call),
       ],
       if(shop.isGoogle) ...[
-        ButtonView(header: "More about this business", index: 4, icon: Icons.view_compact),
+        ButtonView(
+          header: "More about this ${controller.state.search.value.category.title.toLowerCase()}",
+          index: 4,
+          icon: Icons.view_compact
+        ),
       ]
     ];
 

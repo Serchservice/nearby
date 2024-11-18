@@ -16,6 +16,9 @@ final carReverseImage = Database.preference.isLightTheme
 final carDriveReverseImage = Database.preference.isLightTheme
     ? Assets.commonDriveBlackReverse
     : Assets.commonDriveWhiteReverse;
+final carDriveImage = Database.preference.isLightTheme
+    ? Assets.commonDriveCarBlack
+    : Assets.commonDriveCarWhite;
 
 class MainLayout extends StatelessWidget {
   const MainLayout({

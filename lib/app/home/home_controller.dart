@@ -13,7 +13,6 @@ class HomeController extends GetxController {
   final AppService _appService = AppImplementation();
   final AccessService _accessService = AccessImplementation();
   final LocationService _locationService = LocationImplementation();
-  final ConnectService _connect = Connect(useToken: false);
 
   late AppLifecycleReactor _appLifecycleReactor;
   BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
@@ -33,7 +32,6 @@ class HomeController extends GetxController {
     _appService.checkUpdate();
 
     _launchDevice();
-    _loadCategories();
 
     super.onReady();
   }
@@ -92,41 +90,22 @@ class HomeController extends GetxController {
     }
   }
 
-  void _loadCategories() async {
-    state.isFetchingCategories.value = true;
-    var response = await _connect.get(endpoint: "/shop/drive/categories");
-    state.isFetchingCategories.value = false;
-
-    if(response.isSuccessful) {
-      List<dynamic> result = response.data;
-      _updateCategories(result);
-    }
-  }
-
-  void _updateCategories(List<dynamic> result) {
-    state.categories.value = result.map((d) => DriveCategoryResponse.fromJson(d)).toList();
-    state.categories.sort((DriveCategoryResponse a, DriveCategoryResponse b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-  }
-
-  Future<void> refreshCategories() async {
-    final Completer<void> completer = Completer<void>();
-
-    var response = await _connect.get(endpoint: "/shop/drive/categories");
-    if(response.isSuccessful) {
-      List<dynamic> result = response.data;
-      _updateCategories(result);
-    }
-
-    completer.complete();
-    return completer.future;
-  }
-
-  bool get canShowButton => state.selectedCategory.value.isNotEmpty
+  bool get canShowButton => state.category.value.type.isNotEmpty
       && state.selectedAddress.value.longitude != 0.0
       && state.selectedAddress.value.latitude != 0.0;
 
-  void selectCategory(String category) {
-    state.selectedCategory.value = category;
+  void selectSection(CategorySection category) {
+    state.category.value = category;
+  }
+
+  void clearSelection() {
+    state.category.value = CategorySection.empty();
+  }
+
+  Category? category() {
+    return Category.categories.firstWhereOrNull((c) {
+      return c.sections.any((s) => s.type == state.category.value.type);
+    });
   }
 
   void updateAddress(Address address) {
@@ -134,7 +113,7 @@ class HomeController extends GetxController {
   }
 
   void search() {
-    RequestSearch search = RequestSearch(category: state.selectedCategory.value, pickup: state.selectedAddress.value);
+    RequestSearch search = RequestSearch(category: state.category.value, pickup: state.selectedAddress.value);
     Navigate.to(ResultLayout.route, parameters: search.toParams(), arguments: search.toJson());
   }
 }

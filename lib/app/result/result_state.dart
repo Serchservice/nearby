@@ -6,7 +6,7 @@ class ResultState {
   RxBool isSearching = RxBool(true);
 
   /// Specialization (For Skill Search)
-  Rx<RequestSearch> search = RequestSearch(pickup: Database.address, category: "").obs;
+  Rx<RequestSearch> search = RequestSearch(pickup: Database.address, category: CategorySection.empty()).obs;
 
   /// Title text
   RxString title = RxString("Search Result");

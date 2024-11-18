@@ -30,22 +30,22 @@ class ResultController extends GetxController {
   }
 
   void updateTitle() {
-    state.title.value = "Nearby ${state.search.value.category.toLowerCase().replaceAll("_", " ")} locations";
+    state.title.value = "Nearby ${state.search.value.category.title.toLowerCase().replaceAll("_", " ")} locations";
 
     AnalyticsEngine.logSearchResults(state.title.value, state.search.value.toJson());
   }
 
-  String noResult() => "No ${state.search.value.category.toLowerCase().replaceAll("_", " ")} result in your location";
+  String noResult() => "No ${state.search.value.category.title.toLowerCase().replaceAll("_", " ")} result in your location";
 
   String shopEndpoint({double? radius}) {
-    String query = state.search.value.category;
+    String query = state.search.value.category.type;
     double longitude = state.search.value.pickup.longitude;
     double latitude = state.search.value.pickup.latitude;
 
     if(radius != null) {
-      return "/shop/search?c=$query&lng=$longitude&lat=$latitude&radius=$radius";
+      return "/shop/search?q=$query&lng=$longitude&lat=$latitude&radius=$radius";
     } else {
-      return "/shop/search?c=$query&lng=$longitude&lat=$latitude";
+      return "/shop/search?q=$query&lng=$longitude&lat=$latitude";
     }
   }
 
