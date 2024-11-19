@@ -45,7 +45,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.DRIVE_APP_SECRET_KEY }}" >> .env
           echo "ANDROID_BANNER_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_BANNER_ADMOB_ID }}" >> .env
           echo "ANDROID_APP_OPEN_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_APP_OPEN_ADMOB_ID }}" >> .env
-          echo "SERCH_ANDROID_STORE_ID=${{ secrets.DRIVE_APP_ANDROID_STORE_ID }}" >> .env
+          echo "SIGNATURE=${{ secrets.SERCH_SIGNATURE }}" >> .env
 
       - name: Decode and save keystore
         run: |
