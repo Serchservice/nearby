@@ -3,23 +3,14 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Keys {
-  /// Tip2Fix Session Duration
-  static final int tip2fixSession = int.parse(dotenv.env["TIP2FIX_SESSION"] ?? "30");
-
   /// Serch api key
   static final String apiKey = dotenv.env["API_KEY"] ?? "";
 
   /// Serch secret key
   static final String secretKey = dotenv.env["SECRET_KEY"] ?? "";
 
-  /// Get stream api key
-  static final String streamApiKey = dotenv.env["GET_STREAM_API_KEY"] ?? "";
-
-  /// Google play store id for the Serch App - [ANDROID]
-  static final String googlePlay = dotenv.env["SERCH_ANDROID_STORE_ID"] ?? "";
-
-  /// App store id for the Serch App - [iOS]
-  static final String appStore = dotenv.env["SERCH_IOS_STORE_ID"] ?? "";
+  /// Serch signature
+  static final String signature = dotenv.env["SIGNATURE"] ?? "";
 
   /// Google map api key
   static String get googleMapApiKey {

@@ -14,6 +14,7 @@ class Connect<T> implements ConnectService<T> {
         'Content-Type': 'application/json',
         'X-Serch-Drive-Api-Key': Keys.apiKey,
         'X-Serch-Drive-Secret-Key': Keys.secretKey,
+        'X-Serch-Signed': Keys.signature
       },
     ));
   }
