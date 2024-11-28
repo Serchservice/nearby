@@ -1,6 +1,6 @@
 # Changelog
 
-Version: **1.0.2+2**
+Version: **1.0.2+9**
 
 All notable changes to this project will be documented in this file.
 
