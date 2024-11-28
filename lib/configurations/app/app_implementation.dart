@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform, NetworkInterface;
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:device_safety_info/device_safety_info.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -11,6 +12,8 @@ import 'package:drive/library.dart';
 
 class AppImplementation implements AppService {
   final AppLinks _appLinks = AppLinks();
+  final ConnectService _connect = Connect();
+  final FirebaseMessagingService _messagingService = FirebaseMessagingImplementation();
 
   Future<String> get ipAddress async {
     if(kIsWeb) {
@@ -164,6 +167,30 @@ class AppImplementation implements AppService {
             InAppUpdate.completeFlexibleUpdate();
           }
         });
+      }
+    });
+  }
+
+  @override
+  void registerDevice() async {
+    buildDeviceInformation(onSuccess: (device) async {
+      String fcmToken = await _messagingService.getFcmToken();
+
+      ApiResponse response = await _connect.post(endpoint: "/auth/nearby/register", body: {
+        "id": Database.preference.id.isEmpty ? null : Database.preference.id,
+        "fcm_token": fcmToken,
+        "device": device.id,
+        "name": device.name,
+        "host": device.host,
+        "platform": device.platform,
+        "operating_system": device.operatingSystem,
+        "operating_system_version": device.operatingSystemVersion,
+        "local_host": device.localHostName,
+        "ip_address": device.ipAddress
+      });
+
+      if(response.isSuccessful) {
+        Database.savePreference(Database.preference.copyWith(id: response.data));
       }
     });
   }

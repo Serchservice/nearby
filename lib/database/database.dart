@@ -57,4 +57,26 @@ class Database {
     AddressRepository db = AddressRepository();
     return db.save(address);
   }
+
+  /// DATABASE ACTIONS - RECENT ADDRESS
+  static List<Address> get recentAddresses {
+    RecentAddressRepository db = RecentAddressRepository();
+    return db.get();
+  }
+
+  static Future<List<Address>> saveRecentAddress(List<Address> address) async {
+    RecentAddressRepository db = RecentAddressRepository();
+    return db.save(address);
+  }
+
+  /// DATABASE ACTIONS - RECENT SEARCH
+  static List<SearchShopResponse> get recentSearch {
+    RecentSearchRepository db = RecentSearchRepository();
+    return db.get();
+  }
+
+  static Future<List<SearchShopResponse>> saveRecentSearch(List<SearchShopResponse> address) async {
+    RecentSearchRepository db = RecentSearchRepository();
+    return db.save(address);
+  }
 }

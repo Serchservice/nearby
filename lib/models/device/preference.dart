@@ -7,10 +7,12 @@ import 'package:drive/library.dart';
 class Preference {
   final ThemeType theme;
   final bool isNew;
+  final String id;
 
   const Preference({
     this.theme = ThemeType.light,
     this.isNew = true,
+    this.id = ""
   });
 
   bool get isDarkTheme => theme == ThemeType.dark;
@@ -20,10 +22,12 @@ class Preference {
   Preference copyWith({
     ThemeType? theme,
     bool? isNew,
+    String? id,
   }) {
     return Preference(
       theme: theme ?? this.theme,
       isNew: isNew ?? this.isNew,
+      id: id ?? this.id,
     );
   }
 
@@ -32,12 +36,14 @@ class Preference {
       theme: map["theme"] != null
         ? (map["theme"] as String).toThemeType()
         : ThemeType.light,
-      isNew: map["is_new"] ?? true
+      isNew: map["is_new"] ?? true,
+      id: map["id"] ?? ""
     );
   }
 
   Map<String, dynamic> toJson() => {
     "theme": theme.type,
-    "is_new": isNew
+    "is_new": isNew,
+    "id": id
   };
 }

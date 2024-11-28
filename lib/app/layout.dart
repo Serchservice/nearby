@@ -41,7 +41,8 @@ class MainLayout extends StatelessWidget {
     this.theme,
     this.drawer,
     this.endDrawer,
-    this.shouldOverride = false
+    this.shouldOverride = false,
+    this.barColor
   });
 
   final Key? layoutKey;
@@ -53,6 +54,7 @@ class MainLayout extends StatelessWidget {
   final Widget? floater;
   final double floaterPosition;
   final Color? backgroundColor;
+  final Color? barColor;
   final bool needSafeArea;
   final FloatingActionButtonLocation? floatingLocation;
   final bool extendBody;
@@ -72,12 +74,12 @@ class MainLayout extends StatelessWidget {
           ? backgroundColor
           : goDark
           ? darkBackgroundColor
-          : Theme.of(context).appBarTheme.systemOverlayStyle?.systemNavigationBarColor,
+          : barColor ?? Theme.of(context).scaffoldBackgroundColor,
         systemNavigationBarColor: shouldOverride
           ? backgroundColor
           : goDark
           ? darkBackgroundColor
-          : Theme.of(context).appBarTheme.systemOverlayStyle?.systemNavigationBarColor,
+          : Theme.of(context).scaffoldBackgroundColor,
         statusBarIconBrightness: goDark
           ? Brightness.light
           : (theme != null && theme == ThemeType.light) || Database.preference.isLightTheme

@@ -24,4 +24,7 @@ abstract class AppService {
 
   /// Checks for app update and updates the app version
   void checkUpdate();
+
+  /// Registers the device to the server
+  void registerDevice();
 }
