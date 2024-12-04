@@ -26,10 +26,19 @@ export 'exception/exception_implementation.dart';
 export 'firebase/analytics_engine.dart';
 export 'firebase/crashlytics_engine.dart';
 export 'firebase/firebase_configuration.dart';
+export 'firebase/firebase_messaging_implementation.dart';
+export 'firebase/firebase_messaging_service.dart';
+
 
 export 'main/main_configuration.dart';
 export 'main/app_lifecycle.dart';
 export 'main/constants.dart';
+
+export 'notification/remote/remote_notification_implementation.dart';
+export 'notification/remote/remote_notification_service.dart';
+export 'notification/remote/remote_notification_build_implementation.dart';
+export 'notification/remote/remote_notification_build_service.dart';
+export 'notification/remote/channels.dart';
 
 export 'notification/notification.dart';
 export 'notification/notification_service.dart';

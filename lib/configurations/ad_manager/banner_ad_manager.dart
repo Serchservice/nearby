@@ -27,8 +27,8 @@ class BannerAdManager {
     )..load();
   }
 
-  Widget? banner() {
-    if(bannerAd != null) {
+  Widget banner() {
+    if(bannerAd != null && bannerAd!.responseInfo != null) {
       return Container(
         height: 50,
         margin: EdgeInsets.only(bottom: Sizing.space(10)),
@@ -36,6 +36,6 @@ class BannerAdManager {
       );
     }
 
-    return null;
+    return Container();
   }
 }

@@ -1,20 +1,28 @@
+import 'package:flutter/material.dart';
+
 class CategorySection {
   final String title;
   final String type;
+  final String description;
+  final List<Color> colors;
 
-  CategorySection({required this.title, required this.type});
+  CategorySection({required this.title, required this.type, this.description = "", this.colors = const []});
 
   static CategorySection fromJson(Map<String, dynamic> json) {
     return CategorySection(
       title: json["title"] ?? "",
-      type: json["type"] ?? ""
+      type: json["type"] ?? "",
+      description: json["description"] ?? "",
+      colors: json["colors"] ?? [],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "title": title,
-      "type": type
+      "type": type,
+      "description": description,
+      "colors": colors
     };
   }
 
@@ -28,6 +36,99 @@ class Category {
   final List<CategorySection> sections;
 
   Category({required this.sections, required this.title});
+
+  static List<CategorySection> services = [
+    CategorySection(
+      title: "Electrician",
+      type: "electrician",
+      description: "Electricians",
+      colors: [Color(0xFF001F3F), Color(0xFF003366)], // Dark Blue Gradient
+    ),
+    CategorySection(
+      title: "Hair Salon",
+      type: "hair_salon",
+      description: "Hair salons",
+      colors: [Color(0xFF002B36), Color(0xFF004D60)], // Teal Blue Gradient
+    ),
+    CategorySection(
+      title: "Makeup Artist",
+      type: "makeup_artist",
+      description: "Makeup artists",
+      colors: [Color(0xFF004225), Color(0xFF006633)], // Forest Green Gradient
+    ),
+    CategorySection(
+      title: "Plumber",
+      type: "plumber",
+      description: "Plumbers",
+      colors: [Color(0xFF101820), Color(0xFF2C394B)], // Navy Black Gradient
+    ),
+    CategorySection(
+      title: "Car Repair",
+      type: "car_repair",
+      description: "Mechanics",
+      colors: [Color(0xFF0B0C10), Color(0xFF1F2833)], // Charcoal Black Gradient
+    ),
+  ];
+
+  static List<CategorySection> suggestions = [
+    CategorySection(
+      title: "School",
+      type: "school",
+      description: "Schools",
+      colors: [Color(0xFF002244), Color(0xFF003366)], // Sapphire Blue Gradient
+    ),
+    CategorySection(
+      title: "ATM",
+      type: "atm",
+      description: "Atm stands",
+      colors: [Color(0xFF101820), Color(0xFF2C394B)], // Navy Black Gradient
+    ),
+    CategorySection(
+      title: "Restaurant",
+      type: "restaurant",
+      description: "Restaurants",
+      colors: [Color(0xFF004225), Color(0xFF006633)], // Forest Green Gradient
+    ),
+    CategorySection(
+      title: "Hotel",
+      type: "hotel",
+      description: "Hotels",
+      colors: [Color(0xFF1C2833), Color(0xFF566573)], // Steel Blue Gradient
+    ),
+    CategorySection(
+      title: "Church",
+      type: "church",
+      description: "Churches",
+      colors: [Color(0xFF001F3F), Color(0xFF004080)], // Royal Blue Gradient
+    ),
+  ];
+
+  static List<CategorySection> emergencies = [
+    CategorySection(
+      title: "Police",
+      type: "police",
+      description: "Police stations",
+      colors: [Color(0xFF0A0A0A), Color(0xFF202020)], // Deep Black Gradient
+    ),
+    CategorySection(
+      title: "Fire Station",
+      type: "fire_station",
+      description: "Fire stations",
+      colors: [Color(0xFF101820), Color(0xFF2C394B)], // Midnight Blue Gradient
+    ),
+    CategorySection(
+      title: "Hospital",
+      type: "hospital",
+      description: "Hospitals",
+      colors: [Color(0xFF0B3D91), Color(0xFF002147)], // Medical Blue Gradient
+    ),
+    CategorySection(
+      title: "Pharmacy",
+      type: "pharmacy",
+      description: "Pharmacies",
+      colors: [Color(0xFF004225), Color(0xFF006633)], // Emerald Green Gradient
+    ),
+  ];
 
   static List<Category> categories = [
     Category(
@@ -141,7 +242,7 @@ class Category {
     ),
     Category(
       sections: [
-        CategorySection(title: "Accounting", type: "acounting"),
+        CategorySection(title: "Accounting", type: "accounting"),
         CategorySection(title: "ATM", type: "atm"),
         CategorySection(title: "Bank", type: "bank"),
       ],

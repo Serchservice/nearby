@@ -17,6 +17,7 @@ class Shop {
     required this.services,
     required this.latitude,
     required this.longitude,
+    required this.link,
   });
 
   final String name;
@@ -34,6 +35,7 @@ class Shop {
   final List<ShopService> services;
   final double latitude;
   final double longitude;
+  final String link;
 
   Shop copyWith({
     String? name,
@@ -51,6 +53,7 @@ class Shop {
     List<ShopService>? services,
     double? latitude,
     double? longitude,
+    String? link,
   }) {
     return Shop(
       name: name ?? this.name,
@@ -68,6 +71,7 @@ class Shop {
       services: services ?? this.services,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      link: link ?? this.link,
     );
   }
 
@@ -89,9 +93,10 @@ class Shop {
           : List<ShopWeekday>.from(json["weekdays"]!.map((x) => ShopWeekday.fromJson(x))),
       services: json["services"] == null
           ? []
-          : List<ShopService>.from( json["services"]!.map((x) => ShopService.fromJson(x))),
+          : List<ShopService>.from(json["services"]!.map((x) => ShopService.fromJson(x))),
       latitude: json["latitude"] ?? 0.0,
       longitude: json["longitude"] ?? 0.0,
+      link: json["link"] ?? "",
     );
   }
 
@@ -129,6 +134,7 @@ class Shop {
       ],
       "latitude": 0.0,
       "longitude": 0.0,
+      "link": "string",
     });
   }
 
@@ -148,5 +154,6 @@ class Shop {
     "services": services.map((x) => x.toJson()).toList(),
     "latitude": latitude,
     "longitude": longitude,
+    "link": link,
   };
 }

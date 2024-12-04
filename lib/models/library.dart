@@ -3,6 +3,7 @@ library;
 /// BUTTON MODELS
 export 'buttons/button_view.dart';
 export 'buttons/update_log_view.dart';
+export 'buttons/dynamic_icon_button_view.dart';
 
 /// DEVICE MODELS
 export 'device/device.dart';

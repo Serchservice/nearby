@@ -4,9 +4,9 @@ import 'package:drive/library.dart';
 class Routes {
   static List<GetPage> all = [
     GetPage(
-      name: HomeLayout.route,
-      page: () => HomeLayout(),
-      binding: HomeBinding(),
+      name: ParentLayout.route,
+      page: () => ParentLayout(),
+      binding: ParentBinding(),
       middlewares: [
         AuthMiddleware()
       ],
@@ -26,6 +26,14 @@ class Routes {
       name: LocationSearchLayout.route,
       page: () => LocationSearchLayout(),
       binding: LocationSearchBinding(),
+      transition: Transition.circularReveal,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: CategorySearchLayout.route,
+      page: () => CategorySearchLayout(),
+      binding: CategorySearchBinding(),
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 800),
     ),

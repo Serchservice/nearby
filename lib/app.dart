@@ -35,7 +35,7 @@ class _MainState extends State<Main> {
         title: "Serch Drive",
         color: CommonColors.darkTheme,
         debugShowCheckedModeBanner: false,
-        initialRoute: HomeLayout.route,
+        initialRoute: ParentLayout.route,
         unknownRoute: GetPage(
           name: PageNotFoundLayout.route,
           page: () => const PageNotFoundLayout(),

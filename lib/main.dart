@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -28,6 +29,20 @@ Future<void> _initializeApp() async {
   return await Database.initialize();
 }
 
+@pragma("vm:entry-point")
+Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+  _initializeApp().then((_) {
+    MainConfiguration.bind();
+
+    FirebaseMessagingService messaging = FirebaseMessagingImplementation();
+    messaging.background(message);
+
+    runApp(const Main());
+  });
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
@@ -35,6 +50,8 @@ Future<void> main() async {
 
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
+  FirebaseMessaging.onBackgroundMessage(_backgroundRemoteMessagingHandler);
 
   Get.updateLocale(const Locale('en'));
   _initializeApp().then((_) => {
