@@ -110,7 +110,7 @@ class LocationSearchLayout extends GetResponsiveView<LocationSearchController> {
               }
             }),
           ),
-          controller.bannerAdManager.banner(),
+          BannerAdWidget(),
         ],
       )
     );

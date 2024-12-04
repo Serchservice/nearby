@@ -6,9 +6,14 @@ def admobId = project.hasProperty('ADMOB_ID')
         ? project.ADMOB_ID
         : System.getenv("ADMOB_ID") ?: ""
 
+def startappId = project.hasProperty('STARTAPP_ID')
+        ? project.STARTAPP_ID
+        : System.getenv("STARTAPP_ID") ?: ""
+
 android {
     defaultConfig {
         resValue "string", "google_maps_api_key", googleMapsApiKey
         resValue "string", "admob_id", admobId
+        resValue "string", "startapp_id", startappId
     }
 }

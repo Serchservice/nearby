@@ -15,9 +15,6 @@ class ParentController extends GetxController {
   final ConnectService _connect = Connect();
 
   late AppLifecycleReactor _appLifecycleReactor;
-  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
-  BannerAdManager activityBannerAdManager = BannerAdManager()..loadAd();
-  BannerAdManager settingsBannerAdManager = BannerAdManager()..loadAd();
 
   final InAppReview inAppReview = InAppReview.instance;
 
@@ -300,7 +297,7 @@ class ParentController extends GetxController {
 
   void updateRecentAddresses(Address address) {
     List<Address> update = List.from(Database.recentAddresses);
-    if(!update.any((ad) => ad.latitude == address.latitude)) {
+    if(!update.any((ad) => (ad.latitude == address.latitude && ad.longitude == address.longitude) || ad.place.toLowerCase() == address.place.toLowerCase())) {
       update.add(address);
 
       Database.saveRecentAddress(update);

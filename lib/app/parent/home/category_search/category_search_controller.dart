@@ -7,7 +7,6 @@ class CategorySearchController extends GetxController {
   final state = CategorySearchState();
 
   final TextEditingController searchController = TextEditingController();
-  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
 
   @override
   void onReady() {

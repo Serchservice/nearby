@@ -1,11 +1,8 @@
 import 'package:drive/library.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'dart:io' show Platform;
 
 class AppOpenAdManager {
-  String adUnitId = Platform.isAndroid
-      ? Keys.admobAppOpenId
-      : 'ca-app-pub-3940256099942544/5575463023';
+  String testKey = 'ca-app-pub-3940256099942544/5575463023';
 
   AppOpenAd? _appOpenAd;
   bool _isShowingAd = false;
@@ -19,7 +16,7 @@ class AppOpenAdManager {
   /// Load an AppOpenAd.
   void loadAd() {
     AppOpenAd.load(
-      adUnitId: adUnitId,
+      adUnitId: Keys.admobAppOpenId,
       request: AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {

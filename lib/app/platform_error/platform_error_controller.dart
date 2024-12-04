@@ -7,7 +7,6 @@ class PlatformErrorController extends GetxController {
 
   final state = PlatformErrorState();
 
-  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
   final args = Get.arguments;
 
   @override

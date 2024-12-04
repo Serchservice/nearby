@@ -11,7 +11,6 @@ class LocationSearchController extends GetxController {
   final LocationService _locationService = LocationImplementation();
 
   final TextEditingController locationController = TextEditingController();
-  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
 
   @override
   void onReady() {
