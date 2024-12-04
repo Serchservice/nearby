@@ -48,7 +48,7 @@ class HistoryLayout extends GetResponsiveView<ParentController> {
               child: buildView(context),
             ),
           ),
-          controller.activityBannerAdManager.banner(),
+          BannerAdWidget(),
         ],
       ),
     );
@@ -62,7 +62,11 @@ class HistoryLayout extends GetResponsiveView<ParentController> {
         final List<Widget> items = [];
         groupedShops.forEach((title, shops) {
           // Add a header for each category
-          items.add(SText(text: title, size: Sizing.font(14), color: CommonColors.hint));
+          items.add(SText(
+            text: CommonUtility.capitalizeWords(title),
+            size: Sizing.font(14),
+            color: CommonColors.hint
+          ));
 
           // Add each shop under the category
           items.addAll(shops.map((shop) {

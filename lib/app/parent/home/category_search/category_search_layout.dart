@@ -141,7 +141,7 @@ class CategorySearchLayout extends GetResponsiveView<CategorySearchController> {
               }),
             ),
           ),
-          controller.bannerAdManager.banner(),
+          BannerAdWidget(),
         ],
       )
     );

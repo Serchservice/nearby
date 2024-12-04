@@ -30,7 +30,7 @@ class UpdateLayout extends GetResponsiveView<UpdateController> {
               }
             ),
           ),
-          controller.bannerAdManager.banner()
+          BannerAdWidget(),
         ],
       )
     );

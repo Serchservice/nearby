@@ -38,4 +38,12 @@ class Keys {
       return "";
     }
   }
+
+  static String get admobInterstitialId {
+    if(Platform.isAndroid) {
+      return dotenv.env["ANDROID_INTERSTITIAL_ADMOB_ID"] ?? "";
+    } else {
+      return "";
+    }
+  }
 }

@@ -104,9 +104,7 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
               ),
             ),
           ),
-          if(controller.bannerAdManager.banner() != null) ...[
-            controller.bannerAdManager.banner()!
-          ]
+          BannerAdWidget(),
         ],
       )
     );

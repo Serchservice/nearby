@@ -107,9 +107,7 @@ class ExploreLayout extends GetResponsiveView<ExploreController> {
               ),
             ),
           ),
-          if(controller.bannerAdManager.banner() != null) ...[
-            controller.bannerAdManager.banner()!
-          ]
+          BannerAdWidget(),
         ],
       )
     );

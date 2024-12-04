@@ -143,7 +143,7 @@ class SettingsLayout extends GetResponsiveView<ParentController> {
                 ),
               ),
             ),
-            controller.settingsBannerAdManager.banner(),
+            BannerAdWidget(),
           ],
         );
       }),

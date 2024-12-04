@@ -1,6 +1,7 @@
 library;
 
 export 'layout.dart';
+export 'inactivity_wrapper.dart';
 export 'parent/library.dart';
 
 /// WEB

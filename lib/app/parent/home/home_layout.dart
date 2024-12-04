@@ -151,7 +151,7 @@ class HomeLayout extends GetResponsiveView<ParentController> {
               ),
             ),
           ),
-          controller.bannerAdManager.banner(),
+          BannerAdWidget(),
         ],
       )
     );

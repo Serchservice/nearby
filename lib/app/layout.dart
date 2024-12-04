@@ -42,10 +42,12 @@ class MainLayout extends StatelessWidget {
     this.drawer,
     this.endDrawer,
     this.shouldOverride = false,
-    this.barColor
+    this.barColor,
+    this.withActivity = true
   });
 
   final Key? layoutKey;
+  final bool withActivity;
   final Widget child;
   final Widget? floatingButton;
   final PreferredSizeWidget? appbar;
@@ -123,7 +125,7 @@ class MainLayout extends StatelessWidget {
             SizedBox(
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).width,
-              child: child
+              child: buildChild()
             ),
             Positioned(
               bottom: floaterPosition,
@@ -144,7 +146,7 @@ class MainLayout extends StatelessWidget {
           SizedBox(
             height: MediaQuery.sizeOf(context).height,
             width: MediaQuery.sizeOf(context).width,
-            child: child
+            child: buildChild()
           ),
           Positioned(
             bottom: floaterPosition,
@@ -158,9 +160,17 @@ class MainLayout extends StatelessWidget {
     }
 
     if(needSafeArea) {
-      return SafeArea(child: child);
+      return SafeArea(child: buildChild());
     }
 
-    return child;
+    return buildChild();
+  }
+
+  Widget buildChild() {
+    if(withActivity) {
+      return InactivityWrapper(child: child);
+    } else {
+      return child;
+    }
   }
 }

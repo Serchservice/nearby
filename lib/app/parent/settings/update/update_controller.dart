@@ -5,8 +5,6 @@ class UpdateController extends GetxController {
   UpdateController();
   final state = UpdateState();
 
-  BannerAdManager bannerAdManager = BannerAdManager()..loadAd();
-
   List<UpdateLogView> updates = [
     UpdateLogView(
       header: "1.0.2: Enhanced user experience and bug fixes.",

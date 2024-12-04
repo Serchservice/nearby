@@ -73,7 +73,7 @@ class ResultLayout extends GetResponsiveView<ResultController> {
               ),
             ),
           ),
-          controller.bannerAdManager.banner()
+          BannerAdWidget(),
         ],
       )
     );
