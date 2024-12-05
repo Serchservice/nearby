@@ -22,28 +22,4 @@ class Keys {
       return "";
     }
   }
-
-  static String get admobBannerId {
-    if(Platform.isAndroid) {
-      return dotenv.env["ANDROID_BANNER_ADMOB_ID"] ?? "";
-    } else {
-      return "";
-    }
-  }
-
-  static String get admobAppOpenId {
-    if(Platform.isAndroid) {
-      return dotenv.env["ANDROID_APP_OPEN_ADMOB_ID"] ?? "";
-    } else {
-      return "";
-    }
-  }
-
-  static String get admobInterstitialId {
-    if(Platform.isAndroid) {
-      return dotenv.env["ANDROID_INTERSTITIAL_ADMOB_ID"] ?? "";
-    } else {
-      return "";
-    }
-  }
 }
