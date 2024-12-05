@@ -1,9 +1,8 @@
 import 'package:drive/library.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:startapp_sdk/startapp.dart';
 
 class InterstitialAdManager {
-  String testKey = 'ca-app-pub-3940256099942544/5575463023';
+  final FirebaseRemoteConfigService _configService = FirebaseRemoteConfigImplementation();
 
   InterstitialAd? _interstitial;
   bool _isShowingAd = false;
@@ -17,7 +16,7 @@ class InterstitialAdManager {
   /// Load an InterstitialAd.
   void loadAd() {
     InterstitialAd.load(
-      adUnitId: Keys.admobInterstitialId,
+      adUnitId: _configService.getAdmobInterstitialId(),
       request: AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -25,48 +24,20 @@ class InterstitialAdManager {
           _loadTime = DateTime.now();
         },
         onAdFailedToLoad: (error) {
-          _loadStartAd();
           Logger.log('InterstitialAd failed to load: $error');
         },
       ),
     );
   }
 
-  var startAppSdk = StartAppSdk();
-
-  void _loadStartAd() {
-    startAppSdk.setTestAdsEnabled(false);
-    startAppSdk.loadInterstitialAd().then((interstitialAd) {
-      _loadTime = DateTime.now();
-
-      interstitialAd.show().then((shown) {
-        return null;
-      }).onError((error, stackTrace) {
-        Logger.log("Error showing Interstitial ad: $error");
-      });
-    }).onError<StartAppException>((ex, stackTrace) {
-      Logger.log("Error loading Interstitial ad: ${ex.message}");
-    }).onError((error, stackTrace) {
-      Logger.log("Error loading Interstitial ad: $error");
-    });
-  }
-
   /// Whether an ad is available to be shown.
   bool get isAdAvailable => _interstitial != null;
-
-  void load() {
-    if(!isAdAvailable) {
-      loadAd();
-    } else {
-      _loadStartAd();
-    }
-  }
 
   void showAdIfAvailable() {
     if (!isAdAvailable) {
       Logger.log('Tried to show ad before available.');
 
-      load();
+      loadAd();
       return;
     }
 
@@ -81,7 +52,7 @@ class InterstitialAdManager {
       _interstitial?.dispose();
       _interstitial = null;
 
-      load();
+      loadAd();
       return;
     }
 

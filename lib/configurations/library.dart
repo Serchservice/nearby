@@ -28,7 +28,8 @@ export 'firebase/crashlytics_engine.dart';
 export 'firebase/firebase_configuration.dart';
 export 'firebase/firebase_messaging_implementation.dart';
 export 'firebase/firebase_messaging_service.dart';
-
+export 'firebase/firebase_remote_config_implementation.dart';
+export 'firebase/firebase_remote_config_service.dart';
 
 export 'main/main_configuration.dart';
 export 'main/app_lifecycle.dart';

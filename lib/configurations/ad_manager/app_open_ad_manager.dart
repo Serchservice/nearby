@@ -2,7 +2,7 @@ import 'package:drive/library.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AppOpenAdManager {
-  String testKey = 'ca-app-pub-3940256099942544/5575463023';
+  final FirebaseRemoteConfigService _configService = FirebaseRemoteConfigImplementation();
 
   AppOpenAd? _appOpenAd;
   bool _isShowingAd = false;
@@ -16,7 +16,7 @@ class AppOpenAdManager {
   /// Load an AppOpenAd.
   void loadAd() {
     AppOpenAd.load(
-      adUnitId: Keys.admobAppOpenId,
+      adUnitId: _configService.getAdmobAppOpenId(),
       request: AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {

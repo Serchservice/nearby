@@ -43,9 +43,6 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY_IOS=${{ secrets.GOOGLE_MAPS_API_KEY_IOS }}" >> .env
           echo "API_KEY=${{ secrets.DRIVE_APP_API_KEY }}" >> .env
           echo "SECRET_KEY=${{ secrets.DRIVE_APP_SECRET_KEY }}" >> .env
-          echo "ANDROID_BANNER_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_BANNER_ADMOB_ID }}" >> .env
-          echo "ANDROID_APP_OPEN_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_APP_OPEN_ADMOB_ID }}" >> .env
-          echo "ANDROID_INTERSTITIAL_ADMOB_ID=${{ secrets.DRIVE_APP_ANDROID_INTERSTITIAL_ADMOB_ID }}" >> .env
           echo "SIGNATURE=${{ secrets.SERCH_SIGNATURE }}" >> .env
 
       - name: Decode and save keystore

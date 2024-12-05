@@ -21,6 +21,7 @@ class MainConfiguration extends GetxController {
   }
 
   final AppService _appService = AppImplementation();
+  final FirebaseRemoteConfigService _configService = FirebaseRemoteConfigImplementation();
 
   StreamSubscription<Uri>? _linkSubscription;
 
@@ -30,6 +31,7 @@ class MainConfiguration extends GetxController {
   @override
   void onInit() async {
     _linkSubscription = await _appService.initializeDeepLink();
+    _configService.init();
 
     AppLifeCycle appLifeCycle = AppLifeCycle(
       onForeground: () async { },
