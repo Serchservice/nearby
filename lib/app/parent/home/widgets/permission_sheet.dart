@@ -36,7 +36,7 @@ class PermissionSheet extends StatelessWidget {
                       ),
                     ),
                     SText(
-                      text: "In order to give you a smooth user experience, Serch requires some basic permissions to be granted.",
+                      text: "In order to give you a smooth user experience, Nearby requires some basic permissions to be granted.",
                       size: Sizing.font(16),
                       color: Theme.of(context).primaryColor,
                     ),

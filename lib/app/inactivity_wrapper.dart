@@ -23,7 +23,7 @@ class _InactivityWrapperState extends State<InactivityWrapper> {
 
   void _startInactivityTimer() {
     _inactivityTimer?.cancel();
-    _inactivityTimer = Timer(const Duration(minutes: 1), _showInactivityPopup);
+    _inactivityTimer = Timer(const Duration(minutes: 3), _showInactivityPopup);
   }
 
   void _resetTimer() {

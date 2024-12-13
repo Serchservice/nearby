@@ -29,7 +29,7 @@ class UpdateController extends GetxController {
       index: 1,
     ),
     UpdateLogView(
-      header: "0.0.1: Launching Serch Drive.",
+      header: "0.0.1: Launching Nearby.",
       content: [
         "Select a category of your need",
         "Locate with your current location or search for a location",

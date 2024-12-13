@@ -17,10 +17,13 @@ class OnboardingLayout extends GetResponsiveView<OnboardingController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              Assets.logoSplashWhite,
-              width: 90,
+              Assets.logoLogo,
+              width: 120,
+              height: 70,
+              fit: BoxFit.contain,
               color: Theme.of(context).primaryColor
             ),
+            const SizedBox(height: 15),
             SText(
               text: "Making your nearest search and movement, faster and better.",
               size: Sizing.font(34),
