@@ -46,9 +46,11 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    Assets.logoSplashWhite,
+                    Assets.logoLogo,
                     width: 100,
-                    color: Theme.of(context).primaryColor,
+                    height: 70,
+                    fit: BoxFit.contain,
+                    color: Theme.of(context).primaryColor
                   ),
                   LineHeader(
                     header: "Oops! An error.",
@@ -97,7 +99,14 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Center(child: Image.asset(Assets.logoSmeBlack, width: 150, color: Theme.of(context).primaryColor),
+                    child: Center(
+                      child: Image.asset(
+                        Assets.logoInfo,
+                        width: 150,
+                        height: 50,
+                        fit: BoxFit.contain,
+                        color: Theme.of(context).primaryColor
+                      ),
                     ),
                   ),
                 ]
