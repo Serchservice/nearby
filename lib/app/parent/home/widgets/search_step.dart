@@ -48,7 +48,7 @@ class _SearchStepState extends State<SearchStep> {
       padding: EdgeInsets.all(Sizing.space(2.5)),
       width: 50,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: CommonColors.color,
         borderRadius: BorderRadius.circular(4),
       ),
     );
@@ -66,12 +66,12 @@ class _SearchStepState extends State<SearchStep> {
             Container(
               height: Sizing.space(15),
               width: Sizing.space(1.5),
-              color: Theme.of(context).primaryColor,
+              color: CommonColors.color,
             ),
             Container(
               padding: EdgeInsets.all(Sizing.space(4)),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: CommonColors.color,
                 borderRadius: BorderRadius.circular(1),
               ),
             ),
@@ -79,7 +79,7 @@ class _SearchStepState extends State<SearchStep> {
               Container(
                 height: Sizing.space(widget.height ?? _calculatedHeight),
                 width: Sizing.space(1.5),
-                color: Theme.of(context).primaryColor,
+                color: CommonColors.color,
               ),
             ],
           ],
@@ -92,7 +92,7 @@ class _SearchStepState extends State<SearchStep> {
               if(widget.header != null && widget.header!.isNotEmpty) ...[
                 SText(
                   text: widget.header!,
-                  color: Theme.of(context).primaryColor,
+                  color: CommonColors.color,
                   size: Sizing.font(14),
                   weight: FontWeight.bold,
                   flow: TextOverflow.clip,

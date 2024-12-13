@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 ///
 ///It comprises of both colors used in the light and dark theme of the UI
 abstract class CommonColors{
+  static const Color color = Color(0xff4361EE);
+
   static const Color lightTheme = Color(0xffFFFFFF);
   static const Color lightTheme2 = Color(0xffF1F1F1);
 

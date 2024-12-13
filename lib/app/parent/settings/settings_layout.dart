@@ -35,18 +35,18 @@ class SettingsLayout extends GetResponsiveView<ParentController> {
                           icon: Icons.update_rounded,
                           path: UpdateLayout.route
                         ),
-                        ButtonView(
-                          header: "Explore",
-                          index: 2,
-                          icon: Icons.view_compact_rounded,
-                          path: ExploreLayout.route
-                        ),
-                        ButtonView(
-                          header: "Rate app",
-                          index: 3,
-                          icon: Icons.star,
-                          path: ""
-                        )
+                        // ButtonView(
+                        //   header: "Explore",
+                        //   index: 2,
+                        //   icon: Icons.view_compact_rounded,
+                        //   path: ExploreLayout.route
+                        // ),
+                        // ButtonView(
+                        //   header: "Rate app",
+                        //   index: 3,
+                        //   icon: Icons.star,
+                        //   path: ""
+                        // )
                       ].map((view) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 3.0),
@@ -138,6 +138,18 @@ class SettingsLayout extends GetResponsiveView<ParentController> {
                           ],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            Assets.logoInfo,
+                            width: 90,
+                            height: 50,
+                            fit: BoxFit.contain,
+                            color: Theme.of(context).primaryColor
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

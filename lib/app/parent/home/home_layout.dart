@@ -41,10 +41,10 @@ class HomeLayout extends GetResponsiveView<ParentController> {
               GestureDetector(
                 onTap: () => RouteNavigator.openWeb(header: "Serchservice", url: Constants.baseWeb),
                 child: Image.asset(
-                  Assets.logoSplashWhite,
+                  Assets.logoLogo,
                   width: 120,
-                  height: 80,
-                  fit: BoxFit.cover,
+                  height: 70,
+                  fit: BoxFit.contain,
                   color: Theme.of(context).primaryColor
                 ),
               ),

@@ -3,7 +3,7 @@ description: "Drive to shop application for Serchservice Inc."
 
 publish_to: 'none'
 
-version: 1.0.2+11
+version: 1.0.2+12
 
 environment:
   sdk: ^3.5.4
@@ -50,6 +50,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   device_safety_info: ^0.0.9
   in_app_update: ^4.2.3
+  onesignal_flutter: ^5.2.8
   flutter_svg:
 
   connectify_flutter:
@@ -82,28 +83,28 @@ flutter_launcher_icons:
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "asset/logo/drive-logo-splash-screen-white.png"
-  adaptive_background_color: "#030001"
+  image_path: "asset/logo/app-icon.png"
+  adaptive_background_color: "#4361EE"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "asset/logo/drive-logo-splash-screen-white.png"
-    background_color: "#050404"
-    theme_color: "#050404"
+    image_path: "asset/logo/app-icon.png"
+    background_color: "#4361EE"
+    theme_color: "#4361EE"
   windows:
     generate: true
-    image_path: "asset/logo/drive-logo-splash-screen-white.png"
+    image_path: "asset/logo/app-icon.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "asset/logo/drive-logo-splash-screen-white.png"
+    image_path: "asset/logo/app-icon.png"
 
 # dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#FFFFFF"
+  color: "#4361EE"
   # background_image: "asset/lightWallpaper.png"
-  image: asset/logo/drive-logo-splash-screen-black.png
-  branding: asset/logo/branding-splash-screen.png
+  image: asset/logo/splash-screen.png
+  branding: asset/logo/branding-android.png
 
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
   # and bottomLeft. The default values is bottom if not specified or specified something else.
@@ -113,10 +114,10 @@ flutter_native_splash:
   # image_dark: asset/logo/splashWhite.png
   # branding_dark: asset/logo/tagWhite.png
   android_12:
-    image: asset/logo/drive-logo-splash-screen-black-android-12.png
-    color: "#FFFFFF"
+    image: asset/logo/splash-screen-android-12.png
+    color: "#4361EE"
     # icon_background_color: "#030001"
-    branding: asset/logo/branding-splash-screen-android-12.png
+    branding: asset/logo/branding-android-12.png
     # image_dark: asset/logo/splashWhite.png
     # color_dark: "#030001"
     # icon_background_color_dark: "#FFFFFF"

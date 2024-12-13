@@ -12,6 +12,7 @@ class ParentController extends GetxController {
 
   final AppService _appService = AppImplementation();
   final AccessService _accessService = AccessImplementation();
+  final OneSignalService _oneSignalService = OneSignalImplementation();
   final ConnectService _connect = Connect();
 
   late AppLifecycleReactor _appLifecycleReactor;
@@ -23,6 +24,8 @@ class ParentController extends GetxController {
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
     _appLifecycleReactor = AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
     _appLifecycleReactor.listenToAppStateChanges();
+    _oneSignalService.initialize();
+
     _checkAccess();
 
     super.onInit();
@@ -290,6 +293,8 @@ class ParentController extends GetxController {
 
   void search() {
     RequestSearch search = RequestSearch(category: state.category.value, pickup: state.selectedAddress.value);
+    _oneSignalService.addSearchTag(state.category.value);
+    _oneSignalService.addLocationTag(state.selectedAddress.value);
 
     Navigate.to(ResultLayout.route, parameters: search.toParams(), arguments: search.toJson());
     clearSelection();

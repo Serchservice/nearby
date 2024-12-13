@@ -43,7 +43,8 @@ class MainLayout extends StatelessWidget {
     this.endDrawer,
     this.shouldOverride = false,
     this.barColor,
-    this.withActivity = true
+    this.withActivity = true,
+    this.navigationColor
   });
 
   final Key? layoutKey;
@@ -57,6 +58,7 @@ class MainLayout extends StatelessWidget {
   final double floaterPosition;
   final Color? backgroundColor;
   final Color? barColor;
+  final Color? navigationColor;
   final bool needSafeArea;
   final FloatingActionButtonLocation? floatingLocation;
   final bool extendBody;
@@ -81,7 +83,7 @@ class MainLayout extends StatelessWidget {
           ? backgroundColor
           : goDark
           ? darkBackgroundColor
-          : Theme.of(context).scaffoldBackgroundColor,
+          : navigationColor ?? Theme.of(context).scaffoldBackgroundColor,
         statusBarIconBrightness: goDark
           ? Brightness.light
           : (theme != null && theme == ThemeType.light) || Database.preference.isLightTheme

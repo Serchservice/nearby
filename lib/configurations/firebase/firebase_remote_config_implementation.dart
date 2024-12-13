@@ -47,4 +47,9 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
       return 'ca-app-pub-3940256099942544/5575463023';
     }
   }
+
+  @override
+  String getOneSignalId() {
+    return remoteConfig.getString("ONESIGNAL_ID");
+  }
 }

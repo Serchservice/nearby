@@ -53,12 +53,12 @@ class FakeField extends StatelessWidget {
                           topRight: Radius.circular(16),
                           bottomRight: Radius.circular(16)
                         ),
-                        color: Theme.of(context).primaryColor
+                        color: CommonColors.color
                       ),
                       child: SText(
                         text: buttonText,
                         size: Sizing.font(14),
-                        color: Theme.of(context).scaffoldBackgroundColor
+                        color: CommonColors.lightTheme
                       ),
                     )
                   ] else ...[

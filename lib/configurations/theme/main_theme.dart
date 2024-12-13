@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MainTheme {
   static final visualDensity = VisualDensity.adaptivePlatformDensity;
-  static final textTheme = GoogleFonts.nunitoTextTheme();
+  static final textTheme = GoogleFonts.montserratAlternatesTextTheme();
   static final logoTheme = GoogleFonts.leagueSpartanTextTheme();
   static final mainFont = GoogleFonts.nunito();
 
