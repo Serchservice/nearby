@@ -2,7 +2,7 @@ import 'package:drive/library.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HistoryLayout extends GetResponsiveView<ParentController> {
+class HistoryLayout extends GetResponsiveView<HistoryController> {
   HistoryLayout({super.key});
 
   @override
@@ -70,9 +70,9 @@ class HistoryLayout extends GetResponsiveView<ParentController> {
 
           // Add each shop under the category
           items.addAll(shops.map((shop) {
-            return ShopView(
+            return SearchResultItem(
               shop: shop,
-              pickup: controller.state.selectedAddress.value,
+              pickup: Database.address,
               title: CommonUtility.capitalizeWords(shop.shop.category),
             );
           }).toList());

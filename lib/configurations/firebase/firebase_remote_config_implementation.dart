@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drive/library.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 
 class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService {
   final remoteConfig = FirebaseRemoteConfig.instance;
@@ -23,7 +24,9 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
 
   @override
   String getAdmobAppOpenId() {
-    if(Platform.isAndroid) {
+    if(kIsWeb) {
+      return "";
+    } else if(Platform.isAndroid) {
       return remoteConfig.getString("ANDROID_APP_OPEN_ADMOB_ID");
     } else {
       return "ca-app-pub-3940256099942544/5575463023";
@@ -32,7 +35,9 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
 
   @override
   String getAdmobBannerId() {
-    if(Platform.isAndroid) {
+    if(kIsWeb) {
+      return "";
+    } else if(Platform.isAndroid) {
       return remoteConfig.getString("ANDROID_BANNER_ADMOB_ID");
     } else {
       return "ca-app-pub-3940256099942544/2934735716";
@@ -41,7 +46,9 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
 
   @override
   String getAdmobInterstitialId() {
-    if(Platform.isAndroid) {
+    if(kIsWeb) {
+      return "";
+    } else if(Platform.isAndroid) {
       return remoteConfig.getString("ANDROID_INTERSTITIAL_ADMOB_ID");
     } else {
       return 'ca-app-pub-3940256099942544/5575463023';

@@ -15,7 +15,6 @@ export 'core/sizing.dart';
 export 'core/category.dart';
 export 'core/connect_service.dart';
 export 'core/connect.dart';
-export 'core/keys.dart';
 
 export 'debug/logger.dart';
 
@@ -55,5 +54,3 @@ export 'theme/common_colors.dart';
 export 'theme/dark_theme.dart';
 export 'theme/light_theme.dart';
 export 'theme/main_theme.dart';
-
-export 'middlewares/auth_middleware.dart';

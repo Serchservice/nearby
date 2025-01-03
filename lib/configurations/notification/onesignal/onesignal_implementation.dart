@@ -1,4 +1,5 @@
 import 'package:drive/library.dart';
+import 'package:flutter/foundation.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalImplementation implements OneSignalService {
@@ -6,14 +7,18 @@ class OneSignalImplementation implements OneSignalService {
 
   @override
   void initialize() {
-    OneSignal.initialize(_configService.getOneSignalId());
-    OneSignal.Notifications.clearAll();
-    OneSignal.LiveActivities.setupDefault();
+    if(kIsWeb) {
+      return;
+    } else {
+      OneSignal.initialize(_configService.getOneSignalId());
+      OneSignal.Notifications.clearAll();
+      OneSignal.LiveActivities.setupDefault();
 
-    if(Database.address.state.isNotEmpty) {
-      addLocationTag(Database.address);
-    } else if(Database.address.country.isNotEmpty) {
-      addLocationTag(Database.address);
+      if(Database.address.state.isNotEmpty) {
+        addLocationTag(Database.address);
+      } else if(Database.address.country.isNotEmpty) {
+        addLocationTag(Database.address);
+      }
     }
   }
 

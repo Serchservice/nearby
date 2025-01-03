@@ -5,10 +5,11 @@ class Routes {
   static List<GetPage> all = [
     GetPage(
       name: ParentLayout.route,
-      page: () => ParentLayout(),
+      page: () => CookieConsentWrapper(child: ParentLayout()),
       binding: ParentBinding(),
       middlewares: [
-        AuthMiddleware()
+        AuthMiddleware(),
+        DeviceMiddleware(),
       ],
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 800),
@@ -16,54 +17,61 @@ class Routes {
 
     GetPage(
       name: OnboardingLayout.route,
-      page: () => OnboardingLayout(),
+      page: () => CookieConsentWrapper(child: OnboardingLayout()),
       binding: OnboardingBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
     GetPage(
       name: LocationSearchLayout.route,
-      page: () => LocationSearchLayout(),
+      page: () => CookieConsentWrapper(child: LocationSearchLayout()),
       binding: LocationSearchBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
     GetPage(
       name: CategorySearchLayout.route,
-      page: () => CategorySearchLayout(),
+      page: () => CookieConsentWrapper(child: CategorySearchLayout()),
       binding: CategorySearchBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
     GetPage(
       name: WebLayout.route,
-      page: () => const WebLayout(),
+      page: () => CookieConsentWrapper(child: WebLayout()),
       binding: WebBinding(),
-      transition: Transition.native,
-      transitionDuration: const Duration(milliseconds: 800),
-    ),
-
-    GetPage(
-      name: ExploreLayout.route,
-      page: () => ExploreLayout(),
-      binding: ExploreBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
       transition: Transition.native,
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
     GetPage(
       name: PageNotFoundLayout.route,
-      page: () => PageNotFoundLayout(),
+      page: () => CookieConsentWrapper(child: PageNotFoundLayout()),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
       transition: Transition.native,
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
     GetPage(
       name: PlatformErrorLayout.route,
-      page: () => PlatformErrorLayout(),
+      page: () => CookieConsentWrapper(child: PlatformErrorLayout()),
       binding: PlatformErrorBinding(),
       transition: Transition.native,
       transitionDuration: const Duration(milliseconds: 800),
@@ -71,17 +79,12 @@ class Routes {
 
     GetPage(
       name: ResultLayout.route,
-      page: () => ResultLayout(),
+      page: () => CookieConsentWrapper(child: ResultLayout()),
       binding: ResultBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
       transition: Transition.rightToLeftWithFade,
-      transitionDuration: const Duration(milliseconds: 800),
-    ),
-
-    GetPage(
-      name: UpdateLayout.route,
-      page: () => UpdateLayout(),
-      binding: UpdateBinding(),
-      transition: Transition.native,
       transitionDuration: const Duration(milliseconds: 800),
     ),
   ];

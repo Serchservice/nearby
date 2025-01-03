@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 class Device {
   final String name;
@@ -87,16 +87,3 @@ class Device {
     "local_host_name": localHostName,
   };
 }
-
-/*
-{
-	"name": "Samsung",
-	"id": "1234",
-	"ip_address": "0.0.0.0",
-	"platform": "iOS",
-	"sdk": 21,
-	"host": "flutter",
-  "operating_system": "",
-	"operating_system_version": "",
-	"local_host_name": ""
-}*/

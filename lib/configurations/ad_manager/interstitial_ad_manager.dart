@@ -1,4 +1,5 @@
 import 'package:drive/library.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class InterstitialAdManager {
@@ -15,19 +16,21 @@ class InterstitialAdManager {
 
   /// Load an InterstitialAd.
   void loadAd() {
-    InterstitialAd.load(
-      adUnitId: _configService.getAdmobInterstitialId(),
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          _interstitial = ad;
-          _loadTime = DateTime.now();
-        },
-        onAdFailedToLoad: (error) {
-          Logger.log('InterstitialAd failed to load: $error');
-        },
-      ),
-    );
+    if(!kIsWeb) {
+      InterstitialAd.load(
+        adUnitId: _configService.getAdmobInterstitialId(),
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            _interstitial = ad;
+            _loadTime = DateTime.now();
+          },
+          onAdFailedToLoad: (error) {
+            Logger.log('InterstitialAd failed to load: $error');
+          },
+        ),
+      );
+    }
   }
 
   /// Whether an ad is available to be shown.

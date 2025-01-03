@@ -3,19 +3,20 @@ import 'package:drive/library.dart';
 
 class Connect<T> implements ConnectService<T> {
   bool useToken;
-  Connect({this.useToken = true});
+  Connect({this.useToken = false});
 
-  Connectify get connect {
-    return Connectify(options: ConnectifyOptions(
-      useToken: false,
-      showLog: false,
+  ConnectifyService get connect {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'X-Serch-Drive-Api-Key': Keys.apiKey,
+      'X-Serch-Drive-Secret-Key': Keys.secretKey,
+      'X-Serch-Signed': Keys.signature
+    };
+
+    return Connectify(config: ConnectifyConfig(
+      useToken: this.useToken,
       mode: ConnectifyMode.PRODUCTION,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Serch-Drive-Api-Key': Keys.apiKey,
-        'X-Serch-Drive-Secret-Key': Keys.secretKey,
-        'X-Serch-Signed': Keys.signature
-      },
+      headers: headers,
     ));
   }
 
