@@ -9,6 +9,7 @@ export 'buttons/dynamic_icon_button_view.dart';
 export 'device/device.dart';
 export 'device/preference.dart';
 export 'device/address.dart';
+export 'device/cookie.dart';
 
 /// MAP
 export 'map/direction.dart';

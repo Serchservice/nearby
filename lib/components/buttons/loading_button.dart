@@ -22,6 +22,7 @@ class LoadingButton extends StatelessWidget {
   final bool notEnabled;
   final bool isCircular;
   final double? width;
+  final bool autoSize;
 
   LoadingButton({
     super.key,
@@ -42,7 +43,8 @@ class LoadingButton extends StatelessWidget {
     this.suffixIconSize,
     this.notEnabled = false,
     this.isCircular = true,
-    this.width
+    this.width,
+    this.autoSize = true
   }) : loader = Loading(
     color: textColor ?? Get.theme.splashColor,
     size: loadingSize ?? Loading().size
@@ -114,6 +116,7 @@ class LoadingButton extends StatelessWidget {
                         color: color,
                         size: textSize,
                         weight: textWeight,
+                        autoSize: autoSize,
                         fontFamily: fontFamily
                       )
                     ),

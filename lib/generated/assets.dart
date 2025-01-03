@@ -16,6 +16,7 @@ class Assets {
   static const String logoInfo = "asset/logo/info.png";
   static const String logoSmeBlack = 'asset/logo/smeBlack.png';
   static const String logoSplashWhite = 'asset/logo/splashWhite.png';
+  static const String logoAppIcon = 'asset/logo/app-icon.png';
   static const String mapCurrent = 'asset/map/current.png';
   static const String mapDestination = 'asset/map/destination.png';
   static const String mapDrive = 'asset/map/drive.png';

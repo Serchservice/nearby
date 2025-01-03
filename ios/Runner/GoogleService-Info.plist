@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDa6ptQwN2NE2qaObC2Z6TO1AIqA-ZYaN0</string>
+	<string>AIzaSyAtyJkqPDkl2FwJNuTwXFr1TUDwEo1-Ouk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>977124095958</string>
+	<string>825589816078</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.serchservice.drive</string>
 	<key>PROJECT_ID</key>
-	<string>serch-drive</string>
+	<string>serch-service</string>
 	<key>STORAGE_BUCKET</key>
-	<string>serch-drive.firebasestorage.app</string>
+	<string>serch-service.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:977124095958:ios:85dff033559a2d415a9677</string>
+	<string>1:825589816078:ios:0ef1ba74c4f39c49bc955f</string>
 </dict>
 </plist>

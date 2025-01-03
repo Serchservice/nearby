@@ -1,40 +1,20 @@
-import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:logger_flutter/logger_flutter.dart';
 
 class Logger {
-  static String build({String? from, required dynamic text}) {
-    if(from != null) {
-      return "$from _______________________________ ${text.toString()}";
-    } else {
-      return text.toString();
-    }
-  }
-
   static void log(text, {String? from, bool needHeader = true}){
-    if(kDebugMode){
-      Debug.log(
-        needHeader ? build(text: text, from: from) : text.toString(),
-        mode: DebugMode.TRACE,
-        prefix: "Serch"
-      );
-    }
-  }
-}
+    LogManagerService logger = LogManager();
 
-String build({String? from, required dynamic text}) {
-  if(from != null) {
-    return "$from _______________________________ ${text.toString()}";
-  } else {
-    return text.toString();
+    if(kDebugMode){
+      logger.log(text, from: from, mode: LogMode.TRACE, prefix: "Serch");
+    }
   }
 }
 
 void log(text, {String? from, bool needHeader = true}){
+  LogManagerService logger = LogManager();
+
   if(kDebugMode){
-    Debug.log(
-      needHeader ? build(text: text, from: from) : text.toString(),
-      mode: DebugMode.INFO,
-      prefix: "Serch"
-    );
+    logger.log(text, from: from, mode: LogMode.INFO, prefix: "Serch");
   }
 }

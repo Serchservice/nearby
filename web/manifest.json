@@ -1,11 +1,11 @@
 {
-    "name": "drive",
-    "short_name": "drive",
+    "name": "Nearby",
+    "short_name": "Nearby",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#4361EE",
     "theme_color": "#4361EE",
-    "description": "A new Flutter project.",
+    "description": "Your nearby search, redefined.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

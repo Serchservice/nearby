@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "977124095958",
-    "project_id": "serch-drive",
-    "storage_bucket": "serch-drive.firebasestorage.app"
+    "project_number": "825589816078",
+    "project_id": "serch-service",
+    "storage_bucket": "serch-service.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:977124095958:android:f02307e58c5886e15a9677",
+        "mobilesdk_app_id": "1:825589816078:android:c2a00fc2114b50a8bc955f",
         "android_client_info": {
           "package_name": "com.serchservice.drive"
         }
@@ -15,7 +15,45 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBpixbFdRc_Z3XR3wwbWMlAy_TbaWYXCBg"
+          "current_key": "AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825589816078:android:504b91b15f74f8febc955f",
+        "android_client_info": {
+          "package_name": "com.serchservice.enterprise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825589816078:android:fe200945e3dd406fbc955f",
+        "android_client_info": {
+          "package_name": "com.serchservice.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk"
         }
       ],
       "services": {

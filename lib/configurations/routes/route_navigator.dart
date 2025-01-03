@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:drive/library.dart';
 
@@ -26,20 +27,22 @@ class RouteNavigator {
     Map<String, String>? params,
     Object? arguments
   }) async {
-    Map<String, String> parameters = {
-      "header": header,
-      "url": url,
-    };
-    if(params != null && params.isNotEmpty) {
-      params.forEach((key, value) {
-        parameters.putIfAbsent(key, () => value);
-      });
-    }
+    if(kIsWeb) {
+      openLink(url: url);
 
-    return Navigate.to(
-      WebLayout.route,
-      parameters: parameters,
-      arguments: arguments
-    );
+      return null;
+    } else {
+      Map<String, String> parameters = {
+        "header": header,
+        "url": url,
+      };
+      if(params != null && params.isNotEmpty) {
+        params.forEach((key, value) {
+          parameters.putIfAbsent(key, () => value);
+        });
+      }
+
+      return Navigate.to(WebLayout.route, parameters: parameters, arguments: arguments);
+    }
   }
 }

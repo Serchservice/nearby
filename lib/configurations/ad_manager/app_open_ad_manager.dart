@@ -1,4 +1,5 @@
 import 'package:drive/library.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AppOpenAdManager {
@@ -15,19 +16,22 @@ class AppOpenAdManager {
 
   /// Load an AppOpenAd.
   void loadAd() {
-    AppOpenAd.load(
-      adUnitId: _configService.getAdmobAppOpenId(),
-      request: AdRequest(),
-      adLoadCallback: AppOpenAdLoadCallback(
-        onAdLoaded: (ad) {
-          _appOpenAd = ad;
-          _appOpenLoadTime = DateTime.now();
-        },
-        onAdFailedToLoad: (error) {
-          Logger.log('AppOpenAd failed to load: $error');
-        },
-      ),
-    );
+    if(!kIsWeb) {
+      AppOpenAd.load(
+        adUnitId: _configService.getAdmobAppOpenId(),
+        request: AdRequest(),
+        adLoadCallback: AppOpenAdLoadCallback(
+          onAdLoaded: (ad) {
+            _appOpenAd = ad;
+            _appOpenLoadTime = DateTime.now();
+          },
+          onAdFailedToLoad: (error) {
+            Logger.log('AppOpenAd failed to load: $error');
+          },
+        ),
+        orientation: 1,
+      );
+    }
   }
 
   /// Whether an ad is available to be shown.
