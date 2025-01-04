@@ -1,11 +1,9 @@
 import 'package:drive/library.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:universal_io/io.dart';
 
 class SettingsController extends GetxController {
   SettingsController();
@@ -163,21 +161,21 @@ class SettingsController extends GetxController {
 
   void handleMore(ButtonView view) {
     if(view.index == 0) {
-      if(kIsWeb) {
+      if(PlatformEngine.instance.isWeb) {
         RouteNavigator.openLink(url: "https://user.serchservice.com");
-      } else if(Platform.isAndroid) {
+      } else if(PlatformEngine.instance.isAndroid) {
         RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serchservice.user");
       }
     } else if(view.index == 1) {
-      if(kIsWeb) {
+      if(PlatformEngine.instance.isWeb) {
         RouteNavigator.openLink(url: "https://provider.serchservice.com");
-      } else if(Platform.isAndroid) {
+      } else if(PlatformEngine.instance.isAndroid) {
         RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serchservice.artisan");
       }
     } else {
-      if(kIsWeb) {
+      if(PlatformEngine.instance.isWeb) {
         RouteNavigator.openLink(url: "https://business.serchservice.com");
-      } else if(Platform.isAndroid) {
+      } else if(PlatformEngine.instance.isAndroid) {
         RouteNavigator.openLink(url: "https://play.google.com/store/apps/details?id=com.serchservice.enterprise");
       }
     }

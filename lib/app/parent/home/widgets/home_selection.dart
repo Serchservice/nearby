@@ -13,7 +13,6 @@ class HomeSelection extends StatelessWidget {
       if(controller.hasDetails) {
         return Column(
           children: [
-            const SizedBox(height: 20),
             Swiper(
               onRightSwipe: (d) => controller.clearSelection(),
               child: ClipRRect(
@@ -25,7 +24,7 @@ class HomeSelection extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if(controller.hasAddress) ...[
+                        if(controller.hasSelectedLocation) ...[
                           Padding(
                             padding: EdgeInsets.all(Sizing.space(10)),
                             child: Column(

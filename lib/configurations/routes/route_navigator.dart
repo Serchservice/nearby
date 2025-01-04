@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:drive/library.dart';
 
@@ -27,7 +26,7 @@ class RouteNavigator {
     Map<String, String>? params,
     Object? arguments
   }) async {
-    if(kIsWeb) {
+    if(PlatformEngine.instance.isWeb) {
       openLink(url: url);
 
       return null;

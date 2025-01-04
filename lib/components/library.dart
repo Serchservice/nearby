@@ -18,6 +18,8 @@ export 'common/rating_icon.dart';
 export 'common/category_image.dart';
 export 'common/dashed_divider.dart';
 export 'common/search_filter.dart';
+export 'common/switcher.dart';
+export 'common/preference_switcher.dart';
 
 export 'forms/field.dart';
 export 'forms/fake_field.dart';

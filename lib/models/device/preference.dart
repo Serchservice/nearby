@@ -8,11 +8,13 @@ class Preference {
   final ThemeType theme;
   final bool isNew;
   final String id;
+  final bool useCurrentLocation;
 
   const Preference({
     this.theme = ThemeType.light,
     this.isNew = true,
-    this.id = ""
+    this.id = "",
+    this.useCurrentLocation = false
   });
 
   bool get isDarkTheme => theme == ThemeType.dark;
@@ -23,11 +25,13 @@ class Preference {
     ThemeType? theme,
     bool? isNew,
     String? id,
+    bool? useCurrentLocation
   }) {
     return Preference(
       theme: theme ?? this.theme,
       isNew: isNew ?? this.isNew,
       id: id ?? this.id,
+      useCurrentLocation: useCurrentLocation ?? this.useCurrentLocation
     );
   }
 
@@ -37,13 +41,15 @@ class Preference {
         ? (map["theme"] as String).toThemeType()
         : ThemeType.light,
       isNew: map["is_new"] ?? true,
-      id: map["id"] ?? ""
+      id: map["id"] ?? "",
+      useCurrentLocation: map["use_current_location"] ?? false
     );
   }
 
   Map<String, dynamic> toJson() => {
     "theme": theme.type,
     "is_new": isNew,
-    "id": id
+    "id": id,
+    "use_current_location": useCurrentLocation
   };
 }

@@ -5,7 +5,9 @@ import 'package:drive/library.dart';
 
 class NavigationSheetController extends GetxController {
   final SearchShopResponse shop;
-  NavigationSheetController({required this.shop});
+  final Address pickup;
+
+  NavigationSheetController({required this.shop, required this.pickup});
 
   final state = NavigationSheetState();
 
@@ -21,20 +23,52 @@ class NavigationSheetController extends GetxController {
   void _fetchList() async {
     state.isLoading.value = true;
 
-    final maps = await MapLauncher.installedMaps;
-    state.maps.value = maps;
+    if(PlatformEngine.instance.isWeb) {
+      List<AvailableMap> maps = [
+        AvailableMap(mapName: "Google map", mapType: MapType.google, icon: Assets.mapGoogleMaps),
+        AvailableMap(mapName: "OpenStreet Map", mapType: MapType.amap, icon: Assets.mapOpenStreetMap),
+        AvailableMap(mapName: "Bing map", mapType: MapType.apple, icon: Assets.mapBing),
+      ];
+
+      state.maps.value = maps;
+    } else {
+      final maps = await MapLauncher.installedMaps;
+      state.maps.value = maps;
+    }
 
     state.isLoading.value = false;
   }
 
   void onSelect(AvailableMap map) async {
-    await MapLauncher.showDirections(
-      mapType: map.mapType,
-      destination: Coords(shop.shop.latitude, shop.shop.longitude),
-      destinationTitle: shop.shop.name
-    );
+    if(PlatformEngine.instance.isWeb) {
+      double originLat = pickup.latitude;
+      double originLng = pickup.longitude;
+      double destinationLat = shop.shop.latitude;
+      double destinationLng = shop.shop.longitude;
+
+      String origin = "$originLat,$originLng";
+      String destination = "$destinationLat,$destinationLng";
+
+      Uri url;
+      if(map.mapType == MapType.google) {
+        url = Uri.parse('https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving',);
+      } else if(map.mapType == MapType.apple) {
+        url = Uri.parse('https://bing.com/maps/default.aspx?rtp=adr.$origin~adr.$destination',);
+      } else {
+        url = Uri.parse('https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=$origin;$destination',);
+      }
+
+      RouteNavigator.openLink(uri: url);
+    } else {
+      await MapLauncher.showDirections(
+        mapType: map.mapType,
+        destination: Coords(shop.shop.latitude, shop.shop.longitude),
+        destinationTitle: shop.shop.name
+      );
+    }
+
     _drive(shop.shop.id, Database.address);
-    Navigate.till(ModalRoute.withName(HomeLayout.route));
+    Navigate.till(ModalRoute.withName(ParentLayout.route));
   }
 
   void _drive(String shopId, Address address) async {

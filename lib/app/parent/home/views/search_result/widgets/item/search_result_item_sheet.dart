@@ -45,7 +45,7 @@ class SearchResultItemSheet extends StatelessWidget {
     if(view.index == 0) {
       ShopResultLayout.open(shop: shop, category: category, pickup: pickup);
     } else if(view.index == 1) {
-      NavigationSheet.open(shop);
+      NavigationSheet.open(shop, pickup);
     } else if(view.index == 2) {
       RouteNavigator.openLink(url: "uber://riderequest?pickup"
           "[latitude]=${pickup.latitude}"

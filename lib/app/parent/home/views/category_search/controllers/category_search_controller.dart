@@ -39,4 +39,8 @@ class CategorySearchController extends GetxController {
       state.filtered.value = [];
     }
   }
+
+  void handleSelect(CategorySection section) {
+    Navigate.back(result: section);
+  }
 }

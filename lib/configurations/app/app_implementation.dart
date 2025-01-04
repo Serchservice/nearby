@@ -4,7 +4,6 @@ import 'package:app_links/app_links.dart';
 import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_safety_info/device_safety_info.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:universal_io/io.dart';
@@ -16,15 +15,8 @@ class AppImplementation implements AppService {
   final FirebaseMessagingService _messagingService = FirebaseMessagingImplementation();
 
   Future<String> get ipAddress async {
-    if(kIsWeb) {
-      ConnectifyUtils.fetchIpAddress(
-        onSuccess: (ip) {
-          return ip;
-        },
-        onError: (error) {}
-      );
-
-      return "";
+    if(PlatformEngine.instance.isWeb) {
+      return ConnectifyUtils.instance.fetchIpAddress();
     }
 
     var networks = await NetworkInterface.list();
@@ -45,7 +37,7 @@ class AppImplementation implements AppService {
     Device device = Device.empty();
     device = device.copyWith(ipAddress: ip);
 
-    if(kIsWeb) {
+    if(PlatformEngine.instance.isWeb) {
       WebBrowserInfo web = await info.webBrowserInfo;
       device = device.copyWith(
         id: web.userAgent,
@@ -54,7 +46,7 @@ class AppImplementation implements AppService {
         platform: "Web"
       );
       onSuccess.call(device);
-    } else if(Platform.isAndroid) {
+    } else if(PlatformEngine.instance.isAndroid) {
       AndroidDeviceInfo android = await info.androidInfo;
       device = device.copyWith(
         sdk: android.version.sdkInt,
@@ -64,7 +56,7 @@ class AppImplementation implements AppService {
         platform: "Android"
       );
       onSuccess.call(device);
-    } else if (Platform.isIOS) {
+    } else if (PlatformEngine.instance.isIOS) {
       IosDeviceInfo ios = await info.iosInfo;
       device = device.copyWith(
         id: ios.identifierForVendor,
@@ -73,7 +65,7 @@ class AppImplementation implements AppService {
         platform: "iOS"
       );
       onSuccess.call(device);
-    } else if(Platform.isLinux) {
+    } else if(PlatformEngine.instance.isLinux) {
       LinuxDeviceInfo linux = await info.linuxInfo;
       device = device.copyWith(
         id: linux.id,
@@ -82,7 +74,7 @@ class AppImplementation implements AppService {
         platform: "Linux"
       );
       onSuccess.call(device);
-    } else if(Platform.isMacOS) {
+    } else if(PlatformEngine.instance.isMacOS) {
       MacOsDeviceInfo macOs = await info.macOsInfo;
       device = device.copyWith(
         id: macOs.kernelVersion,
@@ -91,7 +83,7 @@ class AppImplementation implements AppService {
         platform: "MacOs"
       );
       onSuccess.call(device);
-    } else if(Platform.isWindows) {
+    } else if(PlatformEngine.instance.isWindows) {
       WindowsDeviceInfo windows = await info.windowsInfo;
       device = device.copyWith(
         id: windows.deviceId,
@@ -128,7 +120,7 @@ class AppImplementation implements AppService {
 
   @override
   void verifyDevice() async {
-    if(!kIsWeb) {
+    if(!PlatformEngine.instance.isWeb) {
       bool isJailBroken = await DeviceSafetyInfo.isRootedDevice;
       if (isJailBroken) {
         throw SerchException(isPlatformNotSupported: true, [
@@ -170,7 +162,7 @@ class AppImplementation implements AppService {
 
   @override
   void checkUpdate() async {
-    if(!kIsWeb) {
+    if(!PlatformEngine.instance.isWeb) {
       InAppUpdate.checkForUpdate().then((AppUpdateInfo info) {
         if(info.updateAvailability == UpdateAvailability.updateAvailable) {
           InAppUpdate.startFlexibleUpdate().then((AppUpdateResult result) {

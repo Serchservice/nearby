@@ -104,33 +104,14 @@ class CommonUtility {
     return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
   }
 
-  static Color lightenColor(Color? color, double percent) {
-    if(color == null) {
-      return Database.preference.isLightTheme ? CommonColors.lightTheme : CommonColors.darkTheme2;
-    }
-
+  static Color lightenColor(Color color, double percent) {
     assert(0 <= percent && percent <= 100, 'Percent must be between 0 and 100');
 
-    // Extract the R, G, B values
-    int r = color.red;
-    int g = color.green;
-    int b = color.blue;
+    HSLColor hsl = HSLColor.fromColor(color);
+    double lightness = (hsl.lightness + percent / 100).clamp(0.0, 1.0);
 
-    // Calculate the amount to lighten
-    int amt = (2.55 * percent).round();
-
-    // Ensure the R, G, B values are within the 0-255 range
-    r = r + amt;
-    g = g + amt;
-    b = b + amt;
-
-    // Ensure the R, G, B values are within the 0-255 range
-    r = r < 255 ? (r < 0 ? 0 : r) : 255;
-    g = g < 255 ? (g < 0 ? 0 : g) : 255;
-    b = b < 255 ? (b < 0 ? 0 : b) : 255;
-
-    // Return the new Color
-    return Color.fromARGB(color.alpha, r, g, b);
+    // Return a new color with the adjusted lightness
+    return hsl.withLightness(lightness).toColor();
   }
 
   static List<int> generateList(int count) {

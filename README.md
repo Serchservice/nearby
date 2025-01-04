@@ -79,6 +79,25 @@ base64 /path/upload-keystore.jks > keystore.base64
 - Automated app bundle generation.
 - Version control checks: make sure the `pubspec.yaml` version is updated for every new release.
 
+## 🌐 Building and Deploying the Web Version
+
+The web version of this application can be built and deployed using the `peanut` package. Follow these steps to set it up:
+
+### 1. Install the `peanut` Package
+First, ensure the `peanut` package is globally activated:
+```bash
+flutter pub global activate peanut
+```
+
+### 2. Build and Push the Web Version
+Use the following command to build the web version and push it to the `web` branch:
+```bash
+flutter pub global run peanut -b web
+```
+
+- This command builds the Flutter web app in the `build/web` directory.
+- It automatically commits and pushes the build output to the `web` branch.
+
 ## 🤝 Contributing
 
 We welcome contributions to the Serchservice Drive Mobile Application. To contribute, please fork the repository and submit a pull request with your changes. Make sure to update the relevant documentation and follow coding standards.
@@ -90,5 +109,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 **Happy coding!** 🎉 If you encounter any issues, feel free to open an issue or reach out to the Serchservice team.
-
-This README includes a detailed project description, setup instructions, package dependencies, and CI/CD guidance, with appropriate emojis to make the content more engaging.# drive

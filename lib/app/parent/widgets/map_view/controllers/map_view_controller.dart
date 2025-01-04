@@ -153,27 +153,30 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
   Future<void> _positionCameraToRoute() async {
     try {
       double minLat = state.polyline.first.points.first.latitude;
-      double minLong = state.polyline.first.points.first.longitude;
+      double minLng = state.polyline.first.points.first.longitude;
       double maxLat = state.polyline.first.points.first.latitude;
-      double maxLong = state.polyline.first.points.first.longitude;
+      double maxLng = state.polyline.first.points.first.longitude;
+
       for (var poly in state.polyline) {
         for (var point in poly.points) {
           if (point.latitude < minLat) minLat = point.latitude;
           if (point.latitude > maxLat) maxLat = point.latitude;
-          if (point.longitude < minLong) minLong = point.longitude;
-          if (point.longitude > maxLong) maxLong = point.longitude;
+          if (point.longitude < minLng) minLng = point.longitude;
+          if (point.longitude > maxLng) maxLng = point.longitude;
         }
       }
+
+      // Create bounds from the calculated min/max points
+      LatLngBounds bounds = LatLngBounds(
+        southwest: LatLng(minLat, minLng),
+        northeast: LatLng(maxLat, maxLng),
+      );
+
+      // Animate the camera to fit the bounds with extra padding
       var c = await googleMapsController.future;
-      c.animateCamera(CameraUpdate.newLatLngBounds(
-        LatLngBounds(
-          southwest: LatLng(minLat, minLong),
-          northeast: LatLng(maxLat, maxLong)
-        ),
-        120
-      ));
-      // ignore: empty_catches
+      c.animateCamera(CameraUpdate.newLatLngBounds(bounds, 20));
     } catch (e) {
+      // ignore: empty_catches
       log(e, from: "POSITION CAMERA ROUTE");
     }
   }
@@ -182,7 +185,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
     double distance = 0.0;
     double duration = 0.0;
 
-    List<dynamic> elements = await ConnectifyUtils.getTotalDistanceAndTime(
+    List<dynamic> elements = await ConnectifyUtils.instance.getTotalDistanceAndTime(
       originLatitude: position.latitude,
       originLongitude: position.longitude,
       destinationLatitude: destination.latitude,

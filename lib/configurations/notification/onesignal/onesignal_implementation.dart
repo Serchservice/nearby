@@ -1,5 +1,4 @@
 import 'package:drive/library.dart';
-import 'package:flutter/foundation.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalImplementation implements OneSignalService {
@@ -7,9 +6,7 @@ class OneSignalImplementation implements OneSignalService {
 
   @override
   void initialize() {
-    if(kIsWeb) {
-      return;
-    } else {
+    if(PlatformEngine.instance.isMobile) {
       OneSignal.initialize(_configService.getOneSignalId());
       OneSignal.Notifications.clearAll();
       OneSignal.LiveActivities.setupDefault();
@@ -24,11 +21,15 @@ class OneSignalImplementation implements OneSignalService {
 
   @override
   void addLocationTag(Address location) {
-    OneSignal.User.addTags(location.toJson());
+    if(PlatformEngine.instance.isMobile) {
+      OneSignal.User.addTags(location.toJson());
+    }
   }
 
   @override
   void addSearchTag(CategorySection tag) {
-    OneSignal.User.addTags(tag.toJson());
+    if(PlatformEngine.instance.isMobile) {
+      OneSignal.User.addTags(tag.toJson());
+    }
   }
 }

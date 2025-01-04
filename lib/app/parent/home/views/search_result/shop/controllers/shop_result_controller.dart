@@ -24,7 +24,7 @@ class ShopResultController extends GetxController {
 
   void onClick(ButtonView view) {
     if(view.index == 1) {
-      NavigationSheet.open(shop);
+      NavigationSheet.open(shop, pickup);
     } else if(view.index == 2) {
       RouteNavigator.openLink(url: "uber://riderequest?pickup"
           "[latitude]=${pickup.latitude}"

@@ -1,6 +1,7 @@
+import 'package:connectify_flutter/connectify_flutter.dart';
+import 'package:drive/library.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:drive/library.dart';
 
 class LocationImplementation implements LocationService {
   final AccessService _accessService = AccessImplementation();
@@ -11,7 +12,34 @@ class LocationImplementation implements LocationService {
     required Function(String error) onError
   }) async {
     if(await _accessService.hasLocation()) {
-      Position position = await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
+      late LocationSettings locationSettings;
+
+      if (PlatformEngine.instance.isAndroid) {
+        locationSettings = AndroidSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 100,
+          intervalDuration: const Duration(seconds: 10),
+        );
+      } else if (PlatformEngine.instance.isIOS || PlatformEngine.instance.isMacOS) {
+        locationSettings = AppleSettings(
+          accuracy: LocationAccuracy.high,
+          activityType: ActivityType.fitness,
+          distanceFilter: 100,
+        );
+      } else if (PlatformEngine.instance.isWeb) {
+        locationSettings = WebSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 100,
+          maximumAge: Duration(minutes: 5),
+        );
+      } else {
+        locationSettings = LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 100,
+        );
+      }
+
+      Position position = await Geolocator.getCurrentPosition(locationSettings: locationSettings);
       try {
         List<Placemark> marks = await placemarkFromCoordinates(position.latitude, position.longitude);
         String place = "";
@@ -46,18 +74,15 @@ class LocationImplementation implements LocationService {
         onSuccess.call(address, position);
         return;
       } catch (e) {
-        onError.call("Couldn't find your current location. Check your location settings.");
+        var address = await ConnectifyUtils.instance.getLocationInformation(position.latitude, position.longitude);
+        address = address.copyWith(lat: position.latitude.toString(), lon: position.longitude.toString());
+
+        onSuccess.call(address.toAddress(), position);
         return;
       }
     } else {
       onError.call("Location permission needs to be granted.");
-
-      if(await _accessService.requestPermissions()) {
-        getAddress(onSuccess: onSuccess, onError: onError);
-        return;
-      } else {
-        return;
-      }
+      return;
     }
   }
 
@@ -97,5 +122,21 @@ class LocationImplementation implements LocationService {
     }
 
     return "$newStreetNumber$newStreetName$newCity$newLga$newState$newCountry";
+  }
+}
+
+extension on LocationInformation {
+  Address toAddress() {
+    return Address(
+      latitude: double.parse(lat),
+      longitude: double.parse(lon),
+      place: displayName,
+      country: address.country,
+      city: address.county,
+      state: address.state,
+      localGovernmentArea: address.district,
+      streetNumber: address.postcode,
+      streetName: address.road
+    );
   }
 }

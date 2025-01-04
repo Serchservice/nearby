@@ -1,5 +1,4 @@
 import 'package:drive/library.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class InterstitialAdManager {
@@ -7,6 +6,8 @@ class InterstitialAdManager {
 
   InterstitialAd? _interstitial;
   bool _isShowingAd = false;
+
+  final bool _isPlatformPermitted = PlatformEngine.instance.isMobile;
 
   /// Maximum duration allowed between loading and showing the ad.
   final Duration maxCacheDuration = Duration(hours: 1);
@@ -16,7 +17,7 @@ class InterstitialAdManager {
 
   /// Load an InterstitialAd.
   void loadAd() {
-    if(!kIsWeb) {
+    if(_isPlatformPermitted) {
       InterstitialAd.load(
         adUnitId: _configService.getAdmobInterstitialId(),
         request: AdRequest(),
@@ -37,6 +38,10 @@ class InterstitialAdManager {
   bool get isAdAvailable => _interstitial != null;
 
   void showAdIfAvailable() {
+    if(!_isPlatformPermitted) {
+      return;
+    }
+
     if (!isAdAvailable) {
       Logger.log('Tried to show ad before available.');
 

@@ -23,6 +23,7 @@ export 'widgets/navigation_sheet/navigation_sheet.dart';
 
 export 'widgets/map_view/controllers/map_view_controller.dart';
 export 'widgets/map_view/controllers/map_view_state.dart';
+export 'widgets/map_view/widgets/map_view_details.dart';
 export 'widgets/map_view/map_view.dart';
 
 export 'widgets/permission_sheet/controllers/permission_sheet_controller.dart';

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:drive/library.dart';
-import 'package:flutter/foundation.dart';
 
 class CookieConsentController {
   final StreamController<bool> _showConsentController = StreamController.broadcast();
@@ -22,7 +21,7 @@ class CookieConsentController {
   final RepositoryService _repository = CookieRepository();
 
   void init() {
-    if(kIsWeb) {
+    if(PlatformEngine.instance.isWeb) {
       Cookie cookie = _repository.get();
 
       if(cookie.isAnalyticsGranted && cookie.isAdvertisingGranted && cookie.isEssentialGranted) {

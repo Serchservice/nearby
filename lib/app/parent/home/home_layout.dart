@@ -22,8 +22,8 @@ class HomeLayout extends GetResponsiveView<HomeController> {
                 onTap: () => RouteNavigator.openWeb(header: "Serchservice", url: Constants.baseWeb),
                 child: Image.asset(
                   Assets.logoLogo,
-                  width: 120,
-                  height: 70,
+                  width: 100,
+                  height: 60,
                   fit: BoxFit.contain,
                   color: Theme.of(context).primaryColor
                 ),
@@ -34,56 +34,76 @@ class HomeLayout extends GetResponsiveView<HomeController> {
             child: Obx(() {
               CategorySection selected = controller.state.category.value;
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...controller.fields(selected).map((item) {
-                        return HomeSearchStep(
-                          custom: item,
-                          height: 30,
-                          showBottom: controller.fields(selected).length - 1 != controller.fields(selected).indexOf(item),
-                        );
-                      }),
-                      HomeSelection(controller: controller),
-                      ...controller.items.map((item) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 20),
-                            SText(
-                              text: item.title,
-                              size: Sizing.font(20),
-                              color: Theme.of(context).primaryColor,
-                              weight: FontWeight.bold,
+              return PullToRefresh(
+                onRefreshed: controller.getCurrentLocation,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HomeCurrentLocation(
+                          isLoading: controller.state.isGettingCurrentLocation.value,
+                          address: controller.state.currentLocation.value,
+                        ),
+                        SizedBox(height: 10),
+                        ...controller.fields(selected).asMap().entries.map((item) {
+                          return HomeSearchStep(
+                            custom: item.value,
+                            height: 38,
+                            showBottom: item.key == 0,
+                          );
+                        }),
+                        SizedBox(height: 10),
+                        if(controller.showSwitch) ...[
+                          PreferenceSwitcher(
+                            view: ButtonView(
+                              header: "Use current location",
+                              body: "Fast-forward your search requests using current location"
                             ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 180,
-                              child: GridView.builder(
-                                scrollDirection: Axis.horizontal,
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  crossAxisSpacing: 8,
-                                  mainAxisExtent: 300,
-                                  mainAxisSpacing: 8,
-                                ),
-                                shrinkWrap: true,
-                                itemCount: item.sections.length,
-                                itemBuilder: (context, index) {
-                                  CategorySection section = item.sections[index];
-
-                                  return HomeQuickOption(section: section, onClicked: controller.handleQuickOption);
-                                },
+                            onChange: controller.onCurrentLocationChanged,
+                            value: controller.state.useCurrentLocation.value
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                        HomeSelection(controller: controller),
+                        ...controller.items.map((item) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 20),
+                              SText(
+                                text: item.title,
+                                size: Sizing.font(20),
+                                color: Theme.of(context).primaryColor,
+                                weight: FontWeight.bold,
                               ),
-                            )
-                          ],
-                        );
-                      }),
-                      const SizedBox(height: 20)
-                    ]
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 180,
+                                child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                    crossAxisSpacing: 8,
+                                    mainAxisExtent: 300,
+                                    mainAxisSpacing: 8,
+                                  ),
+                                  shrinkWrap: true,
+                                  itemCount: item.sections.length,
+                                  itemBuilder: (context, index) {
+                                    CategorySection section = item.sections[index];
+
+                                    return HomeQuickOption(section: section, onClicked: controller.handleQuickOption);
+                                  },
+                                ),
+                              )
+                            ],
+                          );
+                        }),
+                        const SizedBox(height: 20)
+                      ]
+                    ),
                   ),
                 ),
               );

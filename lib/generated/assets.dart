@@ -25,6 +25,9 @@ class Assets {
   static const String mapMapRight = 'asset/map/map-right.png';
   static const String mapUpRight = 'asset/map/up-right.png';
   static const String mapWorld = 'asset/map/world.png';
+  static const String mapOpenStreetMap = 'asset/map/openstreetmap.png';
+  static const String mapGoogleMaps = 'asset/map/google-maps.png';
+  static const String mapBing = 'asset/map/bing.png';
   static const String themeWindowDark = 'asset/theme/window_dark.png';
   static const String themeWindowLight = 'asset/theme/window_light.png';
   static const String appBusiness = "asset/app/business.png";

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -60,7 +59,7 @@ class RemoteNotificationImplementation implements RemoteNotificationService {
 
   @pragma("vm:entry-point")
   static Future <void> onDismissActionReceivedMethod(ReceivedAction action) async {
-    if (Platform.isIOS) {
+    if (PlatformEngine.instance.isIOS) {
       AwesomeNotifications().getGlobalBadgeCounter()
           .then((value) => AwesomeNotifications().setGlobalBadgeCounter(value - 1),
       );

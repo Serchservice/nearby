@@ -14,10 +14,7 @@ class PullToRefresh extends StatelessWidget {
       color: color ?? Theme.of(context).primaryColor,
       onRefresh: () => Future.sync(() => onRefreshed.call()),
       backgroundColor: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor,
-      child: Scrollbar(
-        thickness: 2.0,
-        child: child ?? Container(),
-      ),
+      child: child ?? Container(),
     );
   }
 }

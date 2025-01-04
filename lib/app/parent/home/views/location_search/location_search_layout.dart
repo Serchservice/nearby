@@ -16,7 +16,7 @@ class LocationSearchLayout extends GetResponsiveView<LocationSearchController> {
     return MainLayout(
       layoutKey: Key("Location Search"),
         appbar: AppBar(
-          title: SText.center(
+          title: SText(
             text: "Location Search",
             size: Sizing.font(16),
             weight: FontWeight.bold,
@@ -28,22 +28,12 @@ class LocationSearchLayout extends GetResponsiveView<LocationSearchController> {
         children: [
           Container(
             width: MediaQuery.sizeOf(context).width,
-            padding: EdgeInsets.all(Sizing.space(16)),
+            padding: EdgeInsets.all(Sizing.space(10)),
             color: Theme.of(context).appBarTheme.backgroundColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Field(
-                  padding: const EdgeInsets.all(8),
-                  hintText: "Enter your location",
-                  controller: controller.locationController,
-                ),
-                Obx(() => LocationView(
-                  address: controller.state.location.value,
-                  isSearching: controller.state.isSearchingLocation.value,
-                  onSearch: () => controller.fetchCurrentAddress(),
-                )),
-              ],
+            child: Field(
+              padding: const EdgeInsets.all(8),
+              hintText: "Enter your location",
+              controller: controller.locationController,
             ),
           ),
           Expanded(

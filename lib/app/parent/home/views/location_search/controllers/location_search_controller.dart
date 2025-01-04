@@ -8,7 +8,6 @@ class LocationSearchController extends GetxController {
   final state = LocationSearchState();
 
   final ConnectService _connect = Connect(useToken: false);
-  final LocationService _locationService = LocationImplementation();
 
   final TextEditingController locationController = TextEditingController();
 
@@ -48,23 +47,7 @@ class LocationSearchController extends GetxController {
     }
   }
 
-  void fetchCurrentAddress() {
-    state.isSearchingLocation.value = true;
-
-    _locationService.getAddress(onSuccess: (address, position) {
-      state.isSearchingLocation.value = false;
-
-      Database.saveAddress(address);
-      pick(address);
-    }, onError: (error) {
-      state.isSearchingLocation.value = false;
-
-      notify.error(message: error);
-    });
-  }
-
   void pick(Address address) {
-    HomeController.data.updateAddress(address);
     Navigate.back(result: address);
   }
 }

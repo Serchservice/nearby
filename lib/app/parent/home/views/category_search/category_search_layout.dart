@@ -63,10 +63,7 @@ class CategorySearchLayout extends GetResponsiveView<CategorySearchController> {
                         child: Material(
                           color: Theme.of(context).appBarTheme.backgroundColor,
                           child: InkWell(
-                            onTap: () {
-                              HomeController.data.selectSection(section);
-                              Navigate.back();
-                            },
+                            onTap: () => controller.handleSelect(section),
                             child: Padding(
                               padding: const EdgeInsets.all(12),
                               child: Column(
@@ -119,10 +116,7 @@ class CategorySearchLayout extends GetResponsiveView<CategorySearchController> {
                               onTap: () => CategorySectionSheet.open(
                                 category: category,
                                 selected: section,
-                                onTap: (section) {
-                                  HomeController.data.selectSection(section);
-                                  Navigate.back();
-                                }
+                                onTap: controller.handleSelect
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(12),

@@ -95,25 +95,19 @@ class MainLayout extends StatelessWidget {
             ? Brightness.dark
             : Brightness.light,
       ),
-      child: PopScope(
-        onPopInvokedWithResult: (value, result) {
-          Logger.log(value);
-          Navigate.back();
-        },
-        child: Scaffold(
-          key: layoutKey ?? mainLayoutKey,
-          appBar: appbar,
-          extendBody: extendBody,
-          drawer: drawer,
-          endDrawer: endDrawer,
-          extendBodyBehindAppBar: extendBehindAppbar,
-          backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
-          body: _buildBody(context),
-          floatingActionButton: floatingButton,
-          floatingActionButtonLocation: floatingLocation,
-          bottomNavigationBar: bottomNavbar,
-          bottomSheet: bottomSheet,
-        ),
+      child: Scaffold(
+        key: layoutKey ?? mainLayoutKey,
+        appBar: appbar,
+        extendBody: extendBody,
+        drawer: drawer,
+        endDrawer: endDrawer,
+        extendBodyBehindAppBar: extendBehindAppbar,
+        backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+        body: _buildBody(context),
+        floatingActionButton: floatingButton,
+        floatingActionButtonLocation: floatingLocation,
+        bottomNavigationBar: bottomNavbar,
+        bottomSheet: bottomSheet,
       )
     );
   }

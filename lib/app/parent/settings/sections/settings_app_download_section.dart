@@ -1,5 +1,4 @@
 import 'package:drive/library.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SettingsAppDownloadSection extends StatelessWidget {
@@ -9,7 +8,7 @@ class SettingsAppDownloadSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(kIsWeb) {
+    if(PlatformEngine.instance.isWeb) {
       return Padding(
         padding: const EdgeInsets.all(12),
         child: Column(

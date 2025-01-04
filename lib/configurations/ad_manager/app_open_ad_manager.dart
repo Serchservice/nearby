@@ -1,5 +1,4 @@
 import 'package:drive/library.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AppOpenAdManager {
@@ -7,6 +6,8 @@ class AppOpenAdManager {
 
   AppOpenAd? _appOpenAd;
   bool _isShowingAd = false;
+
+  final bool _isPlatformPermitted = PlatformEngine.instance.isMobile;
 
   /// Maximum duration allowed between loading and showing the ad.
   final Duration maxCacheDuration = Duration(hours: 4);
@@ -16,7 +17,7 @@ class AppOpenAdManager {
 
   /// Load an AppOpenAd.
   void loadAd() {
-    if(!kIsWeb) {
+    if(_isPlatformPermitted) {
       AppOpenAd.load(
         adUnitId: _configService.getAdmobAppOpenId(),
         request: AdRequest(),
@@ -29,7 +30,6 @@ class AppOpenAdManager {
             Logger.log('AppOpenAd failed to load: $error');
           },
         ),
-        orientation: 1,
       );
     }
   }
@@ -38,6 +38,10 @@ class AppOpenAdManager {
   bool get isAdAvailable => _appOpenAd != null;
 
   void showAdIfAvailable() {
+    if(!_isPlatformPermitted) {
+      return;
+    }
+
     if (!isAdAvailable) {
       Logger.log('Tried to show ad before available.');
       loadAd();

@@ -46,5 +46,6 @@ export 'controllers/home_state.dart';
 export 'widgets/home_search_step.dart';
 export 'widgets/home_quick_option.dart';
 export 'widgets/home_selection.dart';
+export 'widgets/home_current_location.dart';
 
 export 'home_layout.dart';

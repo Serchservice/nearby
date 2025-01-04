@@ -5,10 +5,12 @@ import 'package:drive/library.dart';
 
 class NavigationSheet extends StatelessWidget {
   final SearchShopResponse shop;
-  const NavigationSheet({super.key, required this.shop});
+  final Address pickup;
 
-  static void open(SearchShopResponse shop) => Navigate.bottomSheet(
-    sheet: NavigationSheet(shop: shop),
+  const NavigationSheet({super.key, required this.shop, required this.pickup});
+
+  static void open(SearchShopResponse shop, Address pickup) => Navigate.bottomSheet(
+    sheet: NavigationSheet(shop: shop, pickup: pickup),
     route: "/drive?to=${shop.shop.address}&latitude=${shop.shop.latitude}&longitude=${shop.shop.longitude}",
     background: Colors.transparent,
     isScrollable: true
@@ -22,7 +24,7 @@ class NavigationSheet extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(24),
       child: GetBuilder<NavigationSheetController>(
-        init: NavigationSheetController(shop: shop),
+        init: NavigationSheetController(shop: shop, pickup: pickup),
         builder: (controller) {
           return SingleChildScrollView(
             child: Column(
@@ -97,7 +99,11 @@ class NavigationSheet extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(map.icon, height: 30.0, width: 30.0),
+                      if(PlatformEngine.instance.isWeb) ...[
+                        Image.asset(map.icon, height: 30.0, width: 30.0)
+                      ] else ...[
+                        SvgPicture.asset(map.icon, height: 30.0, width: 30.0)
+                      ],
                       const SizedBox(width: 10),
                       Expanded(
                         child: SText(

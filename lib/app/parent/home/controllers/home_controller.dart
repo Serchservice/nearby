@@ -8,68 +8,45 @@ class HomeController extends GetxController {
   final state = HomeState();
 
   final OneSignalService _oneSignalService = OneSignalImplementation();
+  final LocationService _locationService = LocationImplementation();
 
-  List<FakeField> fields(CategorySection selected) => [
-    FakeField(
-      onTap: () {
-        dynamic result = LocationSearchLayout.to();
-        if(result != null && result is Address) {
-          updateAddress(result);
-        }
-      },
-      searchText: "Where is your starting point?",
-      buttonText: "Search"
-    ),
-    FakeField(
-      onTap: () {
-        dynamic result = CategorySearchLayout.to(section: selected);
-        if(result != null && result is CategorySection) {
-          selectSection(result);
-        }
-      },
-      searchText: "What nearby place are you looking for?",
-      showSearch: false,
-      buttonText: "Around"
-    )
-  ];
+  @override
+  void onInit() {
+    getCurrentLocation();
 
-  List<HomeItem> items = [
-    HomeItem(title: "Suggestions", sections: Category.suggestions),
-    HomeItem(title: "Emergencies", sections: Category.emergencies),
-    HomeItem(title: "Services", sections: Category.services),
-  ];
-
-  bool get canShowButton => state.category.value.type.isNotEmpty
-      && state.selectedAddress.value.longitude != 0.0
-      && state.selectedAddress.value.latitude != 0.0;
-
-  void selectSection(CategorySection category) {
-    state.category.value = category;
+    super.onInit();
   }
 
-  void clearSelection() {
-    state.category.value = CategorySection.empty();
-    state.selectedAddress.value = Address.empty();
+  void getCurrentLocation() {
+    state.isGettingCurrentLocation.value = true;
+
+    _locationService.getAddress(onSuccess: (address, position) {
+      state.isGettingCurrentLocation.value = false;
+
+      Database.saveAddress(address);
+      state.currentLocation.value = address;
+    }, onError: (error) {
+      state.isGettingCurrentLocation.value = false;
+
+      notify.error(message: error);
+    });
   }
 
-  void updateAddress(Address address) {
-    state.selectedAddress.value = address;
-  }
+  bool get hasCurrentLocation => state.currentLocation.value.hasAddress;
 
-  void handleQuickOption(CategorySection section) {
-    selectSection(section);
-    if(hasAddress) {
-      search();
-    } else {
-      Navigate.to(LocationSearchLayout.route);
-    }
-  }
+  bool get canUseCurrentLocation => state.useCurrentLocation.value && hasCurrentLocation;
 
-  bool get hasAddress => state.selectedAddress.value.longitude != 0.0
-      && state.selectedAddress.value.latitude != 0.0
-      && state.selectedAddress.value.place.isNotEmpty;
+  bool get showSwitch => state.isGettingCurrentLocation.isFalse && hasCurrentLocation;
 
-  bool get hasDetails => category() != null || hasAddress;
+  bool get hasSelectedLocation => state.selectedAddress.value.hasAddress;
+
+  bool get hasLocation => hasSelectedLocation || canUseCurrentLocation;
+
+  bool get hasCategory => state.category.value.type.isNotEmpty;
+
+  bool get canShowButton => hasCategory && hasSelectedLocation;
+
+  bool get hasDetails => category() != null || hasSelectedLocation;
 
   Category? category() {
     return Category.categories.firstWhereOrNull((c) {
@@ -77,14 +54,91 @@ class HomeController extends GetxController {
     });
   }
 
+  List<FakeField> fields(CategorySection selected) => [
+    FakeField(
+      onTap: _handleLocationSearch,
+      searchText: "Where is your starting point?",
+      buttonText: "Search"
+    ),
+    FakeField(
+      onTap: () => _handleCategorySearch(selected),
+      searchText: "What nearby place are you looking for?",
+      showSearch: false,
+      buttonText: "Around"
+    )
+  ];
+
+  void _handleLocationSearch() async {
+    dynamic result = await LocationSearchLayout.to();
+    if(result != null && result is Address) {
+      _updateAddress(result);
+
+      if(hasCategory) {
+        search();
+      }
+    }
+  }
+
+  void _updateAddress(Address address) {
+    state.selectedAddress.value = address;
+  }
+
   void search() {
-    RequestSearch search = RequestSearch(category: state.category.value, pickup: state.selectedAddress.value);
+    Address pickup = canUseCurrentLocation ? state.currentLocation.value : state.selectedAddress.value;
+
+    RequestSearch search = RequestSearch(category: state.category.value, pickup: pickup);
     _oneSignalService.addSearchTag(state.category.value);
-    _oneSignalService.addLocationTag(state.selectedAddress.value);
+    _oneSignalService.addLocationTag(pickup);
 
     Navigate.to(ResultLayout.route, parameters: search.toParams(), arguments: search.toJson());
     clearSelection();
   }
+
+  void clearSelection() {
+    state.category.value = CategorySection.empty();
+    state.selectedAddress.value = Address.empty();
+  }
+
+  void _handleCategorySearch(CategorySection selected) async {
+    dynamic result = await CategorySearchLayout.to(section: selected);
+    if(result != null && result is CategorySection) {
+      _selectSection(result);
+
+      if(hasLocation) {
+        search();
+      }
+    }
+  }
+
+  void _selectSection(CategorySection category) {
+    state.category.value = category;
+  }
+
+  void handleQuickOption(CategorySection section) {
+    _selectSection(section);
+
+    if(hasLocation) {
+      search();
+    } else {
+      _handleLocationSearch();
+    }
+  }
+
+  void onCurrentLocationChanged(bool value) {
+    Database.savePreference(Database.preference.copyWith(useCurrentLocation: value));
+
+    state.useCurrentLocation.value = value;
+
+    if(hasCategory && value) {
+      search();
+    }
+  }
+
+  List<HomeItem> items = [
+    HomeItem(title: "Suggestions", sections: Category.suggestions),
+    HomeItem(title: "Emergencies", sections: Category.emergencies),
+    HomeItem(title: "Services", sections: Category.services),
+  ];
 }
 
 class HomeItem {

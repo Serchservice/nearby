@@ -1,6 +1,5 @@
 import 'package:drive/library.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class BannerAdWidget extends StatefulWidget {
@@ -13,12 +12,11 @@ class BannerAdWidget extends StatefulWidget {
 class _BannerAdWidgetState extends State<BannerAdWidget> {
   BannerAd? _bannerAd;
   final FirebaseRemoteConfigService _configService = FirebaseRemoteConfigImplementation();
+  final bool _isPlatformPermitted = PlatformEngine.instance.isMobile;
 
   @override
   void initState() {
-    if(kIsWeb) {
-      return;
-    } else {
+    if(_isPlatformPermitted) {
       _loadAd();
     }
 
@@ -32,6 +30,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
+          _loadAd();
         },
         onAdLoaded: (ad) {
           setState(() {});
@@ -50,21 +49,23 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget? adWidget;
+    if(_isPlatformPermitted) {
+      Widget? adWidget;
 
-    if (_bannerAd != null && _bannerAd!.responseInfo != null) {
-      adWidget = AdWidget(ad: _bannerAd!);
+      if (_bannerAd != null && _bannerAd!.responseInfo != null) {
+        adWidget = AdWidget(ad: _bannerAd!);
+      }
+
+      if (adWidget != null) {
+        return Container(
+          height: 50,
+          width: MediaQuery.sizeOf(context).width,
+          margin: EdgeInsets.only(bottom: 10.0),
+          child: adWidget,
+        );
+      }
     }
 
-    if (adWidget != null) {
-      return Container(
-        height: 50,
-        width: MediaQuery.sizeOf(context).width,
-        margin: EdgeInsets.only(bottom: 10.0),
-        child: adWidget,
-      );
-    } else {
-      return Container();
-    }
+    return SizedBox.shrink();
   }
 }
