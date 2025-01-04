@@ -92,11 +92,29 @@ flutter pub global activate peanut
 ### 2. Build and Push the Web Version
 Use the following command to build the web version and push it to the `web` branch:
 ```bash
-flutter pub global run peanut -b web
+flutter pub global run peanut -b web --web-renderer=canvaskit
 ```
 
 - This command builds the Flutter web app in the `build/web` directory.
 - It automatically commits and pushes the build output to the `web` branch.
+
+## Git tricks
+
+The easiest way to push your `web` branch to github (without switching from
+your working branch) is:
+
+```console
+$ git push origin --set-upstream web
+```
+
+To create (or update) your local `web` branch to match what's on the
+server.
+
+```console
+$ git update-ref refs/heads/web origin/web
+```
+
+This is also useful if you want to undo a `peanut` run.
 
 ## 🤝 Contributing
 
