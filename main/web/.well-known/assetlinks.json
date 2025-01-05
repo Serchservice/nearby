@@ -1,0 +1,15 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.serchservice.drive",
+            "sha256_cert_fingerprints": [
+                "B1:47:1F:FD:51:2A:5C:5A:60:7C:EC:F8:20:43:04:C6:B6:60:61:8E:A4:5F:10:3A:DE:89:19:FD:53:DD:9F:90",
+                "6A:D1:2F:BC:D7:E6:1B:09:56:E5:69:0C:34:38:FD:15:C0:3F:01:57:DB:5C:DE:13:26:0B:A7:E2:53:7A:84:AF"
+            ]
+        }
+    }
+]

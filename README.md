@@ -79,43 +79,6 @@ base64 /path/upload-keystore.jks > keystore.base64
 - Automated app bundle generation.
 - Version control checks: make sure the `pubspec.yaml` version is updated for every new release.
 
-## 🌐 Building and Deploying the Web Version
-
-The web version of this application can be built and deployed using the `peanut` package. Follow these steps to set it up:
-
-### 1. Install the `peanut` Package
-First, ensure the `peanut` package is globally activated:
-```bash
-flutter pub global activate peanut
-```
-
-### 2. Build and Push the Web Version
-Use the following command to build the web version and push it to the `web` branch:
-```bash
-flutter pub global run peanut -b web --web-renderer=canvaskit
-```
-
-- This command builds the Flutter web app in the `build/web` directory.
-- It automatically commits and pushes the build output to the `web` branch.
-
-## Git tricks
-
-The easiest way to push your `web` branch to github (without switching from
-your working branch) is:
-
-```console
-$ git push origin --set-upstream web
-```
-
-To create (or update) your local `web` branch to match what's on the
-server.
-
-```console
-$ git update-ref refs/heads/web origin/web
-```
-
-This is also useful if you want to undo a `peanut` run.
-
 ## 🤝 Contributing
 
 We welcome contributions to the Serchservice Drive Mobile Application. To contribute, please fork the repository and submit a pull request with your changes. Make sure to update the relevant documentation and follow coding standards.
