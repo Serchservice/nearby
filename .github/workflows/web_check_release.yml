@@ -1,0 +1,42 @@
+name: Check release for Web Application
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check_web:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
+      - name: Get version and build number from version.json
+        id: get_version_and_build
+        run: |
+          VERSION=$(jq -r .version web/version.json)
+          BUILD_NUMBER=$(jq -r .build_number web/version.json)
+          VERSION_WITH_BUILD="web-v${VERSION}+${BUILD_NUMBER}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+          echo "VERSION_WITH_BUILD=$VERSION_WITH_BUILD" >> $GITHUB_ENV
+
+      - name: Check for existing tag
+        run: |
+          if git fetch --tags && git rev-parse "v${{ env.VERSION_WITH_BUILD }}" >/dev/null 2>&1; then
+            echo "Tag v${{ env.VERSION_WITH_BUILD }} already exists."
+            exit 1
+          fi
+
+      - name: Check for existing release
+        id: check_release
+        run: |
+          if gh release view "v${{ env.VERSION_WITH_BUILD }}" >/dev/null 2>&1; then
+            echo "Release v${{ env.VERSION_WITH_BUILD }} already exists. Failing the check."
+            exit 1
+          fi

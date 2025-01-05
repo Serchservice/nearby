@@ -1,0 +1,1 @@
+ /Users/mac/Documents/Serch/frontend/app/nearby/.dart_tool/flutter_build/65560cea0bbe9f3610a972202b6fbb27/native_assets.yaml: 

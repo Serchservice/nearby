@@ -90,5 +90,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 **Happy coding!** 🎉 If you encounter any issues, feel free to open an issue or reach out to the Serchservice team.
-
-This README includes a detailed project description, setup instructions, package dependencies, and CI/CD guidance, with appropriate emojis to make the content more engaging.# drive
