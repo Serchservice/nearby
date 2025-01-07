@@ -6,7 +6,7 @@ class Logger {
     LogManagerService logger = LogManager();
 
     if(kDebugMode){
-      logger.log(text, from: from, mode: LogMode.TRACE, prefix: "Serch");
+      logger.log(text, from: from, mode: LogMode.TRACE, prefix: "Nearby");
     }
   }
 }
@@ -15,6 +15,6 @@ void log(text, {String? from, bool needHeader = true}){
   LogManagerService logger = LogManager();
 
   if(kDebugMode){
-    logger.log(text, from: from, mode: LogMode.INFO, prefix: "Serch");
+    logger.log(text, from: from, mode: LogMode.INFO, prefix: "Nearby");
   }
 }

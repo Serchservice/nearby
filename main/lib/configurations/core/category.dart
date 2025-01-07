@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../debug/logger.dart';
+
 class CategorySection {
   final String title;
   final String type;
@@ -8,12 +10,26 @@ class CategorySection {
 
   CategorySection({required this.title, required this.type, this.description = "", this.colors = const []});
 
-  static CategorySection fromJson(Map<String, dynamic> json) {
+  factory CategorySection.fromJson(Map<String, dynamic> json) {
     return CategorySection(
       title: json["title"] ?? "",
       type: json["type"] ?? "",
       description: json["description"] ?? "",
       colors: json["colors"] ?? [],
+    );
+  }
+
+  factory CategorySection.fromJsonWithColorStrings(Map<String, dynamic> json) {
+    var colors = (json["colors"] as List<dynamic>?)?.map((color) {
+      int value = int.parse("0xff${color.toString().substring(1)}");
+      return Color(value);
+    }).toList() ?? [];
+
+    return CategorySection(
+      title: json["title"] ?? "",
+      type: json["type"] ?? "",
+      description: json["description"] ?? "",
+      colors: colors,
     );
   }
 
@@ -26,7 +42,7 @@ class CategorySection {
     };
   }
 
-  static CategorySection empty() {
+  factory CategorySection.empty() {
     return CategorySection(title: "", type: "");
   }
 }

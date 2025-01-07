@@ -3,7 +3,7 @@ description: "Drive to shop application for Serchservice Inc."
 
 publish_to: 'none'
 
-version: 1.0.3+18
+version: 1.0.4+19
 
 environment:
   sdk: ^3.6.0
@@ -58,13 +58,14 @@ dependencies:
 
   connectify_flutter:
     git:
-      url: https://github.com/Serchservice/connectify_flutter.git
+      url: https://github.com/Serchservice/flutter.git
       ref: main
-
+      path: connectify_flutter
   logger_flutter:
     git:
-      url: https://github.com/Serchservice/logger_flutter.git
+      url: https://github.com/Serchservice/flutter.git
       ref: main
+      path: logger_flutter
 
 dev_dependencies:
   flutter_test:
