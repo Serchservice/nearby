@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drive/library.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
@@ -55,5 +57,22 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
   @override
   String getOneSignalId() {
     return remoteConfig.getString("ONESIGNAL_ID");
+  }
+
+  @override
+  HomeItem getSeasonPromotion() {
+    RemoteConfigValue response = remoteConfig.getValue("NEARBY_SEASONAL");
+    Map<String, dynamic> json = jsonDecode(response.asString());
+
+    if(json["can_publish"]) {
+      return HomeItem(
+        title: json["season"] ?? "",
+        sections: (json["sections"] as List<dynamic>).map((i) {
+          return CategorySection.fromJsonWithColorStrings(i);
+        }).toList(),
+      );
+    }
+    
+    return HomeItem(title: "", sections: []);
   }
 }

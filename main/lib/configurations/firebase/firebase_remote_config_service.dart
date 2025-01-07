@@ -1,3 +1,5 @@
+import 'package:drive/library.dart';
+
 /// A service interface for managing Firebase Remote Config interactions.
 /// This abstract class provides methods to initialize the service and fetch AdMob ad unit IDs
 /// dynamically from Firebase Remote Config.
@@ -48,4 +50,14 @@ abstract class FirebaseRemoteConfigService {
   /// String appOpenId = remoteConfigService.getOneSignalId();
   /// ```
   String getOneSignalId();
+
+  /// Retrieves the promotional item from Firebase Remote Config.
+  ///
+  /// This method returns the ID as a `HomeItem`, which is used for onesignal authentication.
+  ///
+  /// Example use case:
+  /// ```dart
+  /// HomeItem item = remoteConfigService.getSeasonPromotion();
+  /// ```
+  HomeItem getSeasonPromotion();
 }

@@ -9,15 +9,18 @@ class HomeController extends GetxController {
 
   final OneSignalService _oneSignalService = OneSignalImplementation();
   final LocationService _locationService = LocationImplementation();
+  final FirebaseRemoteConfigService _remoteConfigService = FirebaseRemoteConfigImplementation();
 
   @override
   void onInit() {
-    getCurrentLocation();
+    getCurrentLocationAndPromotionalItem();
 
     super.onInit();
   }
 
-  void getCurrentLocation() {
+  void getCurrentLocationAndPromotionalItem() {
+    state.promotionalItem.value = _remoteConfigService.getSeasonPromotion();
+
     state.isGettingCurrentLocation.value = true;
 
     _locationService.getAddress(onSuccess: (address, position) {
@@ -134,7 +137,10 @@ class HomeController extends GetxController {
     }
   }
 
-  List<HomeItem> items = [
+  List<HomeItem> items() => [
+    if(state.promotionalItem.value.title.isNotEmpty) ...[
+      state.promotionalItem.value,
+    ],
     HomeItem(title: "Suggestions", sections: Category.suggestions),
     HomeItem(title: "Emergencies", sections: Category.emergencies),
     HomeItem(title: "Services", sections: Category.services),

@@ -35,7 +35,7 @@ class HomeLayout extends GetResponsiveView<HomeController> {
               CategorySection selected = controller.state.category.value;
 
               return PullToRefresh(
-                onRefreshed: controller.getCurrentLocation,
+                onRefreshed: controller.getCurrentLocationAndPromotionalItem,
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4.0),
@@ -67,7 +67,7 @@ class HomeLayout extends GetResponsiveView<HomeController> {
                           SizedBox(height: 10),
                         ],
                         HomeSelection(controller: controller),
-                        ...controller.items.map((item) {
+                        ...controller.items().map((item) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

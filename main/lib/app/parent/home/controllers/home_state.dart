@@ -11,4 +11,6 @@ class HomeState {
   RxBool isGettingCurrentLocation = RxBool(true);
 
   RxBool useCurrentLocation = Database.preference.useCurrentLocation.obs;
+
+  Rx<HomeItem> promotionalItem = HomeItem(title: "", sections: []).obs;
 }

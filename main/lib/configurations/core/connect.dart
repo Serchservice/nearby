@@ -15,8 +15,11 @@ class Connect<T> implements ConnectService<T> {
 
     return Connectify(config: ConnectifyConfig(
       useToken: this.useToken,
-      mode: ConnectifyMode.PRODUCTION,
+      mode: Server.PRODUCTION,
       headers: headers,
+      showErrorLogs: true,
+      showRequestLogs: false,
+      showResponseLogs: false
     ));
   }
 

@@ -257,12 +257,12 @@ packages:
   connectify_flutter:
     dependency: "direct main"
     description:
-      path: "."
+      path: connectify_flutter
       ref: main
-      resolved-ref: "209e296ff4dc18d5affd947154a7822a2e4b134a"
-      url: "https://github.com/Serchservice/connectify_flutter.git"
+      resolved-ref: "56c541e2fc5ee2c92606fe908418e3b3e06a2b64"
+      url: "https://github.com/Serchservice/flutter.git"
     source: git
-    version: "0.1.4"
+    version: "0.1.5"
   connectivity_plus:
     dependency: transitive
     description:
@@ -1001,10 +1001,10 @@ packages:
   logger_flutter:
     dependency: "direct main"
     description:
-      path: "."
+      path: logger_flutter
       ref: main
-      resolved-ref: d859dae10bf8e8a1d85e5b05659e077c8f3d2206
-      url: "https://github.com/Serchservice/logger_flutter.git"
+      resolved-ref: "56c541e2fc5ee2c92606fe908418e3b3e06a2b64"
+      url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.0.8"
   logging:
@@ -1412,14 +1412,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
-  stomp_dart_client:
-    dependency: transitive
-    description:
-      name: stomp_dart_client
-      sha256: "376d37a01fbe865eb213ef857f54e1d8adcba203e5cfa54e1463cfcb9ebac84c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   stream_channel:
     dependency: transitive
     description:
