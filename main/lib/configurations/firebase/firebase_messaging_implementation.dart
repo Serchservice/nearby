@@ -1,14 +1,20 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:drive/library.dart';
+import 'package:notify_flutter/notify_flutter.dart';
 
 class FirebaseMessagingImplementation implements FirebaseMessagingService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final RemoteNotificationBuildService _notificationBuilder = RemoteNotificationBuildImplementation();
   final ConnectService _connect = Connect();
 
   @override
   void background(RemoteMessage message) async {
-    _notificationBuilder.build(message: message, isBackground: true);
+    remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
+      data: message.data,
+      title: message.notification?.title ?? "",
+      body: message.notification?.body ?? "",
+      platform: AppPlatform.nearby,
+      isBackground: true
+    ));
   }
 
   @override
@@ -16,9 +22,14 @@ class FirebaseMessagingImplementation implements FirebaseMessagingService {
     _messaging.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
 
     /// BACKGROUND TERMINATED GETTER
-    _messaging.getInitialMessage().then((remoteMessage) {
-      if(remoteMessage != null) {
-        _notificationBuilder.build(message: remoteMessage, shouldNavigate: true);
+    _messaging.getInitialMessage().then((message) {
+      if(message != null) {
+        remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
+          data: message.data,
+          title: message.notification?.title ?? "",
+          body: message.notification?.body ?? "",
+          platform: AppPlatform.nearby,
+        ));
       }
     }, onError: (error) {
       log(error, from: "FIREBASE MESSAGING LISTENER - B");
@@ -26,14 +37,24 @@ class FirebaseMessagingImplementation implements FirebaseMessagingService {
 
     /// FOREGROUND LISTENER
     FirebaseMessaging.onMessage.listen((message) {
-      _notificationBuilder.build(message: message);
+      remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
+        data: message.data,
+        title: message.notification?.title ?? "",
+        body: message.notification?.body ?? "",
+        platform: AppPlatform.nearby,
+      ));
     }, onError: (error) {
       log(error, from: "FIREBASE MESSAGING LISTENER - F");
     });
 
     /// BACKGROUND NOT TERMINATED LISTENER
-    FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
-      _notificationBuilder.build(message: remoteMessage, shouldNavigate: true);
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
+        data: message.data,
+        title: message.notification?.title ?? "",
+        body: message.notification?.body ?? "",
+        platform: AppPlatform.nearby,
+      ));
     }, onError: (error) {
       log(error, from: "FIREBASE MESSAGING LISTENER - F");
     });

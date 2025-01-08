@@ -49,6 +49,16 @@
         <meta-data android:name="flutterEmbedding" android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_api_key"/>
         <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="@string/admob_id"/>
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/app_notification_icon" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/notificationAppIconColorPrimary" />
+        <service android:name="com.google.firebase.messaging.FirebaseMessagingService" android:exported="true" tools:replace="android:exported">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

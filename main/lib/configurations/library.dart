@@ -36,15 +36,7 @@ export 'main/constants.dart';
 
 export 'notification/onesignal/onesignal_implementation.dart';
 export 'notification/onesignal/onesignal_service.dart';
-
-export 'notification/remote/remote_notification_implementation.dart';
-export 'notification/remote/remote_notification_service.dart';
-export 'notification/remote/remote_notification_build_implementation.dart';
-export 'notification/remote/remote_notification_build_service.dart';
-export 'notification/remote/channels.dart';
-
 export 'notification/notification.dart';
-export 'notification/notification_service.dart';
 
 export 'routes/navigate.dart';
 export 'routes/router.dart';
