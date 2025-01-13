@@ -75,6 +75,11 @@ You can do this on mac:
 base64 /path/upload-keystore.jks > keystore.base64
 ```
 
+To build for web:
+```bash
+flutter build web --wasm --dart-define-from-file=.env
+```
+
 ### Key CI/CD Features:
 - Automated app bundle generation.
 - Version control checks: make sure the `pubspec.yaml` version is updated for every new release.
