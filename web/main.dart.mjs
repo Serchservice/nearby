@@ -951,7 +951,6 @@ class CompiledApp {
         }
         return s;
       },
-      _5293: x0 => x0.input,
       _5294: x0 => x0.index,
       _5300: x0 => x0.flags,
       _5301: x0 => x0.multiline,
