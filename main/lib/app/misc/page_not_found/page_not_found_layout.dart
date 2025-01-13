@@ -7,7 +7,7 @@ class PageNotFoundLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       child: Padding(
         padding: EdgeInsets.all(Sizing.space(30)),
         child: Column(

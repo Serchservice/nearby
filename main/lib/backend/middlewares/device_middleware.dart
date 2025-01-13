@@ -3,19 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DeviceMiddleware extends GetMiddleware{
-  int? _priority = 0;
-
-  @override
-  int? get priority => _priority;
-
-  @override
-  set priority(int? value) {
-    _priority = value;
-  }
-
-  DeviceMiddleware({
-    int? priority
-  }) : _priority = priority;
+  DeviceMiddleware();
 
   @override
   RouteSettings? redirect(String? route) {

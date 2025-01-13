@@ -1,5 +1,3 @@
-import 'package:universal_io/io.dart';
-
 class Device {
   final String name;
   final String id;
@@ -55,9 +53,9 @@ class Device {
       platform: "",
       sdk: 0,
       host: "",
-      operatingSystem: Platform.operatingSystem.toUpperCase(),
-      operatingSystemVersion: Platform.operatingSystemVersion,
-      localHostName: Platform.localHostname
+      operatingSystem: "",
+      operatingSystemVersion: "",
+      localHostName: ""
     );
   }
 

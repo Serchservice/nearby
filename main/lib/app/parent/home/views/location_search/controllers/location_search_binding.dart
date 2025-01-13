@@ -1,9 +1,11 @@
 import 'package:drive/library.dart';
 import 'package:get/get.dart';
 
-class LocationSearchBinding extends Bindings {
+class LocationSearchBinding extends Binding {
   @override
-  void dependencies() {
-    Get.lazyPut(() => LocationSearchController());
+  List<Bind> dependencies() {
+    return [
+      Bind.lazyPut(() => LocationSearchController())
+    ];
   }
 }

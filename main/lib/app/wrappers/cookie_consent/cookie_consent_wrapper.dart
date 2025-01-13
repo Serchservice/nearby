@@ -31,33 +31,35 @@ class _CookieConsentWrapperState extends State<CookieConsentWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: MediaQuery.sizeOf(context).width,
-          height: MediaQuery.sizeOf(context).height,
-          child: widget.child,
-        ),
-        StreamBuilder<bool>(
-          stream: _consentController.showConsentStream,
-          builder: (_, snapshot) {
-            bool showConsent = snapshot.data ?? false;
-            double width = 540;
-            bool resize = MediaQuery.sizeOf(context).width <= width;
+    return PermissionConsentWrapper(
+      child: Stack(
+        children: [
+          SizedBox(
+            width: MediaQuery.sizeOf(context).width,
+            height: MediaQuery.sizeOf(context).height,
+            child: widget.child,
+          ),
+          StreamBuilder<bool>(
+            stream: _consentController.showConsentStream,
+            builder: (_, snapshot) {
+              bool showConsent = snapshot.data ?? false;
+              double width = 540;
+              bool resize = MediaQuery.sizeOf(context).width <= width;
 
-            if(showConsent) {
-              return Positioned(
-                bottom: 10,
-                right: resize ? 6 : 16,
-                left: resize ? 6 : null,
-                child: _buildConsentCard(_consentController, resize, width),
-              );
-            }
+              if(showConsent) {
+                return Positioned(
+                  bottom: 10,
+                  right: resize ? 6 : 16,
+                  left: resize ? 6 : null,
+                  child: _buildConsentCard(_consentController, resize, width),
+                );
+              }
 
-            return SizedBox.shrink();
-          },
-        )
-      ],
+              return SizedBox.shrink();
+            },
+          )
+        ],
+      )
     );
   }
 

@@ -35,7 +35,7 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
       ),
     ];
 
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Platform Error"),
       child: Column(
         children: [

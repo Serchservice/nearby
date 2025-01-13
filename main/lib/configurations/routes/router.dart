@@ -1,19 +1,21 @@
 import 'package:get/get.dart';
 import 'package:drive/library.dart';
 
+final parentPage = GetPage(
+  name: ParentLayout.route,
+  page: () => CookieConsentWrapper(child: ParentLayout()),
+  binding: ParentBinding(),
+  transition: Transition.circularReveal,
+  middlewares: [
+    AuthMiddleware(),
+    DeviceMiddleware()
+  ],
+  transitionDuration: const Duration(milliseconds: 800),
+);
+
 class Routes {
   static List<GetPage> all = [
-    GetPage(
-      name: ParentLayout.route,
-      page: () => CookieConsentWrapper(child: ParentLayout()),
-      binding: ParentBinding(),
-      middlewares: [
-        AuthMiddleware(),
-        DeviceMiddleware(),
-      ],
-      transition: Transition.circularReveal,
-      transitionDuration: const Duration(milliseconds: 800),
-    ),
+    parentPage,
 
     GetPage(
       name: OnboardingLayout.route,

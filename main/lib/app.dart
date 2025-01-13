@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:toastification/toastification.dart';
+import 'package:notify_flutter/notify_flutter.dart';
 
 import 'library.dart';
 
@@ -18,6 +18,7 @@ class _MainState extends State<Main> {
 
   @override
   void initState() {
+    PlatformEngine.instance.initialize();
     _exceptionService.handleException();
 
     super.initState();
@@ -25,7 +26,8 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return ToastificationWrapper(
+    return NotifyWrapper(
+      platform: AppPlatform.nearby,
       child: GetMaterialApp(
         navigatorKey: Navigate.navigatorKey,
         defaultTransition: Transition.fade,
@@ -45,15 +47,6 @@ class _MainState extends State<Main> {
         useInheritedMediaQuery: true,
         getPages: Routes.all,
         routingCallback: MainConfiguration.data.updateRoute,
-        builder: (context, child) {
-          return ToastificationConfigProvider(
-            config: const ToastificationConfig(
-              alignment: Alignment.center,
-              animationDuration: Duration(milliseconds: 500),
-            ),
-            child: child!,
-          );
-        },
       ),
     );
   }

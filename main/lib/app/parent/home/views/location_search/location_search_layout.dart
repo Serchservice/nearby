@@ -13,7 +13,7 @@ class LocationSearchLayout extends GetResponsiveView<LocationSearchController> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Location Search"),
         appbar: AppBar(
           title: SText(

@@ -1,9 +1,11 @@
 import 'package:drive/library.dart';
 import 'package:get/get.dart';
 
-class ResultBinding extends Bindings {
+class ResultBinding extends Binding {
   @override
-  void dependencies() {
-    Get.lazyPut(() => ResultController());
+  List<Bind> dependencies() {
+    return [
+      Bind.lazyPut(() => ResultController())
+    ];
   }
 }

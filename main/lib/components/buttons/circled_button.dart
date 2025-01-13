@@ -32,7 +32,7 @@ class CircledButton extends StatelessWidget {
           return backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor;
         }),
         overlayColor: WidgetStateProperty.resolveWith((states) {
-          return overlayColor ?? CommonColors.shimmerBase.withOpacity(.48);
+          return overlayColor ?? CommonColors.shimmerBase.withValues(alpha: .48);
         }),
         shape: WidgetStateProperty.all(const CircleBorder()),
         padding: WidgetStatePropertyAll(EdgeInsets.all(Sizing.space(10)))

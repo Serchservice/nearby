@@ -3,11 +3,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
+// import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'library.dart';
+
+@pragma("vm:entry-point")
+Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+  _initializeApp().then((_) {
+    FirebaseMessagingService messaging = FirebaseMessagingImplementation();
+    messaging.background(message);
+
+    _run();
+  });
+}
 
 bool isCurrentRoute(String route) => Get.currentRoute == route;
 
@@ -30,21 +42,6 @@ Future<void> _initializeApp() async {
   return await Database.initialize();
 }
 
-@pragma("vm:entry-point")
-Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
-  _initializeApp().then((_) {
-    MainConfiguration.bind();
-
-    FirebaseMessagingService messaging = FirebaseMessagingImplementation();
-    messaging.background(message);
-
-    usePathUrlStrategy();
-    runApp(const Main());
-  });
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
@@ -56,8 +53,11 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_backgroundRemoteMessagingHandler);
 
   Get.updateLocale(const Locale('en'));
-  _initializeApp().then((_) {
-    usePathUrlStrategy();
-    runApp(const Main());
-  });
+  _initializeApp().then((_) => _run());
+}
+
+void _run() {
+  MainConfiguration.bind();
+  // usePathUrlStrategy();
+  runApp(const Main());
 }

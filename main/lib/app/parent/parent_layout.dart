@@ -34,7 +34,7 @@ class ParentLayout extends GetResponsiveView {
       builder: (controller) {
         int current = controller.state.routeIndex.value;
 
-        return MainLayout(
+        return LayoutWrapper(
           theme: SettingsController.data.state.theme.value,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             barColor: current != 0

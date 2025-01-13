@@ -54,11 +54,11 @@ class SearchFilter extends StatelessWidget {
             overlayColor: WidgetStateProperty.resolveWith((states) {
               return Database.preference.isLightTheme
                 ? isSelected
-                ? CommonColors.shimmerBase.withOpacity(.48)
+                ? CommonColors.shimmerBase.withValues(alpha: .48)
                 : CommonColors.hinted
                 : isSelected
                 ? CommonColors.hinted
-                : CommonColors.shimmerBase.withOpacity(.48);
+                : CommonColors.shimmerBase.withValues(alpha: .48);
             }),
             shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             padding: WidgetStatePropertyAll(EdgeInsets.symmetric(
