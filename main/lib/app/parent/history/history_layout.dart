@@ -7,7 +7,7 @@ class HistoryLayout extends GetResponsiveView<HistoryController> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Activity"),
         appbar: AppBar(
           elevation: 0.5,

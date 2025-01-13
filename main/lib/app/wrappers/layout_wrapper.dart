@@ -20,8 +20,8 @@ final carDriveImage = Database.preference.isLightTheme
     ? Assets.commonDriveCarBlack
     : Assets.commonDriveCarWhite;
 
-class MainLayout extends StatelessWidget {
-  const MainLayout({
+class LayoutWrapper extends StatelessWidget {
+  const LayoutWrapper({
     super.key,
     this.layoutKey,
     required this.child,

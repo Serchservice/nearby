@@ -1,9 +1,11 @@
 import 'package:drive/library.dart';
 import 'package:get/get.dart';
 
-class CategorySearchBinding extends Bindings {
+class CategorySearchBinding extends Binding {
   @override
-  void dependencies() {
-    Get.lazyPut<CategorySearchController>(() => CategorySearchController());
+  List<Bind> dependencies() {
+    return [
+      Bind.lazyPut<CategorySearchController>(() => CategorySearchController())
+    ];
   }
 }

@@ -7,7 +7,7 @@ class SettingsLayout extends GetResponsiveView<SettingsController> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Settings"),
       appbar: AppBar(
         elevation: 0.5,

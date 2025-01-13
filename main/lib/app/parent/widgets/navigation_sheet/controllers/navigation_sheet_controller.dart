@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:drive/library.dart';
@@ -68,7 +67,7 @@ class NavigationSheetController extends GetxController {
     }
 
     _drive(shop.shop.id, Database.address);
-    Navigate.till(ModalRoute.withName(ParentLayout.route));
+    Navigate.till(parentPage);
   }
 
   void _drive(String shopId, Address address) async {

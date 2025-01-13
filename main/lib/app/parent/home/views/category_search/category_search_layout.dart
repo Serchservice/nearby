@@ -13,7 +13,7 @@ class CategorySearchLayout extends GetResponsiveView<CategorySearchController> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Category Search"),
       appbar: AppBar(
         title: SText.center(

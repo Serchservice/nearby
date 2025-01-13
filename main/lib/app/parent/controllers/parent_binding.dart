@@ -1,13 +1,14 @@
 import 'package:drive/library.dart';
 import 'package:get/get.dart';
 
-class ParentBinding extends Bindings {
+class ParentBinding extends Binding {
   @override
-  void dependencies() {
-    Get.lazyPut(() => ParentController());
-
-    Get.put<HomeController>(HomeController());
-    Get.put<HistoryController>(HistoryController());
-    Get.put<SettingsController>(SettingsController());
+  List<Bind> dependencies() {
+    return [
+      Bind.lazyPut(() => ParentController()),
+      Bind.put<HomeController>(HomeController()),
+      Bind.put<HistoryController>(HistoryController()),
+      Bind.put<SettingsController>(SettingsController())
+    ];
   }
 }

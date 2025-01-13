@@ -9,7 +9,7 @@ class HomeLayout extends GetResponsiveView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Home"),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -37,9 +37,7 @@ class AppLifeCycle extends WidgetsBindingObserver {
       case AppLifecycleState.hidden:
         await onHidden();
         break;
-      default:
-        await onForeground();
-    }
+      }
   }
 
   Future<void> init() async {

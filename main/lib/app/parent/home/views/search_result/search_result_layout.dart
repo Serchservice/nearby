@@ -10,7 +10,7 @@ class ResultLayout extends GetResponsiveView<ResultController> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
+    return LayoutWrapper(
       layoutKey: Key("Result"),
       appbar: AppBar(
         elevation: 0.5,

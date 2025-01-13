@@ -18,6 +18,7 @@ class _MainState extends State<Main> {
 
   @override
   void initState() {
+    PlatformEngine.instance.initialize();
     _exceptionService.handleException();
 
     super.initState();

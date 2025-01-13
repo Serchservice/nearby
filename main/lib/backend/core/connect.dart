@@ -19,7 +19,8 @@ class Connect<T> implements ConnectService<T> {
       headers: headers,
       showErrorLogs: true,
       showRequestLogs: false,
-      showResponseLogs: false
+      showResponseLogs: false,
+      isWebPlatform: PlatformEngine.instance.isWeb
     ));
   }
 

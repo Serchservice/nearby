@@ -61,17 +61,19 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
 
   @override
   HomeItem getSeasonPromotion() {
-    RemoteConfigValue response = remoteConfig.getValue("NEARBY_SEASONAL");
-    Map<String, dynamic> json = jsonDecode(response.asString());
+    try {
+      RemoteConfigValue response = remoteConfig.getValue("NEARBY_SEASONAL");
+      Map<String, dynamic> json = jsonDecode(response.asString());
 
-    if(json["can_publish"]) {
-      return HomeItem(
-        title: json["season"] ?? "",
-        sections: (json["sections"] as List<dynamic>).map((i) {
-          return CategorySection.fromJsonWithColorStrings(i);
-        }).toList(),
-      );
-    }
+      if(json["can_publish"]) {
+        return HomeItem(
+          title: json["season"] ?? "",
+          sections: (json["sections"] as List<dynamic>).map((i) {
+            return CategorySection.fromJsonWithColorStrings(i);
+          }).toList(),
+        );
+      }
+    } catch (_) { }
     
     return HomeItem(title: "", sections: []);
   }

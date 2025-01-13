@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 /// This class is the wrapper for the local database of the user.
 ///

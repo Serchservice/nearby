@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../debug/logger.dart';
-
 class CategorySection {
   final String title;
   final String type;
