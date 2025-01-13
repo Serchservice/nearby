@@ -46,6 +46,7 @@ dependencies:
   in_app_review: ^2.0.10
   in_app_update: ^4.2.3
   map_launcher: ^3.5.0
+  google_fonts: ^6.2.1
   google_maps_flutter: ^2.10.0
   google_directions_api: ^0.10.0
   google_mobile_ads: ^5.2.0

@@ -159,8 +159,11 @@ class PlatformEngine {
     Database.saveDevice(_device);
   }
 
+  /// Returns `true` if the application is running on a web platform for `wasm`.
+  bool get isWebWasm => kIsWasm;
+
   /// Returns `true` if the application is running on a web platform.
-  bool get isWeb => kIsWeb || kIsWasm;
+  bool get isWeb => kIsWeb || isWebWasm;
 
   /// Returns `true` if the application is running on an Android device.
   bool get isAndroid => !isWeb && Platform.isAndroid;

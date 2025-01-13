@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MainTheme {
-  static final visualDensity = VisualDensity.adaptivePlatformDensity;
-  static final textTheme = theme("Nunito");
-  static final logoTheme = theme("League Spartan");
-  static final mainFont = TextStyle(fontFamily: "Nunito");
+  static final VisualDensity visualDensity = VisualDensity.adaptivePlatformDensity;
+
+  static final TextTheme textTheme = PlatformEngine.instance.isWebWasm
+      ? theme("Nunito")
+      : GoogleFonts.nunitoTextTheme();
+
+  static final TextTheme logoTheme = PlatformEngine.instance.isWebWasm
+      ? theme("League Spartan")
+      : GoogleFonts.leagueSpartanTextTheme();
+
+  static final TextStyle mainFont = PlatformEngine.instance.isWebWasm
+      ? TextStyle(fontFamily: "Nunito")
+      : GoogleFonts.nunito();
 
   static ThemeData get light => LightTheme(
     logoTheme: logoTheme,
