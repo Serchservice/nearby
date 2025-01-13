@@ -69,7 +69,7 @@ class CategorySectionSheet extends StatelessWidget {
                       : Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        Navigate.back();
+                        Navigate.close(result: option);
                         onTap.call(option);
                       },
                       child: Padding(
