@@ -1,20 +1,36 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:drive/library.dart';
-import 'package:notify_flutter/notify_flutter.dart';
+import 'package:notify/notify.dart';
 
 class FirebaseMessagingImplementation implements FirebaseMessagingService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final ConnectService _connect = Connect();
 
-  @override
-  void background(RemoteMessage message) async {
-    remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
+  RemoteNotificationConfig _getConfig(RemoteMessage message, bool isBackground) {
+    return RemoteNotificationConfig.fromData(
       data: message.data,
       title: message.notification?.title ?? "",
       body: message.notification?.body ?? "",
-      platform: AppPlatform.nearby,
-      isBackground: true
-    ));
+      platform: PlatformEngine.instance.notifyPlatform,
+      app: PlatformEngine.instance.notifyApp,
+      isBackground: isBackground,
+      showLogs: PlatformEngine.instance.debug,
+      sound: "nearby"
+    );
+  }
+
+  @override
+  void background(RemoteMessage message) async {
+    NotificationController.instance.register();
+    _handle(message, true);
+  }
+
+  void _handle(RemoteMessage message, bool isBackground) {
+    remoteNotificationBuilder.build(_getConfig(message, isBackground));
+
+    try {
+      MainConfiguration.data.isBackground.value = isBackground;
+    } catch (_) {}
   }
 
   @override
@@ -24,46 +40,31 @@ class FirebaseMessagingImplementation implements FirebaseMessagingService {
     /// BACKGROUND TERMINATED GETTER
     _messaging.getInitialMessage().then((message) {
       if(message != null) {
-        remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
-          data: message.data,
-          title: message.notification?.title ?? "",
-          body: message.notification?.body ?? "",
-          platform: AppPlatform.nearby,
-        ));
+        _handle(message, false);
       }
     }, onError: (error) {
-      log(error, from: "FIREBASE MESSAGING LISTENER - B");
+      console.error(error, from: "FIREBASE MESSAGING LISTENER - B");
     });
 
     /// FOREGROUND LISTENER
     FirebaseMessaging.onMessage.listen((message) {
-      remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
-        data: message.data,
-        title: message.notification?.title ?? "",
-        body: message.notification?.body ?? "",
-        platform: AppPlatform.nearby,
-      ));
+      _handle(message, false);
     }, onError: (error) {
-      log(error, from: "FIREBASE MESSAGING LISTENER - F");
+      console.error(error, from: "FIREBASE MESSAGING LISTENER - F");
     });
 
     /// BACKGROUND NOT TERMINATED LISTENER
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      remoteNotificationBuilder.build(RemoteNotificationConfig.fromData(
-        data: message.data,
-        title: message.notification?.title ?? "",
-        body: message.notification?.body ?? "",
-        platform: AppPlatform.nearby,
-      ));
+      _handle(message, false);
     }, onError: (error) {
-      log(error, from: "FIREBASE MESSAGING LISTENER - F");
+      console.error(error, from: "FIREBASE MESSAGING LISTENER - F");
     });
 
     /// TOKEN LISTENER
     _messaging.onTokenRefresh.listen((token) async {
       await _connect.patch(endpoint: "/account/fcm/update?token=$token", body: {});
     }, onError: (error) {
-      log(error, from: "FIREBASE MESSAGING LISTENER - F");
+      console.error(error, from: "FIREBASE MESSAGING LISTENER - F");
     });
   }
 

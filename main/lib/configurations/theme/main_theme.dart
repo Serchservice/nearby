@@ -1,62 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart/enums.dart';
+import 'package:smart/styles.dart';
 
-class MainTheme {
-  static final VisualDensity visualDensity = VisualDensity.adaptivePlatformDensity;
+class MainTheme extends ThemeFactory {
+  MainTheme._();
+  static MainTheme instance = MainTheme._();
 
-  static final TextTheme textTheme = PlatformEngine.instance.isWebWasm
-      ? theme("Nunito")
-      : GoogleFonts.nunitoTextTheme();
+  Color get darkBackgroundColor => DarkTheme(settings).backgroundColor;
 
-  static final TextTheme logoTheme = PlatformEngine.instance.isWebWasm
-      ? theme("League Spartan")
+  @override
+  ThemeData get light => LightTheme(settings).theme;
+
+  @override
+  ThemeData get dark => DarkTheme(settings).theme;
+
+  @override
+  TextTheme get logo => PlatformEngine.instance.isWebWasm
+      ? textThemeBuilder(font: FontFamily.leagueSpartan)
       : GoogleFonts.leagueSpartanTextTheme();
 
-  static final TextStyle mainFont = PlatformEngine.instance.isWebWasm
-      ? TextStyle(fontFamily: "Nunito")
+  @override
+  ThemeSettings get settings => ThemeSettings(density: VisualDensity.adaptivePlatformDensity, text: text, logo: logo, style: style);
+
+  @override
+  TextTheme get text => PlatformEngine.instance.isWebWasm
+      ? textThemeBuilder(font: FontFamily.nunito)
+      : GoogleFonts.nunitoTextTheme();
+
+  @override
+  TextStyle get style => PlatformEngine.instance.isWebWasm
+      ? textStyleBuilder(font: FontFamily.nunito)
       : GoogleFonts.nunito();
-
-  static ThemeData get light => LightTheme(
-    logoTheme: logoTheme,
-    textTheme: textTheme,
-    visualDensity: visualDensity,
-    mainFont: mainFont
-  ).theme;
-
-  static ThemeData get dark => DarkTheme(
-    logoTheme: logoTheme,
-    textTheme: textTheme,
-    visualDensity: visualDensity,
-    mainFont: mainFont
-  ).theme;
-
-  /// Returns a `TextStyle` for the given font family, weight, and style.
-  static TextStyle style(String fontFamily, TextStyle? style) {
-    style ??= TextStyle();
-    return style.copyWith(fontFamily: fontFamily);
-  }
-
-  /// Returns a `TextTheme` based on the specified font family.
-  static TextTheme theme(String fontFamily, [TextTheme? baseTheme]) {
-    baseTheme ??= ThemeData.light().textTheme;
-
-    return TextTheme(
-      displayLarge: style(fontFamily, baseTheme.displayLarge),
-      displayMedium: style(fontFamily, baseTheme.displayMedium),
-      displaySmall: style(fontFamily, baseTheme.displaySmall),
-      headlineLarge: style(fontFamily, baseTheme.headlineLarge),
-      headlineMedium: style(fontFamily, baseTheme.headlineMedium),
-      headlineSmall: style(fontFamily, baseTheme.headlineSmall),
-      titleLarge: style(fontFamily, baseTheme.titleLarge),
-      titleMedium: style(fontFamily, baseTheme.titleMedium),
-      titleSmall: style(fontFamily, baseTheme.titleSmall),
-      bodyLarge: style(fontFamily, baseTheme.bodyLarge),
-      bodyMedium: style(fontFamily, baseTheme.bodyMedium),
-      bodySmall: style(fontFamily, baseTheme.bodySmall),
-      labelLarge: style(fontFamily, baseTheme.labelLarge),
-      labelMedium: style(fontFamily, baseTheme.labelMedium),
-      labelSmall: style(fontFamily, baseTheme.labelSmall),
-    );
-  }
 }

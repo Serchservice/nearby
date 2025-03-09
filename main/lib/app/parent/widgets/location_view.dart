@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class LocationView extends StatelessWidget {
   final Address address;
@@ -26,7 +27,7 @@ class LocationView extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onShowOptions ?? onSearch ?? () => onSelect?.call(address),
+        onTap: onShowOptions ?? onSearch ?? (onSelect.isNotNull ? () => onSelect!(address) : null),
         child: Padding(
           padding: withPadding ? const EdgeInsets.all(8.0) : EdgeInsets.zero,
           child: Row(
@@ -37,7 +38,7 @@ class LocationView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SText(
+                      TextBuilder(
                         text: address.place.isNotEmpty
                           ? address.place
                           : onShowOptions != null
@@ -49,7 +50,7 @@ class LocationView extends StatelessWidget {
                         flow: TextOverflow.ellipsis
                       ),
                       if(address.country.isNotEmpty) ...[
-                        SText(
+                        TextBuilder(
                           text: address.country,
                           size: Sizing.font(12),
                           color: Theme.of(context).primaryColorLight
@@ -61,6 +62,9 @@ class LocationView extends StatelessWidget {
               ] else ...[
                 Expanded(
                   child: LoadingShimmer(
+                    isDarkMode: Database.instance.isDarkTheme,
+                    darkHighlightColor: CommonColors.instance.shimmerHigh.darken(66),
+                    darkBaseColor: CommonColors.instance.shimmerHigh.darken(65),
                     content: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -69,16 +73,16 @@ class LocationView extends StatelessWidget {
                           width: MediaQuery.sizeOf(context).width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: CommonColors.shimmerHigh
+                            color: CommonColors.instance.shimmerHigh
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        Spacing.vertical(6),
                         Container(
                           height: 12,
                           width: 100,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: CommonColors.shimmerHigh
+                            borderRadius: BorderRadius.circular(16),
+                            color: CommonColors.instance.shimmerHigh
                           ),
                         )
                       ],

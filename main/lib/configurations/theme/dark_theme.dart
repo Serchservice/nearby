@@ -1,75 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:smart/styles.dart';
 
-Color darkPrimaryColor = const Color(0xff14181b);
-Color darkSecondaryColor = const Color(0xfff1f1f1);
-Color darkAlternateColor = const Color(0xff212836);
-Color darkPrimaryTextColor = const Color(0xffffffff);
-Color darkSecondaryTextColor = const Color(0xFF3A3F43);
-Color darkBackgroundColor = const Color(0xff050404);
-Color darkSelectionColor = const Color(0xff0e1218);
+class DarkTheme extends ThemeDataFactory {
+  DarkTheme(super.settings);
 
-class DarkTheme {
-  VisualDensity visualDensity;
-  TextTheme textTheme;
-  TextTheme logoTheme;
-  TextStyle mainFont;
-
-  DarkTheme({
-    required this.logoTheme,
-    required this.textTheme,
-    required this.visualDensity,
-    required this.mainFont
-  });
-
+  @override
   ThemeData get theme => ThemeData(
     useMaterial3: true,
-    visualDensity: visualDensity,
-    textTheme: textTheme.apply(bodyColor: darkPrimaryColor),
-    scaffoldBackgroundColor: darkBackgroundColor,
-    iconTheme: IconThemeData(color: darkPrimaryColor),
+    visualDensity: settings.density,
+    textTheme: settings.text.apply(bodyColor: primaryColor),
+    scaffoldBackgroundColor: backgroundColor,
+    iconTheme: IconThemeData(color: primaryColor),
     appBarTheme: AppBarTheme(
-      color: darkAlternateColor,
-      surfaceTintColor: darkAlternateColor,
+      color: alternateColor,
+      surfaceTintColor: alternateColor,
       titleTextStyle: TextStyle(
-        color: darkPrimaryColor,
-        fontFamily: mainFont.fontFamily,
+        color: primaryColor,
+        fontFamily: settings.style.fontFamily,
         fontSize: 16
       ),
-      iconTheme: IconThemeData(color: darkPrimaryTextColor),
+      iconTheme: IconThemeData(color: primaryTextColor),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Brightness.dark, // IOS
-        systemNavigationBarColor: darkAlternateColor,
-        statusBarColor: darkAlternateColor,
+        systemNavigationBarColor: alternateColor,
+        statusBarColor: alternateColor,
         statusBarIconBrightness: Brightness.light, // Android
         systemNavigationBarIconBrightness: Brightness.light, // Android
       )
     ),
-    primaryColor: darkPrimaryTextColor,
-    primaryColorLight: darkSecondaryColor,
-    primaryColorDark: darkPrimaryTextColor,
-    // focusColor: darkPrimaryColor,
-    splashColor: darkAlternateColor,
+    primaryColor: primaryTextColor,
+    primaryColorLight: secondaryColor,
+    primaryColorDark: primaryTextColor,
+    // focusColor: primaryColor,
+    splashColor: alternateColor,
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: darkPrimaryColor, // Change the cursor color
-      selectionColor: darkSelectionColor, // Change the highlight color
-      selectionHandleColor: darkPrimaryColor, // Change the cursor head color
+      cursorColor: primaryColor, // Change the cursor color
+      selectionColor: selectionColor, // Change the highlight color
+      selectionHandleColor: primaryColor, // Change the cursor head color
     ),
-    progressIndicatorTheme: ProgressIndicatorThemeData(color: darkPrimaryColor),
-    bottomAppBarTheme: BottomAppBarTheme(color: darkAlternateColor),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
+    bottomAppBarTheme: BottomAppBarTheme(color: alternateColor),
     colorScheme: const ColorScheme.dark().copyWith(
-      surface: darkSelectionColor,
+      surface: selectionColor,
       brightness: Brightness.dark,
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: darkAlternateColor,
+      backgroundColor: alternateColor,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if(states.contains(WidgetState.selected)) {
-          return TextStyle(color: darkPrimaryTextColor, fontSize: 12);
+          return TextStyle(color: primaryTextColor, fontSize: 12);
         } else {
-          return TextStyle(color: darkSecondaryColor, fontSize: 12);
+          return TextStyle(color: secondaryColor, fontSize: 12);
         }
       }),
     )
   );
+
+  @override
+  Color get alternateColor => Color(0xff212836);
+
+  @override
+  Color get backgroundColor => Color(0xff050404);
+
+  @override
+  Color get primaryColor => Color(0xff14181b);
+
+  @override
+  Color get primaryTextColor => Color(0xffffffff);
+
+  @override
+  Color get secondaryColor => Color(0xfff1f1f1);
+
+  @override
+  Color get secondaryTextColor => Color(0xFF3A3F43);
+
+  @override
+  Color get selectionColor => Color(0xff0e1218);
 }

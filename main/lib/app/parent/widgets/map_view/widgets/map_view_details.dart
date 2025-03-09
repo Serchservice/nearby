@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class MapViewDetails extends StatelessWidget {
   final MapViewController controller;
@@ -10,15 +11,19 @@ class MapViewDetails extends StatelessWidget {
   static void open(MapViewController controller) {
     Navigate.bottomSheet(
       sheet: MapViewDetails(controller: controller),
-      route: "/map/view-details",
+      route: Navigate.appendRoute("/map-details"),
       isScrollable: true
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return CurvedBottomSheet(
-      safeArea: true,
+    return ModalBottomSheet(
+      useSafeArea: (config) => config.copyWith(top: true),
+      uiConfig: UiConfig(
+        systemNavigationBarColor: Theme.of(context).appBarTheme.backgroundColor,
+        systemNavigationBarIconBrightness: Database.instance.isLightTheme ? Brightness.dark : Brightness.light,
+      ),
       borderRadius: BorderRadius.zero,
       padding: EdgeInsets.zero,
       child: Column(
@@ -43,9 +48,9 @@ class MapViewDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(Assets.mapUpRight, width: 30, color: Theme.of(context).primaryColorDark),
-                const SizedBox(width: 10),
+                Spacing.horizontal(10),
                 Expanded(child: DashedDivider(color: Theme.of(context).primaryColorDark)),
-                const SizedBox(width: 10),
+                Spacing.horizontal(10),
                 Image.asset(Assets.mapWorld, width: 40),
               ],
             ),
@@ -61,37 +66,29 @@ class MapViewDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SText(
+                    TextBuilder(
                       text: "Trip Details",
                       color: Theme.of(context).primaryColor,
                       size: Sizing.font(16),
                       weight: FontWeight.bold
                     ),
-                    const SizedBox(height: 10),
+                    Spacing.vertical(10),
                     SteppingList(
                       steppings: [
                         Stepping(
-                          content: Column(
-                            children: [
-                              Container(
-                                height: 60,
-                                margin: const EdgeInsets.symmetric(vertical: 10),
-                                child: LocationView(address: controller.state.origin.value)
-                              ),
-                            ],
+                          content: Container(
+                            height: 60,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: LocationView(address: controller.state.origin.value)
                           ),
                           icon: Icons.location_pin,
                         ),
                         if(controller.destination != null) ...[
                           Stepping(
-                            content: Column(
-                              children: [
-                                Container(
-                                  height: 50,
-                                  margin: const EdgeInsets.symmetric(vertical: 10),
-                                  child: LocationView(address: controller.state.destination.value)
-                                ),
-                              ],
+                            content: Container(
+                              height: 60,
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: LocationView(address: controller.state.destination.value)
                             ),
                             icon: Icons.workspaces_rounded,
                           )
@@ -101,14 +98,14 @@ class MapViewDetails extends StatelessWidget {
                     if(controller.destination != null) ...[
                       Divider(color: Theme.of(context).primaryColorLight),
                       if(controller.state.timeLeft.isNotEmpty) ...[
-                        SText(
+                        TextBuilder(
                           text: "Estimated Arrival Time: ${controller.state.timeLeft.value}",
                           color: Theme.of(context).primaryColor,
                           size: Sizing.font(14)
                         )
                       ],
                       if(controller.state.distanceLeft.isNotEmpty) ...[
-                        SText(
+                        TextBuilder(
                           text: "Distance: ${controller.state.distanceLeft.value}",
                           color: Theme.of(context).primaryColor,
                           size: Sizing.font(14)

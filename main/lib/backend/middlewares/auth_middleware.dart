@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:drive/library.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class AuthMiddleware extends GetMiddleware {
   @override
-  RouteSettings? redirect(String? route) {
-    if(Database.preference.isNew) {
-      return RouteSettings(name: OnboardingLayout.route);
+  int get priority => 1;
+
+  @override
+  FutureOr<RouteDecoder?> redirectDelegate(RouteDecoder route) {
+    if(!PlatformEngine.instance.isWeb && Database.instance.preference.isNew) {
+      return RouteDecoder.fromRoute(OnboardingLayout.route);
     }
 
-    return super.redirect(route);
+    return route;
   }
 }

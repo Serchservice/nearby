@@ -1,6 +1,7 @@
 import 'package:drive/library.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smart/smart.dart';
 
 class OnboardingLayout extends GetResponsiveView<OnboardingController> {
   static String get route => "/onboarding";
@@ -23,14 +24,14 @@ class OnboardingLayout extends GetResponsiveView<OnboardingController> {
               fit: BoxFit.contain,
               color: Theme.of(context).primaryColor
             ),
-            const SizedBox(height: 15),
-            SText(
+            Spacing.vertical(15),
+            TextBuilder(
               text: "Making your nearest search and movement, faster and better.",
               size: Sizing.font(34),
               weight: FontWeight.bold,
               color: Theme.of(context).primaryColor
             ),
-            const SizedBox(height: 20),
+            Spacing.vertical(20),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -47,7 +48,7 @@ class OnboardingLayout extends GetResponsiveView<OnboardingController> {
               );
             }),
             Spacer(),
-            LoadingButton(
+            InteractiveButton(
               padding: EdgeInsets.all(Sizing.space(12)),
               width: MediaQuery.sizeOf(context).width,
               text: "Get started",

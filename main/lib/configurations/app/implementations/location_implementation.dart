@@ -1,4 +1,4 @@
-import 'package:connectify_flutter/connectify_flutter.dart';
+import 'package:connectify/connectify.dart';
 import 'package:drive/library.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';

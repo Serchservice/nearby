@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
   static String route = "/page/error/platform";
@@ -10,7 +11,7 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
 
   @override
   Widget build(BuildContext context) {
-    if(error != null) {
+    if(error.isNotNull && error!.isNotEmpty) {
       return GetBuilder<PlatformErrorController>(
         init: PlatformErrorController(error: error),
         builder: (controller) => render(context, controller)
@@ -21,100 +22,86 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
   }
 
   Widget render(BuildContext context, PlatformErrorController controller) {
-    List<ButtonView> buttons = [
-      ButtonView(
-        header: "Serch Help Center",
-        body: "Learn why you might be getting platform error.",
-        icon: Icons.rule_rounded,
-        index: 0
-      ),
-      ButtonView(
-        header: "Reach out to the team",
-        icon: Icons.polymer_sharp,
-        index: 1
-      ),
-    ];
+    List<ButtonView> buttons = LinkUtils.instance.platformErrorSupport(
+      app: SmartApp.nearby,
+      showWebApp: PlatformEngine.instance.isWeb
+    );
 
     return LayoutWrapper(
-      layoutKey: Key("Platform Error"),
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(Sizing.space(30)),
+      child: Padding(
+        padding: EdgeInsets.all(Sizing.space(20)),
+        child: Column(
+          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  Assets.logoLogo,
+                  width: 70,
+                  color: Theme.of(context).primaryColor,
+                ),
+                Spacer(),
+                Image.asset(
+                  Assets.logoFavicon,
+                  width: 30,
+                )
+              ]
+            ),
+            SizedBox(height: 10),
+            TextBuilder(
+              text: "Oops! An error.",
+              size: Sizing.font(40),
+              weight: FontWeight.w700,
+              color: Theme.of(context).primaryColor
+            ),
+            Expanded(
               child: Column(
+                spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    Assets.logoLogo,
-                    width: 100,
-                    height: 70,
-                    fit: BoxFit.contain,
-                    color: Theme.of(context).primaryColor
-                  ),
-                  LineHeader(
-                    header: "Oops! An error.",
-                    footer: "Platform error just happened",
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  const SizedBox(height: 30),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.all(Sizing.space(12)),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColorLight,
-                              borderRadius: BorderRadius.circular(Sizing.space(12)),
-                            ),
-                            child: Obx(() => SText(
-                              text: controller.state.message.value,
-                              size: Sizing.font(14),
-                              color: Theme.of(context).scaffoldBackgroundColor
-                            ))
-                        ),
-                        const SizedBox(height: 30),
-                        SText(text: "Quick actions", color: Theme.of(context).primaryColor),
-                        const SizedBox(height: 30),
-                        ...buttons.map((button) => Padding(
-                          padding: EdgeInsets.only(bottom: Sizing.space(10)),
-                          child: NavigatorButton(
-                            header: button.header,
-                            backgroundColor: Theme.of(context).splashColor,
-                            detail: button.body,
-                            prefixIcon: button.icon,
-                            detailSize: 12,
-                            onPressed: () {
-                              if(button.index == 0) {
-                                RouteNavigator.openLink(url: "https://help.serchservice.com");
-                              } else {
-                                RouteNavigator.mail("improve@serchservice.com");
-                              }
-                            },
-                          )
-                        )),
-                      ],
+                  Container(
+                    padding: EdgeInsets.all(Sizing.space(12)),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor,
+                      )
                     ),
+                    child: Obx(() => TextBuilder(
+                      text: controller.state.message.value,
+                      size: Sizing.font(16),
+                      color: Theme.of(context).primaryColor
+                    ))
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Center(
-                      child: Image.asset(
-                        Assets.logoInfo,
-                        width: 150,
-                        height: 50,
-                        fit: BoxFit.contain,
-                        color: Theme.of(context).primaryColor
-                      ),
-                    ),
-                  ),
-                ]
+                  Spacing.vertical(30),
+                  TextBuilder(text: "Quick actions", color: Theme.of(context).primaryColor),
+                  ...buttons.map((button) => SmartButton(
+                    tab: button,
+                    backgroundColor: Theme.of(context).splashColor,
+                    onTap: () {
+                      if(button.index.equals(1)) {
+                        RouteNavigator.mail(button.path);
+                      } else {
+                        RouteNavigator.openLink(url: button.path);
+                      }
+                    },
+                  )),
+                ],
               ),
             ),
-          ),
-          BannerAdWidget(),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Center(
+                child: Image.asset(
+                  Assets.logoInfo,
+                  width: 150,
+                  color: Theme.of(context).primaryColor
+                ),
+              ),
+            )
+          ]
+        ),
       )
     );
   }

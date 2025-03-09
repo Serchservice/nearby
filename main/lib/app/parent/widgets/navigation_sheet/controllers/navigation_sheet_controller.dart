@@ -1,12 +1,13 @@
 import 'package:map_launcher/map_launcher.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart' show TExtensions;
 
-class NavigationSheetController extends GetxController {
-  final SearchShopResponse shop;
+class NavigationSheetController<T> extends GetxController {
+  final T response;
   final Address pickup;
 
-  NavigationSheetController({required this.shop, required this.pickup});
+  NavigationSheetController({required this.response, required this.pickup});
 
   final state = NavigationSheetState();
 
@@ -18,6 +19,19 @@ class NavigationSheetController extends GetxController {
 
     super.onInit();
   }
+
+  String get id => response.instanceOf<SearchShopResponse>()
+      ? (response as SearchShopResponse).shop.id
+      : (response as GoActivity).id;
+  double get longitude => response.instanceOf<SearchShopResponse>()
+      ? (response as SearchShopResponse).shop.longitude
+      : (response as GoActivity).location!.longitude;
+  double get latitude => response.instanceOf<SearchShopResponse>()
+      ? (response as SearchShopResponse).shop.latitude
+      : (response as GoActivity).location!.latitude;
+  String get name => response.instanceOf<SearchShopResponse>()
+      ? (response as SearchShopResponse).shop.name
+      : (response as GoActivity).location!.place;
 
   void _fetchList() async {
     state.isLoading.value = true;
@@ -42,8 +56,8 @@ class NavigationSheetController extends GetxController {
     if(PlatformEngine.instance.isWeb) {
       double originLat = pickup.latitude;
       double originLng = pickup.longitude;
-      double destinationLat = shop.shop.latitude;
-      double destinationLng = shop.shop.longitude;
+      double destinationLat = latitude;
+      double destinationLng = longitude;
 
       String origin = "$originLat,$originLng";
       String destination = "$destinationLat,$destinationLng";
@@ -61,12 +75,15 @@ class NavigationSheetController extends GetxController {
     } else {
       await MapLauncher.showDirections(
         mapType: map.mapType,
-        destination: Coords(shop.shop.latitude, shop.shop.longitude),
-        destinationTitle: shop.shop.name
+        destination: Coords(latitude, longitude),
+        destinationTitle: name
       );
     }
 
-    _drive(shop.shop.id, Database.address);
+    if(response.instanceOf<SearchShopResponse>()) {
+      _drive(id, Database.instance.address);
+    }
+
     Navigate.till(parentPage);
   }
 

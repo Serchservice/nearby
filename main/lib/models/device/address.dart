@@ -1,3 +1,5 @@
+import 'package:smart/smart.dart';
+
 /// Class representing a user address.
 class Address {
   final String id;
@@ -12,7 +14,7 @@ class Address {
   final String streetName;
 
   /// Creates a new instance of Address with the given properties.
-  const Address({
+  Address({
     this.id = "",
     this.latitude = 0.0,
     this.longitude = 0.0,
@@ -52,7 +54,7 @@ class Address {
     );
   }
 
-  static Address fromJson(Map<String, dynamic> json) => Address(
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
     id: json["id"] ?? "",
     latitude: json["latitude"] ?? 0.0,
     longitude: json["longitude"] ?? 0.0,
@@ -111,9 +113,8 @@ class Address {
   };
 
   bool matches(String country, String state) {
-    return country.toLowerCase() == this.country.toLowerCase()
-        && state.toLowerCase() == this.state.toLowerCase();
+    return country.equalsIgnoreCase(this.country) && state.equalsIgnoreCase(this.state);
   }
 
-  bool get hasAddress => latitude != 0.0 || longitude != 0.0 || place.isNotEmpty;
+  bool get hasAddress => !latitude.equals(0.0) || !longitude.equals(0.0) || place.isNotEmpty;
 }

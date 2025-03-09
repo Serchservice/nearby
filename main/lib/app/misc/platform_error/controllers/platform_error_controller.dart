@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart' show TExtensions;
 
 class PlatformErrorController extends GetxController {
   final String? error;
@@ -7,13 +8,13 @@ class PlatformErrorController extends GetxController {
 
   final state = PlatformErrorState();
 
-  final args = Get.arguments;
+  dynamic args = Get.arguments;
 
   @override
   void onInit() {
-    if(error != null) {
+    if(error.isNotNull) {
       state.message.value = error!;
-    } else if(args != null && args is String) {
+    } else if(args.isNotNull && args.instanceOf(String)) {
       state.message.value = args;
     } else {
       state.message.value = "A platform error just occurred on this Serch platform. If you feel like this is an error on our end, "

@@ -212,7 +212,7 @@ class Category {
         CategorySection(title: "Cycling Park", type: "cycling_park"),
         CategorySection(title: "Dance Hall", type: "dance_hall"),
         CategorySection(title: "Dog Park", type: "dog_park"),
-        CategorySection(title: "Event Venue", type: "event_venue"),
+        CategorySection(title: "Activity Venue", type: "activity_venue"),
         CategorySection(title: "Ferris Wheel", type: "ferris_wheel"),
         CategorySection(title: "Garden", type: "garden"),
         CategorySection(title: "Hiking Area", type: "hiking_area"),

@@ -1,58 +1,74 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:drive/library.dart';
+import 'package:smart/ui.dart';
 
-class Avatar extends StatelessWidget {
-  final String avatar;
-  final double radius;
-  final VoidCallback? onClick;
-
-  const Avatar({
+class Avatar extends BaseAvatar {
+  Avatar({
     super.key,
-    required this.radius,
-    String? avatar,
-    this.onClick
-  }) : avatar = avatar ?? "";
+    required super.radius,
+    String avatar = "",
+    super.onClick
+  }) : super(
+    foregroundImageBuilder: (BuildContext context, String fallback) {
+      return AssetUtility.image(avatar, fallback: fallback);
+    },
+  );
 
-  const Avatar.large({
+  Avatar.large({
     super.key,
-    String? avatar,
-    this.onClick
-  }) : radius = 50,
-    avatar = avatar ?? "";
+    String avatar = "",
+    super.onClick
+  }) : super(
+    foregroundImageBuilder: (BuildContext context, String fallback) {
+      return AssetUtility.image(avatar, fallback: fallback);
+    },
+    radius: 50
+  );
 
-  const Avatar.medium({
+  Avatar.medium({
     super.key,
-    String? avatar,
-    this.onClick
-  }) : radius = 30,
-    avatar = avatar ?? "";
+    String avatar = "",
+    super.onClick
+  }) : super(
+    foregroundImageBuilder: (BuildContext context, String fallback) {
+      return AssetUtility.image(avatar, fallback: fallback);
+    },
+    radius: 30
+  );
 
-  const Avatar.small({
+  Avatar.small({
     super.key,
-    String? avatar,
-    this.onClick
-  }) : radius = 20,
-    avatar = avatar ?? "";
+    String avatar = "",
+    super.onClick
+  }) : super(
+    foregroundImageBuilder: (BuildContext context, String fallback) {
+      return AssetUtility.image(avatar, fallback: fallback);
+    },
+    radius: 15
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onClick,
-      child: CircleAvatar(
-        radius: radius,
-        backgroundColor: Theme.of(context).unselectedWidgetColor,
-        foregroundImage: AssetUtility.image(
-          avatar,
-          fallback: Database.preference.isDarkTheme
-            ? Assets.commonDriveCarWhite
-            : Assets.commonDriveCarBlack
-        ),
-        onForegroundImageError: (exception, stackTrace) => AssetImage(
-          Database.preference.isDarkTheme
-            ? Assets.commonDriveCarWhite
-            : Assets.commonDriveCarBlack
-        ),
-      ),
-    );
-  }
+class StackedAvatars extends BaseStackedAvatars<String> {
+  StackedAvatars({
+    super.key,
+    super.totalAvatarsInView,
+    required super.avatars,
+    super.avatarSize = 40.0,
+    bool isLoading = false,
+  }) : super(
+    itemBuilder: (BuildContext context, metadata) {
+      if(isLoading) {
+        return Container(
+          width: avatarSize,
+          height: avatarSize,
+          decoration: BoxDecoration(
+            color: CommonColors.instance.shimmerHigh,
+            shape: BoxShape.circle
+          )
+        );
+      } else {
+        return Avatar(radius: avatarSize / 2, avatar: metadata.item);
+      }
+    }
+  );
 }

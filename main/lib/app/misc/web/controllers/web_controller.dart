@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:smart/smart.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:drive/library.dart';
 // Import for Android features.
@@ -13,17 +14,17 @@ class WebController extends GetxController {
   WebController();
   final state = WebState();
 
-  final _params = Get.arguments;
   final _param = Get.parameters;
 
   late final WebViewController controller;
 
+  List<ButtonView> get menuItems => [
+    ButtonView(onClick: () => CommonUtility.copy(state.route.value), header: "Copy web url"),
+    ButtonView(onClick: () => RouteNavigator.openLink(url: state.route.value), header: "Open in a browser")
+  ];
+
   @override
   void onInit() {
-    if(_params != null && _params[0] != null && _params[0] is Uri) {
-      // final header = Uri()
-    }
-
     state.response.value = _param["reference"] ?? "";
     state.route.value = _param["url"] ?? "";
     state.header.value = _param["header"] ?? "";
@@ -33,7 +34,7 @@ class WebController extends GetxController {
   }
 
   void showErrorMessage(String message) {
-    notify.tip(message: message, color: CommonColors.error);
+    notify.tip(message: message, color: CommonColors.instance.error);
   }
 
   void toast(String message) {
@@ -78,11 +79,11 @@ class WebController extends GetxController {
             if (request.url.startsWith('https://www.youtube.com/')) {
               return NavigationDecision.prevent;
             }
-            if (request.url.startsWith('https://www.serchservice.com/payment/verify')) {
+            if (request.url.startsWith('https://nearby.serchservice.com/?trxref=')) {
               Navigate.back(result: state.response.value);
               return NavigationDecision.prevent;
             }
-            if(request.url == 'https://standard.paystack.co/close'){
+            if(request.url.equalsIgnoreCase('https://standard.paystack.co/close')){
               Navigate.back(result: state.response.value);
             }
             return NavigationDecision.navigate;
@@ -91,7 +92,7 @@ class WebController extends GetxController {
           //   debugPrint('Error occurred on page: ${error.response?.statusCode}');
           // },
           onUrlChange: (UrlChange change) {
-            if(change.url != null) {
+            if(change.url.isNotNull) {
               state.route.value = change.url!;
             }
             updateTitle();
@@ -114,8 +115,8 @@ class WebController extends GetxController {
 
   void updateTitle() async {
     final title = await controller.getTitle();
-    if(title != null) {
-      state.header.value = title;
+    if(title.isNotNull) {
+      state.header.value = title!;
     }
   }
 }

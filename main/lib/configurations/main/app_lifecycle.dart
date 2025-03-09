@@ -1,46 +1,69 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
 
 class AppLifeCycle extends WidgetsBindingObserver {
-  final AsyncCallback onForeground;
-  final AsyncCallback onPaused;
-  final AsyncCallback onDetached;
-  final AsyncCallback onInactive;
-  final AsyncCallback onHidden;
-
-  AppLifeCycle({
-    required this.onForeground,
-    required this.onPaused,
-    required this.onDetached,
-    required this.onInactive,
-    required this.onHidden,
-  });
+  AppLifeCycle();
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    _init();
+
     switch(state) {
       case AppLifecycleState.resumed:
-        await onForeground();
-        break;
+        return await _onForeground();
       case AppLifecycleState.inactive:
-        await onInactive();
-        break;
+        return await _onInactive();
       case AppLifecycleState.detached:
-        await onDetached();
-        break;
+        return await _onDetached();
       case AppLifecycleState.paused:
-        await onPaused();
-        break;
+        return await _onPaused();
       case AppLifecycleState.hidden:
-        await onHidden();
-        break;
-      }
+        return await _onHidden();
+    }
   }
 
-  Future<void> init() async {
-    log("Listening from AppLifeCycle");
+  Future<void> _init() async {
+    console.log("Listening from AppLifeCycle");
+  }
+
+  void _updateBackground(bool isBackground) {
+    try {
+      MainConfiguration.data.isBackground.value = isBackground;
+    } catch (_) {}
+  }
+
+  Future<void> _onForeground() async {
+    NotificationController.instance.register();
+
+    console.log("FOREGROUND", from: "LifeCycle - Main Configuration");
+    _updateBackground(false);
+  }
+
+  Future<void> _onInactive() async {
+    NotificationController.instance.register();
+
+    console.log("INACTIVE", from: "LifeCycle - Main Configuration");
+    _updateBackground(true);
+  }
+
+  Future<void> _onDetached() async {
+    console.log("DETACHED", from: "LifeCycle - Main Configuration");
+    _updateBackground(true);
+  }
+
+  Future<void> _onPaused() async {
+    NotificationController.instance.register();
+
+    console.log("PAUSED", from: "LifeCycle - Main Configuration");
+    _updateBackground(true);
+  }
+
+  Future<void> _onHidden() async {
+    NotificationController.instance.register();
+
+    console.log("HIDDEN", from: "LifeCycle - Main Configuration");
+    _updateBackground(true);
   }
 }

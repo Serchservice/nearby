@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#4361EE",
     "theme_color": "#4361EE",
-    "description": "Find nearby places, events and live activities, easier and faster.",
+    "description": "Find nearby places, live activities, easier and faster.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

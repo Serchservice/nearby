@@ -41,16 +41,6 @@ abstract class FirebaseRemoteConfigService {
   /// ```
   String getAdmobAppOpenId();
 
-  /// Retrieves the One signal app id from Firebase Remote Config.
-  ///
-  /// This method returns the ID as a `String`, which is used for onesignal authentication.
-  ///
-  /// Example use case:
-  /// ```dart
-  /// String appOpenId = remoteConfigService.getOneSignalId();
-  /// ```
-  String getOneSignalId();
-
   /// Retrieves the promotional item from Firebase Remote Config.
   ///
   /// This method returns the ID as a `HomeItem`, which is used for onesignal authentication.
@@ -59,5 +49,5 @@ abstract class FirebaseRemoteConfigService {
   /// ```dart
   /// HomeItem item = remoteConfigService.getSeasonPromotion();
   /// ```
-  HomeItem getSeasonPromotion();
+  List<Suggestion> getSeasonPromotion();
 }

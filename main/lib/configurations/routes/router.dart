@@ -3,7 +3,7 @@ import 'package:drive/library.dart';
 
 final parentPage = GetPage(
   name: ParentLayout.route,
-  page: () => CookieConsentWrapper(child: ParentLayout()),
+  page: () => ConsentWrapper(child: ParentLayout()),
   binding: ParentBinding(),
   transition: Transition.circularReveal,
   middlewares: [
@@ -19,7 +19,7 @@ class Routes {
 
     GetPage(
       name: OnboardingLayout.route,
-      page: () => CookieConsentWrapper(child: OnboardingLayout()),
+      page: () => ConsentWrapper(child: OnboardingLayout()),
       binding: OnboardingBinding(),
       middlewares: [
         DeviceMiddleware(),
@@ -30,7 +30,7 @@ class Routes {
 
     GetPage(
       name: LocationSearchLayout.route,
-      page: () => CookieConsentWrapper(child: LocationSearchLayout()),
+      page: () => ConsentWrapper(child: LocationSearchLayout()),
       binding: LocationSearchBinding(),
       middlewares: [
         DeviceMiddleware(),
@@ -41,7 +41,7 @@ class Routes {
 
     GetPage(
       name: CategorySearchLayout.route,
-      page: () => CookieConsentWrapper(child: CategorySearchLayout()),
+      page: () => ConsentWrapper(child: CategorySearchLayout()),
       binding: CategorySearchBinding(),
       middlewares: [
         DeviceMiddleware(),
@@ -52,7 +52,7 @@ class Routes {
 
     GetPage(
       name: WebLayout.route,
-      page: () => CookieConsentWrapper(child: WebLayout()),
+      page: () => ConsentWrapper(child: WebLayout()),
       binding: WebBinding(),
       middlewares: [
         DeviceMiddleware(),
@@ -63,7 +63,7 @@ class Routes {
 
     GetPage(
       name: PageNotFoundLayout.route,
-      page: () => CookieConsentWrapper(child: PageNotFoundLayout()),
+      page: () => ConsentWrapper(child: PageNotFoundLayout()),
       middlewares: [
         DeviceMiddleware(),
       ],
@@ -73,7 +73,7 @@ class Routes {
 
     GetPage(
       name: PlatformErrorLayout.route,
-      page: () => CookieConsentWrapper(child: PlatformErrorLayout()),
+      page: () => ConsentWrapper(child: PlatformErrorLayout()),
       binding: PlatformErrorBinding(),
       transition: Transition.native,
       transitionDuration: const Duration(milliseconds: 800),
@@ -81,13 +81,111 @@ class Routes {
 
     GetPage(
       name: ResultLayout.route,
-      page: () => CookieConsentWrapper(child: ResultLayout()),
+      page: () => ConsentWrapper(child: ResultLayout()),
       binding: ResultBinding(),
       middlewares: [
         DeviceMiddleware(),
       ],
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: AccountUpdateLayout.route,
+      page: () => ConsentWrapper(child: AccountUpdateLayout()),
+      binding: AccountUpdateBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.circularReveal,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: AddonLayout.route,
+      page: () => ConsentWrapper(child: AddonLayout()),
+      binding: AddonBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.cupertinoDialog,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: GoActivityLayout.route,
+      page: () => ConsentWrapper(child: GoActivityLayout()),
+      binding: GoActivityBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.circularReveal,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: GoInterestLayout.route,
+      page: () => ConsentWrapper(child: GoInterestLayout()),
+      binding: GoInterestBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: NearbyHistoryLayout.route,
+      page: () => ConsentWrapper(child: NearbyHistoryLayout()),
+      binding: NearbyHistoryBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: GoActivityViewerLayout.route,
+      page: () => ConsentWrapper(child: GoActivityViewerLayout()),
+      binding: GoActivityViewerBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+
+    GetPage(
+      name: GoBCapViewerLayout.route,
+      page: () => ConsentWrapper(child: GoBCapViewerLayout()),
+      binding: GoBCapViewerBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+
+    GetPage(
+      name: GoSimilarActivityViewerLayout.route,
+      page: () => ConsentWrapper(child: GoSimilarActivityViewerLayout()),
+      binding: GoSimilarActivityViewerBinding(),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+
+    GetPage(
+      name: VerifyTransaction.route,
+      page: () => ConsentWrapper(child: VerifyTransaction()),
+      middlewares: [
+        DeviceMiddleware(),
+      ],
+      transition: Transition.circularReveal,
+      transitionDuration: const Duration(milliseconds: 500),
     ),
   ];
 }

@@ -32,7 +32,7 @@
 		<string>Older devices need location. - Serch</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>Need location when in use - Serch</string>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<key>UIApplicationSupportsIndirectInputActivitys</key>
 		<true/>
 		<key>UIBackgroundModes</key>
 		<array>
@@ -60,7 +60,7 @@
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<key>UIApplicationSupportsIndirectInputActivitys</key>
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<true/>

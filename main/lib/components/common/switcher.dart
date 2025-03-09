@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class Switcher extends StatelessWidget {
   const Switcher({
@@ -18,7 +19,7 @@ class Switcher extends StatelessWidget {
       onChanged: onChanged,
       trackOutlineColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
         if (value) {
-          return CommonColors.green;
+          return CommonColors.instance.green;
         } else {
           return Colors.green.withValues(alpha: .48);
         }
@@ -31,15 +32,15 @@ class Switcher extends StatelessWidget {
       //   }
       // }),
       trackColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-        if(Database.preference.isLightTheme) {
-          return CommonColors.lightTheme2;
+        if(Database.instance.isLightTheme) {
+          return CommonColors.instance.lightTheme2;
         } else {
-          return CommonColors.darkTheme2;
+          return CommonColors.instance.darkTheme2;
         }
       }),
       thumbColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
         if (value) {
-          return CommonColors.success;
+          return CommonColors.instance.success;
         } else {
           return Theme.of(context).primaryColor;
         }

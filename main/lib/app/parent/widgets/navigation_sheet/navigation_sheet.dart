@@ -2,29 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
-class NavigationSheet extends StatelessWidget {
-  final SearchShopResponse shop;
+class NavigationSheet<T> extends StatelessWidget {
+  final T response;
   final Address pickup;
 
-  const NavigationSheet({super.key, required this.shop, required this.pickup});
+  const NavigationSheet({super.key, required this.response, required this.pickup});
 
-  static void open(SearchShopResponse shop, Address pickup) => Navigate.bottomSheet(
-    sheet: NavigationSheet(shop: shop, pickup: pickup),
-    route: "/drive?to=${shop.shop.address}&latitude=${shop.shop.latitude}&longitude=${shop.shop.longitude}",
-    background: Colors.transparent,
-    isScrollable: true
-  );
+  static void open<T>(T response, Address pickup) {
+    String route = "";
+    if(response.instanceOf<SearchShopResponse>()) {
+      SearchShopResponse shop = response as SearchShopResponse;
+      route = "/drive?to=${shop.shop.address}&latitude=${shop.shop.latitude}&longitude=${shop.shop.longitude}";
+    } else if(response.instanceOf<GoActivity>() && (response as GoActivity).location.isNotNull) {
+      GoActivity shop = response as GoActivity;
+      route = "/drive?to=${shop.location!.place}&latitude=${shop.location!.latitude}&longitude=${shop.location!.longitude}";
+    }
+
+    Navigate.bottomSheet(
+      sheet: NavigationSheet(response: response, pickup: pickup),
+      route: Navigate.appendRoute(route),
+      background: Colors.transparent,
+      isScrollable: true
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CurvedBottomSheet(
+    return ModalBottomSheet(
       padding: EdgeInsets.zero,
-      safeArea: true,
-      margin: const EdgeInsets.all(10),
+      useSafeArea: (config) => config.copyWith(top: true),
+      sheetPadding: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(24),
       child: GetBuilder<NavigationSheetController>(
-        init: NavigationSheetController(shop: shop, pickup: pickup),
+        init: NavigationSheetController(response: response, pickup: pickup),
         builder: (controller) {
           return SingleChildScrollView(
             child: Column(
@@ -45,7 +57,7 @@ class NavigationSheet extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: SText(
+                    child: TextBuilder(
                       text: "Choose the navigation that works for you",
                       size: Sizing.font(16),
                       weight: FontWeight.bold,
@@ -53,7 +65,7 @@ class NavigationSheet extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                Spacing.vertical(20),
                 _loadList(context, controller),
               ],
             )
@@ -76,7 +88,7 @@ class NavigationSheet extends StatelessWidget {
                 width: MediaQuery.sizeOf(context).width,
                 margin: EdgeInsets.only(bottom: Sizing.space(10)),
                 height: 50,
-                color: CommonColors.shimmerHigh,
+                color: CommonColors.instance.shimmerHigh,
               );
             }
           )
@@ -104,9 +116,9 @@ class NavigationSheet extends StatelessWidget {
                       ] else ...[
                         SvgPicture.asset(map.icon, height: 30.0, width: 30.0)
                       ],
-                      const SizedBox(width: 10),
+                      Spacing.horizontal(10),
                       Expanded(
-                        child: SText(
+                        child: TextBuilder(
                           text: map.mapName,
                           size: Sizing.font(15),
                           color: Theme.of(context).primaryColor
@@ -121,7 +133,7 @@ class NavigationSheet extends StatelessWidget {
         );
       } else {
         return Center(
-          child: SText.center(
+          child: TextBuilder.center(
             text: "We couldn't find any installed map application in your device.",
             size: Sizing.font(14),
             color: Theme.of(context).primaryColorLight

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 /// Parameters: {"reference": "(For payment)", "header": "(Any preferred header)", "url": "(Route to visit)"}
 class WebLayout extends GetView<WebController> {
@@ -13,12 +14,11 @@ class WebLayout extends GetView<WebController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return LayoutWrapper(
+      layoutKey: Key("Webview"),
+      appbar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigate.back(
-            result: controller.state.response.value
-          ),
+          onPressed: () => Navigate.back(result: controller.state.response.value),
           icon: Icon(
             CupertinoIcons.chevron_back,
             color: Theme.of(context).primaryColor,
@@ -28,13 +28,13 @@ class WebLayout extends GetView<WebController> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Obx(() => SText(
+            Obx(() => TextBuilder(
               text: controller.state.header.value,
               color: Theme.of(context).primaryColor,
               size: Sizing.font(14),
               weight: FontWeight.bold
             )),
-            Obx(() => SText(
+            Obx(() => TextBuilder(
               text: controller.state.route.value,
               color: Theme.of(context).primaryColor,
               size: Sizing.font(12),
@@ -42,45 +42,67 @@ class WebLayout extends GetView<WebController> {
             )),
           ]),
         actions: [
-          WebControls(controller: controller.controller)
+          MenuAnchor(
+            builder: (BuildContext context, MenuController controller, Widget? child) {
+              return InkWell(
+                onTap: controller.isOpen ? controller.close : controller.open,
+                child: Icon(
+                  Icons.more_vert_rounded,
+                  color: Theme.of(context).primaryColor,
+                  size: 20
+                ),
+              );
+            },
+            style: MenuStyle(
+              backgroundColor: WidgetStateProperty.all(Theme.of(context).scaffoldBackgroundColor),
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+            ),
+            menuChildren: [
+              ...controller.menuItems.map((menu) {
+                return MenuItemButton(
+                  onPressed: menu.onClick,
+                  child: TextBuilder(
+                    text: menu.header,
+                    color: Theme.of(context).primaryColor,
+                    size: 14,
+                    autoSize: false,
+                  ),
+                );
+              }),
+              MenuItemButton(child: WebControls(controller: controller.controller))
+            ],
+          ),
         ],
       ),
-      body: webViewBody(controller)
+      child: Obx(() {
+        if(controller.state.loadingPercentage.value.isLessThan(100)) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Loading.circular(color: Get.theme.primaryColor, size: 30),
+                Spacing.vertical(5),
+                TextBuilder(
+                  text: "Loading ${controller.state.loadingPercentage.value.toString()}%",
+                  color: Get.theme.primaryColor,
+                  size: Sizing.font(16),
+                  weight: FontWeight.bold,
+                )
+              ]
+            )
+          );
+        } else if(controller.state.loadingPercentage.value.isGreaterThanOrEqualTo(100)) {
+          return WebViewWidget(controller: controller.controller);
+        } else {
+          return Center(
+            child: TextBuilder(
+              text: controller.state.errorMessage.value,
+              color: CommonColors.instance.darkTheme,
+              size: Sizing.font(16)
+            )
+          );
+        }
+      })
     );
-  }
-
-  Widget webViewBody(WebController controller) {
-    return Obx(() {
-      if(controller.state.loadingPercentage.value < 100) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Loading(
-                color: Get.theme.primaryColor,
-                size: 30
-              ),
-              const SizedBox(height: 5),
-              SText(
-                text: "Loading ${controller.state.loadingPercentage.value.toString()}%",
-                color: Get.theme.primaryColor,
-                size: Sizing.font(16),
-                weight: FontWeight.bold,
-              )
-            ]
-          )
-        );
-      } else if(controller.state.loadingPercentage.value >= 100) {
-        return WebViewWidget(controller: controller.controller);
-      } else {
-        return Center(
-          child: SText(
-            text: controller.state.errorMessage.value,
-            color: CommonColors.darkTheme,
-            size: Sizing.font(16)
-          )
-        );
-      }
-    });
   }
 }

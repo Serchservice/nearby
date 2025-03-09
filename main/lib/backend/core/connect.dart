@@ -1,21 +1,24 @@
-import 'package:connectify_flutter/connectify_flutter.dart';
+import 'package:connectify/connectify.dart';
 import 'package:drive/library.dart';
 
 class Connect<T> implements ConnectService<T> {
-  bool useToken;
-  Connect({this.useToken = false});
+  Connect();
 
-  ConnectifyService get connect {
-    Map<String, String> headers = {
+  ConnectifyService get _connect {
+    Headers headers = {
       'Content-Type': 'application/json',
       'X-Serch-Drive-Api-Key': Keys.apiKey,
       'X-Serch-Drive-Secret-Key': Keys.secretKey,
-      'X-Serch-Signed': Keys.signature
+      'X-Serch-Signed': Keys.signature,
     };
 
+    if(Database.instance.auth.isLoggedIn) {
+      headers['Go-Authorization'] = Database.instance.auth.session;
+    }
+
     return Connectify(config: ConnectifyConfig(
-      useToken: this.useToken,
-      mode: Server.PRODUCTION,
+      useToken: false,
+      mode: PlatformEngine.instance.debug ? Server.SANDBOX : Server.PRODUCTION,
       headers: headers,
       showErrorLogs: true,
       showRequestLogs: false,
@@ -25,10 +28,9 @@ class Connect<T> implements ConnectService<T> {
   }
 
   @override
-  Future<ApiResponse<T>> delete({required String endpoint, Map<String, dynamic>? query, body}) async {
+  Future<Outcome<T>> delete({required String endpoint, RequestParam? query, RequestBody body}) async {
     try {
-      var response = await connect.delete(endpoint: endpoint, body: body, query: query);
-
+      ApiResponse<dynamic> response = await _connect.delete(endpoint: endpoint, body: body, query: query);
       return transformResponse(response);
     } on ConnectifyException catch (e) {
       return handleException(e);
@@ -36,10 +38,9 @@ class Connect<T> implements ConnectService<T> {
   }
 
   @override
-  Future<ApiResponse<T>> get({required String endpoint, Map<String, dynamic>? query}) async {
+  Future<Outcome<T>> get({required String endpoint, RequestParam? query}) async {
     try {
-      var response = await connect.get(endpoint: endpoint, query: query);
-
+      ApiResponse<dynamic> response = await _connect.get(endpoint: endpoint, query: query);
       return transformResponse(response);
     } on ConnectifyException catch (e) {
       return handleException(e);
@@ -47,10 +48,9 @@ class Connect<T> implements ConnectService<T> {
   }
 
   @override
-  Future<ApiResponse<T>> patch({required String endpoint, body, Map<String, dynamic>? query}) async {
+  Future<Outcome<T>> patch({required String endpoint, RequestBody body, RequestParam? query}) async {
     try {
-      var response = await connect.patch(endpoint: endpoint, body: body, query: query);
-
+      ApiResponse<dynamic> response = await _connect.patch(endpoint: endpoint, body: body, query: query);
       return transformResponse(response);
     } on ConnectifyException catch (e) {
       return handleException(e);
@@ -58,17 +58,26 @@ class Connect<T> implements ConnectService<T> {
   }
 
   @override
-  Future<ApiResponse<T>> post({required String endpoint, body, Map<String, dynamic>? query}) async {
+  Future<Outcome<T>> post({required String endpoint, RequestBody body, RequestParam? query,}) async {
     try {
-      var response = await connect.post(endpoint: endpoint, body: body, query: query);
-
+      ApiResponse<dynamic> response = await _connect.post(endpoint: endpoint, body: body, query: query);
       return transformResponse(response);
     } on ConnectifyException catch (e) {
       return handleException(e);
     }
   }
 
-  ApiResponse<T> transformResponse(ApiResponse<dynamic> response) {
+  @override
+  Future<Outcome<T>> put({required String endpoint, RequestBody body, RequestParam? query,}) async {
+    try {
+      ApiResponse<dynamic> response = await _connect.put(endpoint: endpoint, body: body, query: query);
+      return transformResponse(response);
+    } on ConnectifyException catch (e) {
+      return handleException(e);
+    }
+  }
+
+  Outcome<T> transformResponse(ApiResponse<dynamic> response) {
     return ApiResponse(
       status: response.status,
       code: response.code,
@@ -77,7 +86,7 @@ class Connect<T> implements ConnectService<T> {
     );
   }
 
-  ApiResponse<T> handleException(ConnectifyException e) {
+  Outcome<T> handleException(ConnectifyException e) {
     notify.error(message: e.message);
 
     return ApiResponse.error(e.message);

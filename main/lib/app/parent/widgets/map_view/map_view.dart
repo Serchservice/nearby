@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:drive/library.dart';
+import 'package:smart/ui.dart';
 
 class MapView extends StatelessWidget {
   final Address origin;
@@ -57,12 +58,14 @@ class MapView extends StatelessWidget {
                 bottom: isTop ? null: 30,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
-                  child: CircledButton(
-                    title: "View details",
-                    icon: Icons.info_outline_rounded,
-                    iconColor: Theme.of(context).primaryColor,
-                    onClick: () => MapViewDetails.open(controller),
-                    backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
+                  child: InfoButton(
+                    tip: "View details",
+                    defaultIcon: Icons.info_outline_rounded,
+                    defaultIconColor: Theme.of(context).primaryColor,
+                    onPressed: () => MapViewDetails.open(controller),
+                    backgroundColor: WidgetStateProperty.resolveWith((state) {
+                      return Theme.of(context).textSelectionTheme.selectionColor;
+                    }),
                   ),
                 )
               )

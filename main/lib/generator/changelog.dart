@@ -1,5 +1,7 @@
 import 'package:universal_io/io.dart';
 
+import '../configurations/debug/logger.dart';
+
 void main(List<String> args) {
   generateChangelog(args);
 }
@@ -77,7 +79,7 @@ List<String> executeGitCommand(String command) {
         .where((line) => line.isNotEmpty)
         .toList();
   } else {
-    print('Error executing command: ${result.stderr}');
+    console.log('Error executing command: ${result.stderr}');
     return [];
   }
 }
@@ -138,7 +140,7 @@ void writeChangelogToFile(String content, String version) {
 
   final changelogFile = File('changes/CHANGELOG-$version.md');
   changelogFile.writeAsStringSync(content);
-  print('CHANGELOG-$version.md has been updated successfully!');
+  console.log('CHANGELOG-$version.md has been updated successfully!');
 }
 
 class Changelog {

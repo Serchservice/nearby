@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class StepItem extends StatefulWidget {
   final String title;
@@ -31,7 +31,7 @@ class _StepItemState extends State<StepItem> {
 
   @override
   Widget build(BuildContext context) {
-    Widget text = SText(
+    Widget text = TextBuilder(
       key: _key,
       text: widget.title,
       color: Theme.of(context).primaryColor,
@@ -70,7 +70,7 @@ class _StepItemState extends State<StepItem> {
               ],
             ],
           ),
-          const SizedBox(width: 10),
+          Spacing.horizontal(10),
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(Sizing.space(10)),

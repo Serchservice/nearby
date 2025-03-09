@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
-class SearchFilter extends StatelessWidget {
+class SearchFilter<T> extends StatelessWidget {
   final List<ButtonView> list;
   final Function(ButtonView view) onSelect;
   final int selectedIndex;
+  final List<T> selectedList;
   final Widget? more;
+  final Color? color;
+  final double? textSize;
+  final double? spacing;
+  final double? runSpacing;
+
+  final Size? _size;
+
   const SearchFilter({
     super.key,
     required this.list,
     required this.onSelect,
-    required this.selectedIndex,
-    this.more
-  });
+    this.selectedIndex = - 1,
+    this.selectedList = const [],
+    this.more,
+    this.textSize,
+    this.color,
+    this.spacing,
+    this.runSpacing,
+    Size? size,
+  }) : _size = size;
+
+  const SearchFilter.short({
+    super.key,
+    required this.list,
+    required this.onSelect,
+    this.selectedIndex = - 1,
+    this.selectedList = const [],
+    this.more,
+    this.color,
+    this.textSize,
+    this.spacing,
+    this.runSpacing,
+  }) : _size = const Size(35, 25);
 
   @override
   Widget build(BuildContext context) {
-    if(more != null) {
+    if(more.isNotNull) {
       return Row(
+        spacing: 10,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -35,47 +64,31 @@ class SearchFilter extends StatelessWidget {
     return Wrap(
       runAlignment: WrapAlignment.spaceBetween,
       crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 5,
-      runSpacing: 5,
+      spacing: spacing ?? 5,
+      runSpacing: runSpacing ?? 5,
       children: list.map((view) {
-        final bool isSelected = view.index == selectedIndex;
+        Object checker = T is String ? view.header : view.index;
+        final bool isSelected = view.index.equals(selectedIndex) || selectedList.contains(checker);
+
+        final Color baseColor = color ?? CommonColors.instance.bluish;
+        final Color bgColor = isSelected ? baseColor.lighten(45) : baseColor.lighten(90);
+        final Color txtColor = isSelected ? baseColor : baseColor.lighten(30);
+
         return TextButton(
-          onPressed: () => onSelect.call(view),
+          onPressed: () => onSelect(view),
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.resolveWith((states) {
-              return Database.preference.isLightTheme
-                ? isSelected
-                ? CommonColors.darkTheme2
-                : CommonColors.lightTheme2
-                : isSelected
-                ? CommonColors.lightTheme2
-                : CommonColors.darkTheme2;
-            }),
+            backgroundColor: WidgetStateProperty.resolveWith((states) => bgColor),
             overlayColor: WidgetStateProperty.resolveWith((states) {
-              return Database.preference.isLightTheme
-                ? isSelected
-                ? CommonColors.shimmerBase.withValues(alpha: .48)
-                : CommonColors.hinted
-                : isSelected
-                ? CommonColors.hinted
-                : CommonColors.shimmerBase.withValues(alpha: .48);
+              return baseColor.lighten(60);
             }),
             shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(
-              vertical: Sizing.space(4),
-              horizontal: Sizing.space(6)
-            ))
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            minimumSize: _size.isNotNull ? WidgetStateProperty.resolveWith((state) => _size) : null,
           ),
-          child: SText(
+          child: TextBuilder(
             text: view.header,
-            size: Sizing.font(11),
-            color: Database.preference.isLightTheme
-              ? isSelected
-              ? CommonColors.lightTheme
-              : CommonColors.darkTheme
-              : isSelected
-              ? CommonColors.darkTheme
-              : CommonColors.lightTheme,
+            size: Sizing.font(textSize ?? 11),
+            color: txtColor,
           )
         );
       }).toList(),

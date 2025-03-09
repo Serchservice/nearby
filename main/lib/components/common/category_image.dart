@@ -17,7 +17,7 @@ class CategoryImage extends StatelessWidget {
       height: h,
       errorBuilder: (context, obj, trace) {
         return Image.asset(
-          Database.preference.isDarkTheme ? Assets.commonDriveWhite : Assets.commonDriveBlack,
+          Database.instance.isDarkTheme ? Assets.commonDriveWhite : Assets.commonDriveBlack,
           width: w,
           height: h,
         );

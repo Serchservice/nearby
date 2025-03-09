@@ -1,20 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:logger_flutter/logger_flutter.dart';
+import 'package:smart/smart.dart' show Console;
+import 'package:drive/library.dart';
 
-class Logger {
-  static void log(text, {String? from, bool needHeader = true}){
-    LogManagerService logger = LogManager();
-
-    if(kDebugMode){
-      logger.log(text, from: from, mode: LogMode.TRACE, prefix: "Nearby");
-    }
-  }
-}
-
-void log(text, {String? from, bool needHeader = true}){
-  LogManagerService logger = LogManager();
-
-  if(kDebugMode){
-    logger.log(text, from: from, mode: LogMode.INFO, prefix: "Nearby");
-  }
-}
+final Console console = Console(PlatformEngine.instance.debug);
