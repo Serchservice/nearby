@@ -1,3 +1,5 @@
+import 'package:smart/smart.dart';
+
 import 'go_addon.dart';
 import 'go_user_addon_constraint.dart';
 import 'go_user_addon_timeline.dart';
@@ -94,6 +96,8 @@ class GoUserAddon {
     "card": card.toJson(),
     "addon": addon.toJson(),
   };
+
+  bool get hasAd => addon.isAd && (status.equalsIgnoreCase("active") || status.equalsIgnoreCase("renewal_due"));
 
   @override
   String toString(){

@@ -61,6 +61,12 @@ class AddonController extends GetxController {
     List<GoUserAddon> addons = data.map((e) => GoUserAddon.fromJson(e)).toList();
     state.userAddons.value = addons;
 
+    if(addons.any((e) => e.hasAd)) {
+      ParentController.data.state.showAds.value = false;
+    } else {
+      ParentController.data.state.showAds.value = true;
+    }
+
     List<GoCreditCard> cards = addons.flatten<GoCreditCard>((GoUserAddon e) => e.card).toList();
     state.userCards.value = cards;
   }

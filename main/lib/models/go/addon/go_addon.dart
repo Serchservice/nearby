@@ -1,3 +1,5 @@
+import 'package:smart/smart.dart';
+
 import 'go_addon_plan.dart';
 
 class GoAddon {
@@ -50,6 +52,8 @@ class GoAddon {
     "type": type,
     "plans": plans.map((x) => x.toJson()).toList(),
   };
+
+  bool get isAd => type.equalsIgnoreCase("advertisement") || type.startsWith("advert");
 
   @override
   String toString(){

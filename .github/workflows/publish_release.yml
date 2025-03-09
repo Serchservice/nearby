@@ -7,7 +7,7 @@ on:
 
 jobs:
   release_main:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.activity_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Set up .netrc

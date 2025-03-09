@@ -6,7 +6,7 @@ Welcome to the **Serchservice Drive** mobile application! This Flutter-based pro
 
 This mobile application simplifies the normal google search "nearby mechanics around me" using our category connector and so much more.
 
-The project is built using **Flutter** 🐦 and relies on a variety of packages and plugins, including our custom-made `connectify_flutter` package developed by the Serchservice team.
+The project is built using **Flutter** 🐦 and relies on a variety of packages and plugins, including our custom-made `connectify` package developed by the Serchservice team.
 
 ## 📦 Dependencies & Packages
 
@@ -15,13 +15,13 @@ This project relies on several essential Flutter packages and plugins to provide
 - [`flutter`](https://flutter.dev/)
 - [`get`](https://pub.dev/packages/get)
 - [`firebase_core`](https://pub.dev/packages/firebase_core)
-- [`connectify_flutter`](https://github.com/Serchservice/connectify_flutter) (Custom Serchservice package)
+- [`connectify`](https://github.com/Serchservice/connectify) (Custom Serchservice package)
 
 Make sure to check the `pubspec.yaml` for the full list of dependencies and their versions.
 
-### Special Configuration for `connectify_flutter`
+### Special Configuration for `connectify`
 
-To access the `connectify_flutter` package, you need to set up authentication via a `.netrc` file. This file allows secure access to the private package hosted on GitHub.
+To access the `connectify` package, you need to set up authentication via a `.netrc` file. This file allows secure access to the private package hosted on GitHub.
 
 Create a `.netrc` file in your home directory with the following content:
 
