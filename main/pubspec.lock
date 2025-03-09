@@ -294,7 +294,7 @@ packages:
     description:
       path: connectify
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.2.7"
@@ -869,10 +869,10 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_web
-      sha256: a9fd5356d46f54744ced1ebedbbf212f3d2cb71e95d79b1d08690c1ec33dc584
+      sha256: bbeb93807a34bfeebdb7ace506bd2bc400a3915dc96736254fea721eb264caa0
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.10+1"
+    version: "0.5.11"
   google_mobile_ads:
     dependency: "direct main"
     description:
@@ -1142,7 +1142,7 @@ packages:
     description:
       path: multimedia
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.0.2"
@@ -1159,7 +1159,7 @@ packages:
     description:
       path: notify
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.3.5"
@@ -1359,10 +1359,10 @@ packages:
     dependency: transitive
     description:
       name: pub_semver
-      sha256: "7b3cfbf654f3edd0c6298ecd5be782ce997ddf0e00531b9464b55245185bbbbd"
+      sha256: "5bfcf68ca79ef689f8990d1160781b4bad40a3bd5e5218ad4076ddb7f4081585"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.2.0"
   pubspec_parse:
     dependency: transitive
     description:
@@ -1400,16 +1400,16 @@ packages:
     description:
       path: sedat
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
-    version: "0.1.6"
+    version: "0.1.7"
   serch:
     dependency: transitive
     description:
       path: serch
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.0.5"
@@ -1439,7 +1439,7 @@ packages:
     description:
       path: smart
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.8.9"
@@ -1592,7 +1592,7 @@ packages:
     description:
       path: tracing
       ref: main
-      resolved-ref: fbfa12ac9d214c16f45665dfa7d0d69c07190383
+      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.1.3"
