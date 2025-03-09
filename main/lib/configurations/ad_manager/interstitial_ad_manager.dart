@@ -1,5 +1,6 @@
 import 'package:drive/library.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:smart/smart.dart' show BoolExtensions;
 
 class InterstitialAdManager {
   final FirebaseRemoteConfigService _configService = FirebaseRemoteConfigImplementation();
@@ -17,20 +18,25 @@ class InterstitialAdManager {
 
   /// Load an InterstitialAd.
   void loadAd() {
-    if(_isPlatformPermitted) {
-      InterstitialAd.load(
-        adUnitId: _configService.getAdmobInterstitialId(),
-        request: AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) {
-            _interstitial = ad;
-            _loadTime = DateTime.now();
-          },
-          onAdFailedToLoad: (error) {
-            Logger.log('InterstitialAd failed to load: $error');
-          },
-        ),
-      );
+    if(_isPlatformPermitted && PlatformEngine.instance.debug.isFalse) {
+      try {
+        InterstitialAd.load(
+          adUnitId: _configService.getAdmobInterstitialId(),
+          request: AdRequest(),
+          adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: (ad) {
+              _interstitial = ad;
+              _loadTime = DateTime.now();
+            },
+            onAdFailedToLoad: (error) {
+              console.log('InterstitialAd failed to load: $error');
+            },
+          ),
+        );
+      } catch (e) {
+        console.log('AppOpenAd failed to load', from: "[INTERSTITIAL AD]");
+        console.error(e, from: "[INTERSTITIAL AD]");
+      }
     }
   }
 
@@ -43,20 +49,20 @@ class InterstitialAdManager {
     }
 
     if (!isAdAvailable) {
-      Logger.log('Tried to show ad before available.');
+      console.log('Tried to show ad before available.');
 
       loadAd();
       return;
     }
 
     if (_isShowingAd) {
-      Logger.log('Tried to show ad while already showing an ad.');
+      console.log('Tried to show ad while already showing an ad.');
 
       return;
     }
 
     if (DateTime.now().subtract(maxCacheDuration).isAfter(_loadTime!)) {
-      Logger.log('Maximum cache duration exceeded. Loading another ad.');
+      console.log('Maximum cache duration exceeded. Loading another ad.');
       _interstitial?.dispose();
       _interstitial = null;
 
@@ -69,16 +75,16 @@ class InterstitialAdManager {
       _interstitial!.fullScreenContentCallback = FullScreenContentCallback(
         onAdShowedFullScreenContent: (ad) {
           _isShowingAd = true;
-          Logger.log('$ad onAdShowedFullScreenContent');
+          console.log('$ad onAdShowedFullScreenContent');
         },
         onAdFailedToShowFullScreenContent: (ad, error) {
-          Logger.log('$ad onAdFailedToShowFullScreenContent: $error');
+          console.log('$ad onAdFailedToShowFullScreenContent: $error');
           _isShowingAd = false;
           ad.dispose();
           _interstitial = null;
         },
         onAdDismissedFullScreenContent: (ad) {
-          Logger.log('$ad onAdDismissedFullScreenContent');
+          console.log('$ad onAdDismissedFullScreenContent');
           _isShowingAd = false;
           ad.dispose();
           _interstitial = null;

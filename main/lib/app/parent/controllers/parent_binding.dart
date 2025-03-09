@@ -6,9 +6,12 @@ class ParentBinding extends Binding {
   List<Bind> dependencies() {
     return [
       Bind.lazyPut(() => ParentController()),
-      Bind.put<HomeController>(HomeController()),
-      Bind.put<HistoryController>(HistoryController()),
-      Bind.put<SettingsController>(SettingsController())
+      Bind.put<ActivityController>(ActivityController()),
+      Bind.put<BCapController>(BCapController()),
+      Bind.put<ServicesController>(ServicesController()),
+      Bind.put<CentreController>(CentreController()),
+      Bind.put<SettingsController>(SettingsController()),
+      Bind.put<AddonController>(AddonController()),
     ];
   }
 }

@@ -11,7 +11,7 @@ class AnalyticsEngine {
     return _instance.logScreenView(screenClass: layout, screenName: route, parameters: _convertParameters(parameters));
   }
 
-  static void logEvent(String name, {Map<String, dynamic>? parameters}) async {
+  static void logActivity(String name, {Map<String, dynamic>? parameters}) async {
     return _instance.logEvent(name: name, parameters: _convertParameters(parameters));
   }
 

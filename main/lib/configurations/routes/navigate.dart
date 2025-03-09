@@ -20,10 +20,10 @@ class Navigate<T> {
   /// Navigate to new page `[PAGE]` => `Get.toNamed`
   static Future<T?>? to<T>(String page, {
     dynamic arguments,
-    int? id,
-    bool preventDuplicates = true,
+    dynamic id,
+    bool practivityDuplicates = true,
     Map<String, String>? parameters,
-  }) async => await Get.toNamed(page, arguments: arguments, parameters: parameters);
+  }) async => await Get.toNamed(page, arguments: arguments, parameters: parameters, id: id);
 
   /// Navigate to new page `[PAGE]` => `Get.toNamed`
   static Future<T?>? toPage<T>({
@@ -35,10 +35,10 @@ class Navigate<T> {
   /// Leave the current page to another page `[PAGE]` => `Get.off`
   static Future<T?>? off<T>(dynamic page, {
     dynamic arguments,
-    int? id,
-    bool preventDuplicates = true,
+    dynamic id,
+    bool practivityDuplicates = true,
     Map<String, String>? parameters,
-  }) async => await Get.offNamed(page, arguments: arguments, parameters: parameters);
+  }) async => await Get.offNamed(page, arguments: arguments, parameters: parameters, id: id);
 
   /// Leave all pages till the `[PREDICATE]` is true and push `[PAGE]` to the stack => `Get.offNamedUntil`
   ///
@@ -76,20 +76,62 @@ class Navigate<T> {
   /// or also like this: `Get.until((route) => !Get.isDialogOpen())`, to make sure the dialog is closed
   static void till<T>(GetPage predicate, {String? id}) => Get.until((route) => route == predicate, id: id);
 
-  static void bottomSheet({
+  static Future<T?> bottomSheet<T>({
     required Widget sheet,
     required String route,
     Object? arguments,
     Color background = Colors.transparent,
     bool isScrollable = false,
     bool safeArea = false
-  }) {
-    Get.bottomSheet(
+  }) async {
+    return Get.bottomSheet(
       sheet,
       backgroundColor: background,
       isScrollControlled: isScrollable,
       ignoreSafeArea: safeArea,
       settings: RouteSettings(name: route, arguments: arguments)
     );
+  }
+
+  static String currentRoute = Get.currentRoute;
+
+  static String previousRoute = Get.previousRoute;
+
+  static Map<String, String?> parameters = Get.parameters;
+
+  static String appendRoute(String routeName) {
+    String current = Get.routing.route?.settings.name ?? '';
+
+    // Extract parameters from the current route
+    final currentParams = Get.parameters;
+
+    // Check if the current route has parameters
+    bool hasParams = currentParams.isNotEmpty;
+
+    // Remove trailing slash if present
+    if (current.endsWith("/")) {
+      current = current.substring(0, current.length - 1);
+    }
+
+    String newRoute;
+
+    if (routeName.startsWith("/")) {
+      newRoute = "$current$routeName";
+    } else {
+      newRoute = current;
+    }
+
+    if (hasParams) {
+      newRoute += "?";
+      newRoute += Uri(queryParameters: currentParams).query;
+
+      if(!routeName.startsWith("/")) {
+        newRoute += "&$routeName";
+      }
+    } else if(!routeName.startsWith("/")) {
+      newRoute += "&$routeName";
+    }
+
+    return newRoute;
   }
 }

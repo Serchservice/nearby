@@ -4,19 +4,19 @@ import 'package:drive/library.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService {
-  final remoteConfig = FirebaseRemoteConfig.instance;
+  final FirebaseRemoteConfig _config = FirebaseRemoteConfig.instance;
 
   @override
   void init() async {
-    await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    await _config.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(minutes: 1),
       minimumFetchInterval: const Duration(hours: 1),
     ));
 
-    await remoteConfig.fetchAndActivate();
+    await _config.fetchAndActivate();
 
-    // remoteConfig.onConfigUpdated.listen((event) async {
-    //   await remoteConfig.activate();
+    // _config.onConfigUpdated.listen((activity) async {
+    //   await _config.activate();
     //
     // });
   }
@@ -26,7 +26,7 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
     if(PlatformEngine.instance.isWeb) {
       return "";
     } else if(PlatformEngine.instance.isAndroid) {
-      return remoteConfig.getString("ANDROID_APP_OPEN_ADMOB_ID");
+      return _config.getString("ANDROID_APP_OPEN_ADMOB_ID");
     } else {
       return "ca-app-pub-3940256099942544/5575463023";
     }
@@ -37,7 +37,7 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
     if(PlatformEngine.instance.isWeb) {
       return "";
     } else if(PlatformEngine.instance.isAndroid) {
-      return remoteConfig.getString("ANDROID_BANNER_ADMOB_ID");
+      return _config.getString("ANDROID_BANNER_ADMOB_ID");
     } else {
       return "ca-app-pub-3940256099942544/2934735716";
     }
@@ -48,33 +48,28 @@ class FirebaseRemoteConfigImplementation implements FirebaseRemoteConfigService 
     if(PlatformEngine.instance.isWeb) {
       return "";
     } else if(PlatformEngine.instance.isAndroid) {
-      return remoteConfig.getString("ANDROID_INTERSTITIAL_ADMOB_ID");
+      return _config.getString("ANDROID_INTERSTITIAL_ADMOB_ID");
     } else {
       return 'ca-app-pub-3940256099942544/5575463023';
     }
   }
 
   @override
-  String getOneSignalId() {
-    return remoteConfig.getString("ONESIGNAL_ID");
-  }
+  List<Suggestion> getSeasonPromotion() {
+    List<Suggestion> items = [];
 
-  @override
-  HomeItem getSeasonPromotion() {
     try {
-      RemoteConfigValue response = remoteConfig.getValue("NEARBY_SEASONAL");
-      Map<String, dynamic> json = jsonDecode(response.asString());
+      RemoteConfigValue response = _config.getValue("NEARBY_SEASONAL");
+      dynamic json = jsonDecode(response.asString());
 
-      if(json["can_publish"]) {
-        return HomeItem(
-          title: json["season"] ?? "",
-          sections: (json["sections"] as List<dynamic>).map((i) {
-            return CategorySection.fromJsonWithColorStrings(i);
-          }).toList(),
-        );
+      if(json is Map) {
+        items.add(Suggestion.fromJson(json as Map<String, dynamic>));
+      } else if(json is List) {
+        items = json.map((i) => Suggestion.fromJson(i)).toList();
       }
+
     } catch (_) { }
     
-    return HomeItem(title: "", sections: []);
+    return items;
   }
 }

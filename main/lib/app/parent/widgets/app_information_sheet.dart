@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class AppInformationSheet extends StatelessWidget {
   final List<ButtonView> options;
@@ -16,15 +17,15 @@ class AppInformationSheet extends StatelessWidget {
   static void open({required List<ButtonView> options, String? header, required Function(ButtonView) onTap}) => {
     Navigate.bottomSheet(
       sheet: AppInformationSheet(options: options, onTap: onTap, header: header),
-      route: header != null ? "/options?for=${header.toLowerCase()}" : "/options"
+      route: Navigate.appendRoute(header != null ? "/options?for=${header.toLowerCase()}" : "/options")
     )
   };
 
   @override
   Widget build(BuildContext context) {
-    return CurvedBottomSheet(
-      safeArea: true,
-      margin: const EdgeInsets.all(16),
+    return ModalBottomSheet(
+      useSafeArea: (config) => config.copyWith(top: true),
+      sheetPadding: const EdgeInsets.all(16),
       padding: EdgeInsets.zero,
       borderRadius: BorderRadius.circular(24),
       child: Column(
@@ -41,17 +42,17 @@ class AppInformationSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          Spacing.vertical(20),
           if(header != null && header!.isNotEmpty) ...[
             Center(
-              child: SText(
+              child: TextBuilder(
                 text: header!,
                 color: Theme.of(context).primaryColor,
                 size: Sizing.font(18),
                 weight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 15),
+            Spacing.vertical(15),
           ],
           ...options.map((option) {
             return Padding(
@@ -69,9 +70,9 @@ class AppInformationSheet extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                           size: Sizing.font(25)
                         ),
-                        const SizedBox(width: 10),
+                        Spacing.horizontal(10),
                         Expanded(
-                          child: SText(
+                          child: TextBuilder(
                             text: option.header,
                             size: 14,
                             color: Theme.of(context).primaryColor

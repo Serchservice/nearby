@@ -1,6 +1,8 @@
-import 'package:connectify_flutter/connectify_flutter.dart';
+import 'package:connectify/connectify.dart';
 import 'package:flutter/foundation.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:notify/notify.dart';
+import 'package:smart/platform.dart';
 import 'package:universal_io/io.dart';
 import 'package:drive/library.dart';
 
@@ -155,9 +157,10 @@ class PlatformEngine {
       _operatingSystemVersion = "Unknown Version";
       _deviceInfo = "Unknown Device";
     }
-
-    Database.saveDevice(_device);
   }
+
+  /// Updates the stored device info
+  void updateDevice() => Database.instance.saveDevice(_device);
 
   /// Returns `true` if the application is running on a web platform for `wasm`.
   bool get isWebWasm => kIsWasm;
@@ -200,4 +203,20 @@ class PlatformEngine {
 
   /// Gets the device payload
   Device get device => _device;
+
+  /// Show debug
+  bool get debug => kDebugMode;
+
+  /// The current platform running this application
+  String get platform => isWeb ? "Web" : isAndroid ? "Android" : isIOS ? "iOS" : "Unknown";
+
+  /// Notification platform to run with
+  NotifyPlatform get notifyPlatform => isWeb
+      ? NotifyPlatform.WEB
+      : isAndroid
+      ? NotifyPlatform.ANDROID
+      : NotifyPlatform.IOS;
+
+  /// Serch Notification application running
+  NotifyApp get notifyApp => NotifyApp.nearby;
 }

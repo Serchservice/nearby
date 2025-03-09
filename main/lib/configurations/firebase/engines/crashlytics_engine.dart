@@ -10,7 +10,7 @@ class CrashlyticsEngine {
 
     FlutterError.onError = (errorDetails) {
       if(kDebugMode) {
-        log(errorDetails, from: errorDetails.library);
+        console.error(errorDetails, from: errorDetails.library);
       } else {
         _instance.recordFlutterFatalError(errorDetails);
       }
@@ -18,7 +18,7 @@ class CrashlyticsEngine {
 
     PlatformDispatcher.instance.onError = (error, stack) {
       if(kDebugMode) {
-        log(error, from: stack.toString());
+        console.error(error, from: stack.toString());
       } else {
         _instance.recordError(error, stack, fatal: true);
       }
@@ -28,9 +28,9 @@ class CrashlyticsEngine {
 
   static void logError(String error, String from) {
     if(kDebugMode) {
-      log(error, from: from);
+      console.error(error, from: from);
     } else {
-      _instance.setUserIdentifier(Database.device.id);
+      _instance.setUserIdentifier(Database.instance.device.id);
       _instance.log("$from: => $error");
     }
   }

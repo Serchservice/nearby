@@ -4,58 +4,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 // import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:notify/notify.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:smart/smart.dart';
 
 import 'library.dart';
 
-@pragma("vm:entry-point")
-Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
-  _initializeApp().then((_) {
-    FirebaseMessagingService messaging = FirebaseMessagingImplementation();
-    messaging.background(message);
-
-    _run();
-  });
-}
-
-bool isCurrentRoute(String route) => Get.currentRoute == route;
-
-void _loadPlatformChannel() {
-  const platform = MethodChannel('com.serchservice.drive/apiKey');
-  platform.setMethodCallHandler((call) async {
-    if (call.method == 'getMapApiKey') {
-      return Keys.googleMapApiKey;
-    }
-    return null;
-  });
-}
-
-Future<void> _initializeApp() async {
-  _loadPlatformChannel();
-  Get.updateLocale(const Locale('en'));
-  MainConfiguration.bind();
-
-  return await Database.initialize();
-}
-
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
-  MobileAds.instance.initialize();
+  _init();
+  FirebaseMessaging.onBackgroundMessage(_backgroundRemoteMessagingHandler);
 
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
-  FirebaseMessaging.onBackgroundMessage(_backgroundRemoteMessagingHandler);
-
-  Get.updateLocale(const Locale('en'));
-  _initializeApp().then((_) => _run());
+  return _initializeApp().then((v) => run(true, false));
 }
 
-void _run() {
+void _init() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+}
+
+@pragma("vm:entry-point")
+Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
+  _init();
+  return _initializeApp().then((_) async {
+    FirebaseMessagingService messaging = FirebaseMessagingImplementation();
+    messaging.background(message);
+    runNotification();
+  });
+}
+
+Future<void> _initializeApp() async {
+  const platform = MethodChannel('com.serchservice.drive/apiKey');
+  platform.setMethodCallHandler((call) async {
+    if (call.method.equalsIgnoreCase('getMapApiKey')) {
+      return Keys.googleMapApiKey;
+    }
+    return null;
+  });
+
+  Get.updateLocale(const Locale('en'));
+  PlatformEngine.instance.initialize();
+  return await Database.instance.initialize();
+}
+
+void run(bool checkUpdate, bool isBackground) {
   MainConfiguration.bind();
   // usePathUrlStrategy();
-  runApp(const Main());
+  runApp(Main(checkUpdate: checkUpdate, isBackground: isBackground));
+}
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse response) async {
+  _init();
+  _initializeApp().then((v) {
+    Notify.instance.handleNotificationResponse(response, handler: NotificationHandler.instance.process);
+  });
 }

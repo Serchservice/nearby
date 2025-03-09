@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notify_flutter/notify_flutter.dart';
+import 'package:notify/notify.dart';
+import 'package:smart/smart.dart';
 
 import 'library.dart';
 
 final GlobalKey<ScaffoldMessengerState> messenger = GlobalKey<ScaffoldMessengerState>();
 
+NotifyAppInformation _info = NotifyAppInformation(
+  androidIcon: "notification_icon",
+  app: PlatformEngine.instance.notifyApp,
+);
+
 class Main extends StatefulWidget {
-  const Main({super.key});
+  final bool checkUpdate;
+  final bool isBackground;
+  const Main({super.key, this.checkUpdate = true, this.isBackground = false});
 
   @override
   State<Main> createState() => _MainState();
@@ -18,24 +26,51 @@ class _MainState extends State<Main> {
 
   @override
   void initState() {
-    PlatformEngine.instance.initialize();
+    _handleUpdate();
+    MainConfiguration.data.isBackground.value = widget.isBackground;
+
     _exceptionService.handleException();
+    NotificationController.instance.initialize();
 
     super.initState();
+  }
+
+  void _handleUpdate() {
+    if(widget.checkUpdate) {
+      PlatformEngine.instance.updateDevice();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant Main oldWidget) {
+    if(oldWidget.checkUpdate.notEquals(widget.checkUpdate)) {
+      _handleUpdate();
+    }
+
+    if(oldWidget.isBackground.notEquals(widget.isBackground)) {
+      MainConfiguration.data.isBackground.value = widget.isBackground;
+    }
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     return NotifyWrapper(
-      platform: AppPlatform.nearby,
+      info: _info,
+      showInitializationLogs: PlatformEngine.instance.debug,
+      platform: PlatformEngine.instance.notifyPlatform,
+      onLaunchedByNotification: NotificationController.instance.onLaunchedByNotification,
+      handler: NotificationHandler.instance.process,
+      backgroundHandler: notificationTapBackground,
       child: GetMaterialApp(
         navigatorKey: Navigate.navigatorKey,
         defaultTransition: Transition.fade,
-        theme: MainTheme.light,
-        darkTheme: MainTheme.dark,
-        themeMode: Database.themeMode,
+        theme: MainTheme.instance.light,
+        darkTheme: MainTheme.instance.dark,
+        themeMode: Database.instance.themeMode,
         title: "Nearby",
-        color: CommonColors.darkTheme,
+        color: CommonColors.instance.darkTheme,
         debugShowCheckedModeBanner: false,
         initialRoute: ParentLayout.route,
         unknownRoute: GetPage(
@@ -50,4 +85,13 @@ class _MainState extends State<Main> {
       ),
     );
   }
+}
+
+void runNotification() {
+  remoteNotification.init(
+    _info,
+    PlatformEngine.instance.debug,
+    NotificationHandler.instance.process,
+    notificationTapBackground
+  );
 }

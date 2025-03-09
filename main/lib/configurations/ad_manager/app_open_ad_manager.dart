@@ -1,5 +1,6 @@
 import 'package:drive/library.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:smart/smart.dart' show BoolExtensions;
 
 class AppOpenAdManager {
   final FirebaseRemoteConfigService _configService = FirebaseRemoteConfigImplementation();
@@ -17,20 +18,25 @@ class AppOpenAdManager {
 
   /// Load an AppOpenAd.
   void loadAd() {
-    if(_isPlatformPermitted) {
-      AppOpenAd.load(
-        adUnitId: _configService.getAdmobAppOpenId(),
-        request: AdRequest(),
-        adLoadCallback: AppOpenAdLoadCallback(
-          onAdLoaded: (ad) {
-            _appOpenAd = ad;
-            _appOpenLoadTime = DateTime.now();
-          },
-          onAdFailedToLoad: (error) {
-            Logger.log('AppOpenAd failed to load: $error');
-          },
-        ),
-      );
+    if(_isPlatformPermitted && PlatformEngine.instance.debug.isFalse) {
+      try {
+        AppOpenAd.load(
+          adUnitId: _configService.getAdmobAppOpenId(),
+          request: AdRequest(),
+          adLoadCallback: AppOpenAdLoadCallback(
+            onAdLoaded: (ad) {
+              _appOpenAd = ad;
+              _appOpenLoadTime = DateTime.now();
+            },
+            onAdFailedToLoad: (error) {
+              console.log('AppOpenAd failed to load: $error');
+            },
+          ),
+        );
+      } catch (e) {
+        console.log('AppOpenAd failed to load', from: "[APP OPEN AD]");
+        console.error(e, from: "[APP OPEN AD]");
+      }
     }
   }
 
@@ -43,20 +49,20 @@ class AppOpenAdManager {
     }
 
     if (!isAdAvailable) {
-      Logger.log('Tried to show ad before available.');
+      console.log('Tried to show ad before available.');
       loadAd();
 
       return;
     }
 
     if (_isShowingAd) {
-      Logger.log('Tried to show ad while already showing an ad.');
+      console.log('Tried to show ad while already showing an ad.');
 
       return;
     }
 
     if (DateTime.now().subtract(maxCacheDuration).isAfter(_appOpenLoadTime!)) {
-      Logger.log('Maximum cache duration exceeded. Loading another ad.');
+      console.log('Maximum cache duration exceeded. Loading another ad.');
       _appOpenAd!.dispose();
       _appOpenAd = null;
       loadAd();
@@ -68,16 +74,16 @@ class AppOpenAdManager {
     _appOpenAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _isShowingAd = true;
-        Logger.log('$ad onAdShowedFullScreenContent');
+        console.log('$ad onAdShowedFullScreenContent');
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        Logger.log('$ad onAdFailedToShowFullScreenContent: $error');
+        console.log('$ad onAdFailedToShowFullScreenContent: $error');
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
       },
       onAdDismissedFullScreenContent: (ad) {
-        Logger.log('$ad onAdDismissedFullScreenContent');
+        console.log('$ad onAdDismissedFullScreenContent');
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;

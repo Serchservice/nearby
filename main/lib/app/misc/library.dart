@@ -18,3 +18,10 @@ export 'platform_error/controllers/platform_error_controller.dart';
 export 'platform_error/controllers/platform_error_state.dart';
 
 export 'platform_error/platform_error_layout.dart';
+
+/// MULTIMEDIA
+export 'multimedia/camera/multimedia_camera.dart';
+export 'multimedia/gallery/multimedia_gallery.dart';
+export 'multimedia/image_viewer/multimedia_image_viewer.dart';
+export 'multimedia/video_player/multimedia_video_player.dart';
+export 'multimedia/multimedia.dart';

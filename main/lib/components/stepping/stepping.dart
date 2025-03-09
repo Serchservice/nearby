@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/ui.dart';
 
 class Stepping extends StatelessWidget {
   final Color? lineColor;
@@ -47,7 +48,7 @@ class Stepping extends StatelessWidget {
                   )
                 ],
                 if(showLine) ...[
-                  const SizedBox(height: 4),
+                  Spacing.vertical(4),
                   Expanded(
                     child: VerticalDivider(
                       color: lineColor ?? Theme.of(context).primaryColor,
@@ -59,7 +60,7 @@ class Stepping extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          Spacing.horizontal(10),
           Expanded(child: content)
         ],
       )

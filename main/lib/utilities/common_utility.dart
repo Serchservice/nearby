@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:intl/intl.dart';
+import 'package:smart/smart.dart';
 import 'package:drive/library.dart';
 
 class CommonUtility {
@@ -14,62 +18,10 @@ class CommonUtility {
     }
   }
 
-  static String greeting() {
-    var hour = DateTime.now().hour;
-    if(hour < 12) {
-      return 'Good Morning,';
-    }
-    if(hour < 16) {
-      return 'Good Afternoon,';
-    }
-    if(hour < 20) {
-      return 'Good Evening,';
-    }
-    return 'Hi there,';
-  }
-
-  static String statements() {
-    var hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'What provider can we get for you?';
-    }
-    if (hour < 16) {
-      return 'Sunny or rainy, we always got your back.';
-    }
-    if(hour < 20) {
-      return 'While the moon is out, we never say bye!';
-    }
-    return 'Service made easy whenever you need it.';
-  }
-
-  static String capitalizeWords(String input) {
-    if (input.isEmpty) {
-      return input;
-    }
-
-    List<String> words = input.split(' ');
-    for (int i = 0; i < words.length; i++) {
-      String word = words[i];
-      if (word.isNotEmpty) {
-        words[i] = '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
-      }
-    }
-
-    return words.join(' ');
-  }
-
   static void unfocus(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
-    }
-  }
-
-  static String textWithAorAn(String text) {
-    if(text.startsWith(RegExp('[aeiouAEIOU]'))) {
-      return "an ${text.toLowerCase()}";
-    } else {
-      return "a ${text.toLowerCase()}";
     }
   }
 
@@ -80,12 +32,14 @@ class CommonUtility {
 
   static String formatDay(DateTime? dateTime, {bool showTime = true}) {
     if (dateTime != null) {
-      DateTime currentDateTime = DateTime.now();
+      DateTime current = DateTime.now();
+      DateTime currentDateTime = DateTime(current.year, current.month, current.day);
+      DateTime date = DateTime(dateTime.year, dateTime.month, dateTime.day);
 
       if(showTime) {
-        if (isSameDate(dateTime, currentDateTime)) {
+        if (date.equals(currentDateTime)) {
           return 'Today, ${formatTime(dateTime)}';
-        } else if (isSameDate(dateTime, currentDateTime.subtract(const Duration(days: 1)))) {
+        } else if (date.equals(currentDateTime.subtract(const Duration(days: 1)))) {
           return 'Yesterday, ${formatTime(dateTime)}';
         } else {
           DateFormat formatter = DateFormat('EEEE, d MMMM yyyy');
@@ -93,28 +47,30 @@ class CommonUtility {
         }
       } else {
         DateFormat formatter = DateFormat('EEEE, d MMMM yyyy');
-        return formatter.format(dateTime);
+        String result = formatter.format(dateTime);
+
+        if (date.equals(currentDateTime)) {
+          return 'Today, $result';
+        } else if (date.equals(currentDateTime.subtract(const Duration(days: 1)))) {
+          return 'Yesterday, $result';
+        } else {
+          return result;
+        }
       }
     } else {
       return '';
     }
   }
 
-  static bool isSameDate(DateTime date1, DateTime date2) {
-    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+  static DateFormat timeFormat(String pattern) => DateFormat(pattern);
+
+  static StreamSubscription<dynamic> fetch({required Function action, int durationInSeconds = 10}) {
+    return Stream.periodic(Duration(seconds: durationInSeconds)).listen((_) {
+      Future<void>.delayed(const Duration(milliseconds: 500), () async {
+        action();
+      });
+    });
   }
 
-  static Color lightenColor(Color color, double percent) {
-    assert(0 <= percent && percent <= 100, 'Percent must be between 0 and 100');
-
-    HSLColor hsl = HSLColor.fromColor(color);
-    double lightness = (hsl.lightness + percent / 100).clamp(0.0, 1.0);
-
-    // Return a new color with the adjusted lightness
-    return hsl.withLightness(lightness).toColor();
-  }
-
-  static List<int> generateList(int count) {
-    return List.generate(count, (index) => index);
-  }
+  static Future<String> getTimezone() async => await FlutterTimezone.getLocalTimezone();
 }

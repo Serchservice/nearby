@@ -4,10 +4,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
-import 'package:connectify_flutter/connectify_flutter.dart';
+import 'package:connectify/connectify.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class MapViewController extends GetxController with GetTickerProviderStateMixin {
   final Address origin;
@@ -45,7 +46,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
   LatLng get getOrigin => LatLng(state.origin.value.latitude, state.origin.value.longitude);
 
   void _loadStyle() async {
-    if(Database.preference.isDarkTheme) {
+    if(Database.instance.isDarkTheme) {
       try {
         String json = await rootBundle.loadString('asset/common/google_map_style.json');
         state.style.value = json;
@@ -127,7 +128,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
     );
 
     await directionsService.route(request, (DirectionsResult response, status) {
-      log(status);
+      console.log(status);
       if (status == DirectionsStatus.ok && response.routes != null && response.routes!.asMap().values.single.overviewPath != null) {
         for (GeoCoord value in response.routes!.asMap().values.single.overviewPath!) {
           state.polylineCoordinates.add(LatLng(value.latitude, value.longitude));
@@ -141,7 +142,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
       width: 4,
       visible: true,
       polylineId: id,
-      color: CommonColors.darkTheme,
+      color: CommonColors.instance.darkTheme,
       points: state.polylineCoordinates
     );
     state.polyline.add(myPolyline);
@@ -177,7 +178,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
       c.animateCamera(CameraUpdate.newLatLngBounds(bounds, 20));
     } catch (e) {
       // ignore: empty_catches
-      log(e, from: "POSITION CAMERA ROUTE");
+      console.error(e, from: "POSITION CAMERA ROUTE");
     }
   }
 
@@ -193,9 +194,9 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
       googleMapApiKey: Keys.googleMapApiKey
     );
 
-    log(elements, from: "GET TOTAL DISTANCE AND TIME");
+    console.log(elements, from: "GET TOTAL DISTANCE AND TIME");
 
-    if(elements.any((e) => e["status"] == "ZERO_RESULTS")) {
+    if(elements.any((e) => (e["status"] as String).equals("ZERO_RESULTS"))) {
       state.distanceLeft.value = this.distance;
       state.timeLeft.value = "Within close range"; // in minutes
     } else {

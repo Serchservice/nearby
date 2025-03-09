@@ -13,9 +13,6 @@ abstract class AppService {
   /// @param uri The deep link URI to open the application with.
   void openAppLink(Uri uri);
 
-  /// Verifies the safeness of the device
-  void verifyDevice();
-
   /// Checks for app update and updates the app version
   void checkUpdate();
 

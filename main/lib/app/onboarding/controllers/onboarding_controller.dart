@@ -1,14 +1,15 @@
 import 'package:get/get.dart';
 import 'package:drive/library.dart';
+import 'package:smart/smart.dart';
 
 class OnboardingController extends GetxController {
   OnboardingController();
   final state = OnboardingState();
 
-  List<int> items = CommonUtility.generateList(8);
+  List<int> items = 8.listGenerator;
 
   void getStarted() {
-    Database.savePreference(Database.preference.copyWith(isNew: false));
-    Navigate.all(HomeLayout.route);
+    Database.instance.savePreference(Database.instance.preference.copyWith(isNew: false));
+    Navigate.all(ServicesLayout.route);
   }
 }

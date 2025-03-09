@@ -1,0 +1,1 @@
+/Users/mac/Documents/Serch/frontend/app/nearby/main/build/app/intermediates/cxx/Debug/4j1z396c/obj/arm64-v8a

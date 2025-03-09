@@ -1,4 +1,5 @@
-import 'package:drive/library.dart';
+import 'package:smart/enums.dart';
+import 'package:smart/extensions.dart';
 
 /// Class representing user preferences.
 ///
@@ -10,7 +11,7 @@ class Preference {
   final String id;
   final bool useCurrentLocation;
 
-  const Preference({
+  Preference({
     this.theme = ThemeType.light,
     this.isNew = true,
     this.id = "",
@@ -37,9 +38,7 @@ class Preference {
 
   factory Preference.fromJson(Map<String, dynamic> map) {
     return Preference(
-      theme: map["theme"] != null
-        ? (map["theme"] as String).toThemeType()
-        : ThemeType.light,
+      theme: map["theme"] != null ? (map["theme"] as String).toThemeType : ThemeType.light,
       isNew: map["is_new"] ?? true,
       id: map["id"] ?? "",
       useCurrentLocation: map["use_current_location"] ?? false

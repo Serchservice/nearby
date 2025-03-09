@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:smart/smart.dart' show DoubleExtensions;
 
 class LocationUtils {
   static final LocationUtils _instance = LocationUtils._internal();
@@ -19,8 +20,6 @@ class LocationUtils {
       destinationLongitude,
     );
 
-    double distanceInKilometers = distanceInMeters / 1000;
-
-    return "${distanceInKilometers.toStringAsFixed(2)} km";
+    return distanceInMeters.distance;
   }
 }
