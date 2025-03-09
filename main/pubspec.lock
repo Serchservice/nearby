@@ -294,7 +294,7 @@ packages:
     description:
       path: connectify
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.2.7"
@@ -672,7 +672,7 @@ packages:
     source: hosted
     version: "2.0.17"
   flutter_test:
-    dependency: "direct dev"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -1142,7 +1142,7 @@ packages:
     description:
       path: multimedia
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.0.2"
@@ -1159,7 +1159,7 @@ packages:
     description:
       path: notify
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.3.5"
@@ -1400,16 +1400,16 @@ packages:
     description:
       path: sedat
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
-    version: "0.1.7"
+    version: "0.1.8"
   serch:
     dependency: transitive
     description:
       path: serch
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.0.5"
@@ -1439,7 +1439,7 @@ packages:
     description:
       path: smart
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.8.9"
@@ -1592,7 +1592,7 @@ packages:
     description:
       path: tracing
       ref: main
-      resolved-ref: "6bf64ae79a602cd9c2a22ff17806039720f20040"
+      resolved-ref: ce7a162f4207a0dac7942b66739087fe04e900a1
       url: "https://github.com/Serchservice/flutter.git"
     source: git
     version: "0.1.3"
